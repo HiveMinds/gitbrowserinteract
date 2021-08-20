@@ -1,5 +1,32 @@
-# Batch_copy_issues
-Batch copies issues from repo A to repo B.
+# Gets GitLab runner registration token from root account
+Horrible boiler plate to get the token. It is designed to be embedded in another repo with the following structure:
+```
+parent_repo
+|_get-gitlab-runner-registration-token
+|_src/creds.txt
+|_src/hardcoded_variables.txt
+```
+And it will output:
+```
+parent_repo
+|_get-gitlab-runner-registration-token
+|_src/creds.txt
+|_src/hardcoded_variables
+|_src/runner_registration_token.txt
+```
+## Requirements
+0. Next to this repository create a `src` folder.
+1. In that src folder create the `src/creds.txt` file with content:
+```
+gitlab_server_account=root
+gitlab_server_password=yoursecretrootpasswordofyourgitlabserver
+```
+
+2. In that same src folder create the `src/hardcoded_variables.txt` file with content:
+```
+RUNNER_REGISTRATION_TOKEN_FILEPATH=src/runner_registration_token.txt
+```
+That's it.
 
 ## Usage: do once
 Download/clone this repository.
