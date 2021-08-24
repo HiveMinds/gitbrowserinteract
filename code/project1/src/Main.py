@@ -51,15 +51,35 @@ class Main:
         # wait five seconds for page to load
         time.sleep(5)
 
+        # Click unhide registration-token through xpath
+        #click_element_by_xpath(
+        #    website_controller,
+        #    #'/html/body/div[3]/div/div[3]/main/div[2]/div[1]/div[2]/div/ol/li[3]/code/span/button/svg',
+        #    '//*[@id="eye"]',
+        #    #'/symbol/path',
+        #)
+        
+        # click the button to display registration code through element id
+        #website_controller.driver.find_element_by_id("eye").click()
+        
+        # click the button to display registration code through css selector
+        website_controller.driver.find_element_by_css_selector(".gl-text-body\! > svg:nth-child(1)").click()
+        
+        time.sleep(2)
+        
         # get the page source:
         source = website_controller.driver.page_source
-
+        
+        #token_identification_string='<code id="registration_token">'
+        #token_identification_string='data-registration-token='
+        token_identification_string='<code data-testid="registration-token"><span>'
+        
         # verify the source contains the runner token
-        if not source_contains(website_controller,'<code id="registration_token">'):
+        if not source_contains(website_controller,token_identification_string):
            raise Exception("Expected runner registration token to be contained in the source code, but it is not.")
 
         # Extract the runner registration token from the source code
-        runner_registration_token = get_value_from_html_source(source, '<code id="registration_token">', '</code>')
+        runner_registration_token = get_value_from_html_source(source, token_identification_string, ' ')
 
         # Export runner registration token to file
         write_string_to_file(runner_registration_token, get_runner_registration_token_filepath())
