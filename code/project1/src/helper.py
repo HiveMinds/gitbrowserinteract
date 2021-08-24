@@ -268,7 +268,8 @@ def get_runner_registration_token_filepath():
         if line[:len(runner_registration_token_filepath_identifier)]==runner_registration_token_filepath_identifier:
             runner_registration_token_filepath=line[len(runner_registration_token_filepath_identifier):]
     if not runner_registration_token_filepath is None:
-        return f'../{runner_registration_token_filepath}'
+    	# remove newline character
+        return f'../{runner_registration_token_filepath.strip()}'
     else:
         raise Exception("Did not get runner_registration_token_filepath.")
 
