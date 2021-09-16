@@ -153,6 +153,7 @@ def get_value_from_html_source(source, substring, closing_substring):
     """
     nr_of_pages_index = source.find(substring) + len(substring)
     # print(f'nr_of_pages_index={nr_of_pages_index}')
+    print(f'substring={substring}')
     closing_quotation = source.find(closing_substring, nr_of_pages_index)
     # print(f'closing_quotation={closing_quotation}')
     # print(f'nr={source[nr_of_pages_index:closing_quotation]}')
