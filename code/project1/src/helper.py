@@ -269,6 +269,7 @@ def get_runner_registration_token_filepath():
             runner_registration_token_filepath=line[len(runner_registration_token_filepath_identifier):]
     if not runner_registration_token_filepath is None:
     	# remove newline character
+        print(f'FILEPATH=../{runner_registration_token_filepath.strip()}')
         return f'../{runner_registration_token_filepath.strip()}'
     else:
         raise Exception("Did not get runner_registration_token_filepath.")
