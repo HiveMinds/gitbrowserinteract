@@ -19,6 +19,7 @@ from selenium.webdriver.common.keys import Keys
 
 import time
 
+
 class Main:
     """ """
 
@@ -36,74 +37,87 @@ class Main:
         self.relative_src_filepath = f"code/project{self.project_nr}/src/"
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
-        
+
         # get browser drivers
         get_browser_drivers(self.hc)
-        
+
         website_controller = login(self.hc)
 
         # wait five seconds for page to load
         time.sleep(5)
 
         # visit website with runner token
-        website_controller.driver = open_url(website_controller.driver, "http://127.0.0.1/admin/runners")
+        website_controller.driver = open_url(
+            website_controller.driver, "http://127.0.0.1/admin/runners"
+        )
 
         # wait five seconds for page to load
         time.sleep(5)
 
         # Click unhide registration-token through xpath
-        #click_element_by_xpath(
+        # click_element_by_xpath(
         #    website_controller,
         #    #'/html/body/div[3]/div/div[3]/main/div[2]/div[1]/div[2]/div/ol/li[3]/code/span/button/svg',
         #    '//*[@id="eye"]',
         #    #'/symbol/path',
-        #)
-        
+        # )
+
         # click the button to display registration code through element id
-        #website_controller.driver.find_element_by_id("eye").click()
-        
+        # website_controller.driver.find_element_by_id("eye").click()
+
         # click the button to display registration code through css selector (if it exists)
         try:
-            website_controller.driver.find_element_by_css_selector(".gl-text-body\! > svg:nth-child(1)").click()
+            website_controller.driver.find_element_by_css_selector(
+                ".gl-text-body\! > svg:nth-child(1)"
+            ).click()
         except:
-            print(f'\n\n Note: did not find button to click "unhide" runner registration token. This code proceeds and assumes the token was directly visible.')
-        
+            print(
+                f'\n\n Note: did not find button to click "unhide" runner registration token. This code proceeds and assumes the token was directly visible.'
+            )
+
         time.sleep(2)
-        
+
         # get the page source:
         source = website_controller.driver.page_source
-        
-        token_identification_string_0='<code id="registration_token">'
-        #token_identification_string_1='data-registration-token='
-        token_identification_string_2='<code data-testid="registration-token"><span>'
-        
-        write_string_to_file("Created registration token identifiers", "1.txt")
-        # verify the source contains the runner token
-        if not source_contains(website_controller,token_identification_string_0):
-            if not source_contains(website_controller,token_identification_string_2):
-                raise Exception("Expected runner registration token to be CONTAINED in the source code, but it is not.")
 
-        write_string_to_file("Source contains token", "2.txt")
+        token_identification_string_0 = '<code id="registration_token">'
+        # token_identification_string_1='data-registration-token='
+        token_identification_string_2 = '<code data-testid="registration-token"><span>'
+
+        # verify the source contains the runner token
+        if not source_contains(website_controller, token_identification_string_0):
+            if not source_contains(website_controller, token_identification_string_2):
+                raise Exception(
+                    "Expected runner registration token to be CONTAINED in the source code, but it is not."
+                )
 
         # Extract the runner registration token from the source code
-        runner_registration_token_0 = get_value_from_html_source(source, token_identification_string_0, '</code>')
-        runner_registration_token_2 = get_value_from_html_source(source, token_identification_string_0, '</code>')
-        write_string_to_file(f"runner_registration_token_0={runner_registration_token_0}", "3.txt")
-        write_string_to_file(f"runner_registration_token_2={runner_registration_token_2}", "4.txt")
-        
+        runner_registration_token_0 = get_value_from_html_source(
+            source, token_identification_string_0, "</code>"
+        )
+        runner_registration_token_2 = get_value_from_html_source(
+            source, token_identification_string_0, "</code>"
+        )
+
         # Export runner registration token to file
-        if len(runner_registration_token_0)>14:
-            write_string_to_file(runner_registration_token_0, get_runner_registration_token_filepath())
-        elif len(runner_registration_token_2)>14:
-            write_string_to_file(runner_registration_token_2, get_runner_registration_token_filepath())
+        if len(runner_registration_token_0) > 14:
+            write_string_to_file(
+                runner_registration_token_0, get_runner_registration_token_filepath()
+            )
+        elif len(runner_registration_token_2) > 14:
+            write_string_to_file(
+                runner_registration_token_2, get_runner_registration_token_filepath()
+            )
         else:
-            raise Exception("Expected runner registration token to be EXTRACTED from the source code, but it is not.")
-        write_string_to_file(f"Wrote to filepath:{get_runner_registration_token_filepath()}", "5.txt")
-        
+            raise Exception(
+                "Expected runner registration token to be EXTRACTED from the source code, but it is not."
+            )
+
         # close website controller
         website_controller.driver.close()
-        
-        print(f'Done.')
+
+        # print(f'Done.')
+
 
 if __name__ == "__main__":
     # initialize main class

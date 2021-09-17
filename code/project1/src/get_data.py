@@ -64,7 +64,7 @@ def get_issues(source_reponame, source_username, website_controller):
 
     # loop through issues
     for i in range(1, nr_of_issues):
-    #for i in range(1, 3):
+        # for i in range(1, 3):
         issue = Issue()
         issue.set_title(
             get_issue_title(i, source_reponame, source_username, website_controller)
@@ -123,7 +123,7 @@ def loop_through_issue_pages(source_reponame, source_username, website_controlle
     """
     # loop through pages
     for i in range(1, nr_of_issue_pages):
-    #for i in range(1, 3):
+        # for i in range(1, 3):
         # visit issue page
         # visit issue page
         website_controller.driver = open_url(
@@ -153,7 +153,7 @@ def get_value_from_html_source(source, substring, closing_substring):
     """
     nr_of_pages_index = source.find(substring) + len(substring)
     # print(f'nr_of_pages_index={nr_of_pages_index}')
-    print(f'substring={substring}')
+    print(f"substring={substring}")
     closing_quotation = source.find(closing_substring, nr_of_pages_index)
     # print(f'closing_quotation={closing_quotation}')
     # print(f'nr={source[nr_of_pages_index:closing_quotation]}')

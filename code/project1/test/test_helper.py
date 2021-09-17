@@ -22,13 +22,16 @@ class Test_main(unittest.TestCase):
     def test_parse_creds(self):
 
         expected_result = "someusername"
-        lines=[]
+        lines = []
         lines.append("gitlab_server_account=someusername")
-        lines.append("# notice the password is currently hardcoded in src/install_and_boot_gitlab_server.sh")
+        lines.append(
+            "# notice the password is currently hardcoded in src/install_and_boot_gitlab_server.sh"
+        )
         lines.append("gitlab_server_password=yoursecretone")
         lines.append("GITLAB_ROOT_EMAIL=root@protonmail.com")
-        result_username,result_pwd = self.main.parse_creds(lines)
+        result_username, result_pwd = self.main.parse_creds(lines)
         self.assertEqual(expected_result, result_username)
+
 
 if __name__ == "__main__":
     unittest.main()

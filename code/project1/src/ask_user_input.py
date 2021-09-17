@@ -16,8 +16,6 @@ def write_list_to_file(some_list, output_path):
             f.write("%s\n" % item)
 
 
-
-
 def ask_two_factor_code():
     """USED"""
     two_fac_code = get_input(
@@ -29,7 +27,7 @@ def ask_two_factor_code():
 def get_input(text):
     """
 
-    :param text: 
+    :param text:
 
     """
     return input(text)

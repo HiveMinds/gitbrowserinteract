@@ -6,7 +6,7 @@ from selenium.webdriver.common.action_chains import ActionChains
 def add_two(x):
     """Adds two to an incoming integer.
 
-    :param x: 
+    :param x:
 
     """
     return x + 2
@@ -25,7 +25,7 @@ def read_creds(hardcoded):
     """Reads username and password for Radboud University Sports Center from credentials file,
     if the file exists, asks the user to manually enter them if the file is not found.
     Returns two strings representing the username and password for the Radboud University Sports Center login.
-    
+
     TODO: verify this is not a duplicate method.
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
@@ -36,39 +36,38 @@ def read_creds(hardcoded):
         lines = []
         for line in f:
             lines.append(line)
-    
+
     # creds.txt is changed to bash format in other project so the credentials need to be parsed
-    #username = lines[0][:-1]
-    #pswd = lines[1]
+    # username = lines[0][:-1]
+    # pswd = lines[1]
     username, pwd = parse_creds(lines)
-    
+
     return username, pwd
 
+
 def parse_creds(lines):
-    username_identifier="gitlab_server_account="
-    pwd_identifier="gitlab_server_password="
-    username=None
-    pwd=None
+    username_identifier = "gitlab_server_account="
+    pwd_identifier = "gitlab_server_password="
+    username = None
+    pwd = None
     for line in lines:
-        if line[:len(username_identifier)]==username_identifier:
-            username=line[len(username_identifier):]
-        if line[:len(pwd_identifier)]==pwd_identifier:
-            pwd=line[len(pwd_identifier):]
+        if line[: len(username_identifier)] == username_identifier:
+            username = line[len(username_identifier) :]
+        if line[: len(pwd_identifier)] == pwd_identifier:
+            pwd = line[len(pwd_identifier) :]
     if not username is None:
         if not pwd is None:
-            write_string_to_file(f"username={username}", "6.txt")
-            write_string_to_file(f"pwd={pwd}", "7.txt")
-            return username,pwd
+            return username, pwd
         else:
             raise Exception("Did not get password.")
     else:
         raise Exception("Did not get username.")
-        
+
 
 def get_creds_if_not_exist(hardcoded):
     """Asks the user to enter the username and password for the login to the
     Radboud Universitiy Sports Center login.
-    
+
     TODO: ask user to include 'read' before username and password,
     to indicate that they read the source code before entering their username
     and password (and verified that it is not shared). Give them a warning about
@@ -90,7 +89,7 @@ def get_creds_if_not_exist(hardcoded):
 def get_labels_from_issues(issues):
     """
 
-    :param issues: [List] of Issue objects containing the data (e.g. title, comments) of an issue. 
+    :param issues: [List] of Issue objects containing the data (e.g. title, comments) of an issue.
 
     """
     labels = []
@@ -141,7 +140,7 @@ def get_browser_drivers(hardcoded):
 def file_is_found(filepath, hardcoded):
     """
 
-    :param filepath: 
+    :param filepath:
     :param hardcoded: An object containing all the hardcoded settings used in this program.
 
     """
@@ -261,20 +260,29 @@ def write_string_to_file(string, output_path):
     with open(output_path, "w") as f:
         f.write(string)
 
+
 def get_runner_registration_token_filepath():
-    #get lines from hardcoded data
-    lines=read_file_content("../src/hardcoded_variables.txt")
-    runner_registration_token_filepath_identifier="RUNNER_REGISTRATION_TOKEN_FILEPATH="
-    runner_registration_token_filepath=None
+    # get lines from hardcoded data
+    lines = read_file_content("../src/hardcoded_variables.txt")
+    runner_registration_token_filepath_identifier = (
+        "RUNNER_REGISTRATION_TOKEN_FILEPATH="
+    )
+    runner_registration_token_filepath = None
     for line in lines:
-        if line[:len(runner_registration_token_filepath_identifier)]==runner_registration_token_filepath_identifier:
-            runner_registration_token_filepath=line[len(runner_registration_token_filepath_identifier):]
+        if (
+            line[: len(runner_registration_token_filepath_identifier)]
+            == runner_registration_token_filepath_identifier
+        ):
+            runner_registration_token_filepath = line[
+                len(runner_registration_token_filepath_identifier) :
+            ]
     if not runner_registration_token_filepath is None:
-    	# remove newline character
-        print(f'FILEPATH=../{runner_registration_token_filepath.strip()}')
-        return f'../{runner_registration_token_filepath.strip()}'
+        # remove newline character
+        print(f"FILEPATH=../{runner_registration_token_filepath.strip()}")
+        return f"../{runner_registration_token_filepath.strip()}"
     else:
         raise Exception("Did not get runner_registration_token_filepath.")
+
 
 def read_file_content(filepath):
     with open(filepath, "r") as f:

@@ -38,13 +38,12 @@ def login(hardcoded):
     password_input.send_keys(pswd)
     website_controller.driver.implicitly_wait(6)
 
-    #website_controller.driver.find_element_by_css_selector(".btn-primary").click()
+    # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
     click_element_by_xpath(
-            website_controller,
-            '//*[@id="new_user"]/div[5]/input',
+        website_controller,
+        '//*[@id="new_user"]/div[5]/input',
     )
     return website_controller
-    
 
 
 def two_factor_login(two_factor_code, website_controller):
@@ -54,7 +53,7 @@ def two_factor_login(two_factor_code, website_controller):
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
     :param two_factor_code: param website_controller:
-    :param website_controller: Object controlling the browser. 
+    :param website_controller: Object controlling the browser.
 
     """
     two_factor_input = website_controller.driver.find_element_by_id("otp")
@@ -69,7 +68,7 @@ def two_factor_login(two_factor_code, website_controller):
 def get_credentials(hardcoded):
     """Gets the Radboud Sports Center credentials from a hardcoded file and asks the user for
     them if they are not found.
-    
+
     # TODO: export the credentials of the user if the user grants permission for that.
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
