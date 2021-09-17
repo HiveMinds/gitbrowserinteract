@@ -77,15 +77,19 @@ class Main:
         #token_identification_string_1='data-registration-token='
         token_identification_string_2='<code data-testid="registration-token"><span>'
         
-        
+        write_string_to_file("got registration token", "1.txt")
         # verify the source contains the runner token
         if not source_contains(website_controller,token_identification_string_0):
             if not source_contains(website_controller,token_identification_string_2):
                 raise Exception("Expected runner registration token to be CONTAINED in the source code, but it is not.")
 
+        write_string_to_file("Source contains token", "2.txt")
+
         # Extract the runner registration token from the source code
         runner_registration_token_0 = get_value_from_html_source(source, token_identification_string_0, '</code>')
         runner_registration_token_2 = get_value_from_html_source(source, token_identification_string_0, '</code>')
+        write_string_to_file(f"runner_registration_token_0={runner_registration_token_0}", "3.txt")
+        write_string_to_file(f"runner_registration_token_1={runner_registration_token_1}", "4.txt")
         
         # Export runner registration token to file
         if len(runner_registration_token_0)>14:
@@ -94,6 +98,7 @@ class Main:
             write_string_to_file(runner_registration_token_2, get_runner_registration_token_filepath())
         else:
             raise Exception("Expected runner registration token to be EXTRACTED from the source code, but it is not.")
+        write_string_to_file(f"Wrote to filepath:{get_runner_registration_token_filepath()}", "5.txt")
         
         # close website controller
         website_controller.driver.close()
