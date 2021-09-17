@@ -89,7 +89,7 @@ class Main:
         runner_registration_token_0 = get_value_from_html_source(source, token_identification_string_0, '</code>')
         runner_registration_token_2 = get_value_from_html_source(source, token_identification_string_0, '</code>')
         write_string_to_file(f"runner_registration_token_0={runner_registration_token_0}", "3.txt")
-        write_string_to_file(f"runner_registration_token_2={runner_registration_token_1}", "4.txt")
+        write_string_to_file(f"runner_registration_token_2={runner_registration_token_2}", "4.txt")
         
         # Export runner registration token to file
         if len(runner_registration_token_0)>14:
