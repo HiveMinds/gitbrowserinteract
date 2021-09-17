@@ -77,7 +77,7 @@ class Main:
         #token_identification_string_1='data-registration-token='
         token_identification_string_2='<code data-testid="registration-token"><span>'
         
-        write_string_to_file("got registration token", "1.txt")
+        write_string_to_file("Created registration token identifiers", "1.txt")
         # verify the source contains the runner token
         if not source_contains(website_controller,token_identification_string_0):
             if not source_contains(website_controller,token_identification_string_2):

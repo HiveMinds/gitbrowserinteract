@@ -56,6 +56,8 @@ def parse_creds(lines):
             pwd=line[len(pwd_identifier):]
     if not username is None:
         if not pwd is None:
+            write_string_to_file(f"username={username}", "6.txt")
+            write_string_to_file(f"pwd={pwd}", "7.txt")
             return username,pwd
         else:
             raise Exception("Did not get password.")
