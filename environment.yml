@@ -1,6 +1,6 @@
 # run: conda env create --file environment.yml
 # include new packages: conda env update --file environment.yml
-name: batch_copy_issues
+name: get_gitlab_generation_token
 channels:
   - conda-forge
   - conda

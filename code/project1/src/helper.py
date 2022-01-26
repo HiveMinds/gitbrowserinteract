@@ -46,8 +46,8 @@ def read_creds(hardcoded):
 
 
 def parse_creds(lines):
-    username_identifier = "gitlab_server_account="
-    pwd_identifier = "gitlab_server_password="
+    username_identifier = "GITLAB_SERVER_ACCOUNT_GLOBAL="
+    pwd_identifier = "GITLAB_SERVER_PASSWORD_GLOBAL="
     username = None
     pwd = None
     for line in lines:
