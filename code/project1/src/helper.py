@@ -1,6 +1,9 @@
 import getpass
 import os
+import time
+import math
 from selenium.webdriver.common.action_chains import ActionChains
+from .Website_controller import Website_controller
 
 
 def add_two(x):
@@ -99,6 +102,88 @@ def get_labels_from_issues(issues):
     unique_labels = list(set(labels))
     print(f"unique_labels={unique_labels}")
     return unique_labels
+
+
+def loiter_till_gitlab_server_is_ready_for_login(
+    hardcoded, scan_duration, interval_duration
+):
+    website_controller = Website_controller()
+
+    for i in range(0, math.ceil(scan_duration / interval_duration)):
+        # Refresh page
+        try:
+            # TODO: get the open_url function from the control_website.py file.
+            website_controller.driver = open_url(
+                website_controller.driver, hardcoded.login_url
+            )
+            website_controller.driver.implicitly_wait(1)
+        except:
+            print("GitLab server was not yet ready to show website")
+
+        print(
+            f"Waiting for the GitLab server to get ready for {interval_duration} seconds"
+        )
+        time.sleep(interval_duration)
+
+        # Only use this if a new state is found to find its unique characteristics
+        # export_source(website_controller, f"source_{i}.txt")
+
+        # Break loop if page is succesfully loaded.
+        if check_if_login_page_is_loaded(website_controller):
+            # GitLab server page is loaded correctly, can move on in script.
+            break
+
+    # close website controller
+    website_controller.driver.close()
+    print(
+        "GitLab server is ready for first login. Code proceeding now to login and get GitLab runner Token."
+    )
+
+
+def check_if_login_page_is_loaded(website_controller):
+
+    # This identifier only occurs in the first, and not-yet-ready stage.
+    error_stage_identifier = (
+        "The connection to the server was reset while the page was loading."
+    )
+
+    # This identifier only occurs in the second, and not-yet-ready stage.
+    too_soon_stage_identifier = "GitLab is taking too much time to respond."
+
+    # This identifier only occurs in the second, and ready stage.
+    ready_stage_identifier = "Sign in"
+
+    # Verify if that condition is met.
+    source = website_controller.driver.page_source
+    if error_stage_identifier in source:
+        return False
+    elif too_soon_stage_identifier in source:
+        return False
+    elif ready_stage_identifier in source:
+        return True
+    else:
+        raise Exception(
+            "The GitLab server webpage is in a state that is not yet known/recognised, its source code contains:{source}"
+        )
+
+
+def open_url(driver, url):
+    """DUPLICATE, Remove
+    Makes the browser open an url through the driver object in the webcontroller.
+
+    :param driver: object within website_controller that can controll the driver.
+    :param url: A link to a website.
+
+    """
+    driver.get(url)
+    return driver
+
+
+def export_source(website_controller, relative_filepath):
+    source = website_controller.driver.page_source
+    text_file = open(relative_filepath, "w")
+    text_file.write(source)
+    text_file.close()
 
 
 def source_contains(website_controller, string):

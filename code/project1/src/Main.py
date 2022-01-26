@@ -10,6 +10,7 @@ from .helper import click_element_by_xpath
 from .helper import get_runner_registration_token_filepath
 from .helper import source_contains
 from .helper import write_string_to_file
+from .helper import loiter_till_gitlab_server_is_ready_for_login
 from .control_website import open_url
 from .Website_controller import Website_controller
 from .get_data import get_issues
@@ -41,6 +42,11 @@ class Main:
         # get browser drivers
         get_browser_drivers(self.hc)
 
+        # Create for loop that checks if GitLab server page is loaded and ready for login.
+        # loop it for 900 seconds, check page source every 5 seconds
+        loiter_till_gitlab_server_is_ready_for_login(self.hc, 900, 5)
+
+        # Log into GitLab server.
         website_controller = login(self.hc)
 
         # wait five seconds for page to load
@@ -83,6 +89,8 @@ class Main:
         token_identification_string_0 = '<code id="registration_token">'
         # token_identification_string_1='data-registration-token='
         token_identification_string_2 = '<code data-testid="registration-token"><span>'
+
+        # TODO: New update requires clicking dropdown box, xpath=//*[@id="__BVID__31__BV_toggle_"]
 
         # verify the source contains the runner token
         if not source_contains(website_controller, token_identification_string_0):
