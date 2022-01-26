@@ -2,8 +2,9 @@
 from .control_website import login
 from .Hardcoded import Hardcoded
 from .helper import get_labels_from_issues
-from .get_website_controller import get_website_controller
 from .get_data import get_value_from_html_source
+from .get_gitlab_runner_token import get_runner_registration_token_from_page
+from .get_website_controller import get_website_controller
 from .helper import get_browser_drivers
 from .helper import parse_creds
 from .helper import click_element_by_xpath
@@ -44,7 +45,7 @@ class Main:
 
         # Create for loop that checks if GitLab server page is loaded and ready for login.
         # loop it for 900 seconds, check page source every 5 seconds
-        loiter_till_gitlab_server_is_ready_for_login(self.hc, 900, 5)
+        loiter_till_gitlab_server_is_ready_for_login(self.hc, 1200, 5)
 
         # Log into GitLab server.
         website_controller = login(self.hc)
@@ -52,69 +53,14 @@ class Main:
         # wait five seconds for page to load
         time.sleep(5)
 
-        # visit website with runner token
-        website_controller.driver = open_url(
-            website_controller.driver, "http://127.0.0.1/admin/runners"
-        )
-
-        # wait five seconds for page to load
-        time.sleep(5)
-
-        # Click unhide registration-token through xpath
-        # click_element_by_xpath(
-        #    website_controller,
-        #    #'/html/body/div[3]/div/div[3]/main/div[2]/div[1]/div[2]/div/ol/li[3]/code/span/button/svg',
-        #    '//*[@id="eye"]',
-        #    #'/symbol/path',
-        # )
-
-        # click the button to display registration code through element id
-        # website_controller.driver.find_element_by_id("eye").click()
-
-        # click the button to display registration code through css selector (if it exists)
-        try:
-            website_controller.driver.find_element_by_css_selector(
-                ".gl-text-body\! > svg:nth-child(1)"
-            ).click()
-        except:
-            print(
-                f'\n\n Note: did not find button to click "unhide" runner registration token. This code proceeds and assumes the token was directly visible.'
-            )
-
-        time.sleep(2)
-
-        # get the page source:
-        source = website_controller.driver.page_source
-
-        token_identification_string_0 = '<code id="registration_token">'
-        # token_identification_string_1='data-registration-token='
-        token_identification_string_2 = '<code data-testid="registration-token"><span>'
-
-        # TODO: New update requires clicking dropdown box, xpath=//*[@id="__BVID__31__BV_toggle_"]
-
-        # verify the source contains the runner token
-        if not source_contains(website_controller, token_identification_string_0):
-            if not source_contains(website_controller, token_identification_string_2):
-                raise Exception(
-                    "Expected runner registration token to be CONTAINED in the source code, but it is not."
-                )
-
-        # Extract the runner registration token from the source code
-        runner_registration_token_0 = get_value_from_html_source(
-            source, token_identification_string_0, "</code>"
-        )
-        runner_registration_token_2 = get_value_from_html_source(
-            source, token_identification_string_0, "</code>"
+        runner_registration_token = get_runner_registration_token_from_page(
+            website_controller
         )
 
         # Export runner registration token to file
-        if len(runner_registration_token_0) > 14:
+        if len(runner_registration_token) > 14:
             write_string_to_file(
-                runner_registration_token_0, get_runner_registration_token_filepath()
-            )
-        elif len(runner_registration_token_2) > 14:
-            write_string_to_file(
-                runner_registration_token_2, get_runner_registration_token_filepath()
+                runner_registration_token, get_runner_registration_token_filepath()
             )
         else:
             raise Exception(
@@ -124,7 +70,9 @@ class Main:
         # close website controller
         website_controller.driver.close()
 
-        # print(f'Done.')
+        print(
+            f"Got the GitLab runner registration token, can now proceed with setting up the GitLab CI."
+        )
 
 
 if __name__ == "__main__":
