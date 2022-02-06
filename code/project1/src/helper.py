@@ -105,9 +105,9 @@ def get_labels_from_issues(issues):
 
 
 def loiter_till_gitlab_server_is_ready_for_login(
-    hardcoded, scan_duration, interval_duration
+    hardcoded, scan_duration, interval_duration, website_controller
 ):
-    website_controller = Website_controller()
+    # website_controller = Website_controller()
 
     for i in range(0, math.ceil(scan_duration / interval_duration)):
         # Refresh page
@@ -209,6 +209,12 @@ def get_browser_drivers(hardcoded):
 
     """
     os.system("yes | sudo apt install wget")
+
+    firefox_driver_file_is_found = file_is_found(
+        f"{hardcoded.firefox_driver_folder}/{hardcoded.firefox_driver_filename}",
+        hardcoded,
+    )
+
     if not file_is_found(
         f"{hardcoded.firefox_driver_folder}/{hardcoded.firefox_driver_filename}",
         hardcoded,

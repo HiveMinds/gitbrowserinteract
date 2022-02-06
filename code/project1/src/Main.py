@@ -17,6 +17,7 @@ from .Website_controller import Website_controller
 from .get_data import get_issues
 from .set_data import set_labels
 from .set_data import set_issues
+from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
 import time
@@ -43,9 +44,13 @@ class Main:
         # get browser drivers
         get_browser_drivers(self.hc)
 
+        website_controller = get_website_controller(self.hc)
+
         # Create for loop that checks if GitLab server page is loaded and ready for login.
         # loop it for 900 seconds, check page source every 5 seconds
-        loiter_till_gitlab_server_is_ready_for_login(self.hc, 1200, 5)
+        loiter_till_gitlab_server_is_ready_for_login(
+            self.hc, 1200, 5, website_controller
+        )
 
         # Log into GitLab server.
         website_controller = login(self.hc)

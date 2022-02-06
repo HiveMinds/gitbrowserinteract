@@ -15,7 +15,8 @@ class Hardcoded:
         self.firefox_driver_folder = "firefox_driver"
         self.firefox_driver_tarname = "firefox_driver.tar.gz"
         self.firefox_driver_filename = "geckodriver"
-        self.firefox_driver_link = "https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz"
+        # self.firefox_driver_link = "https://github.com/mozilla/geckodriver/releases/download/v0.29.1/geckodriver-v0.29.1-linux64.tar.gz"
+        self.firefox_driver_link = "https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz"
 
         self.chromium_driver_folder = "chrome_driver"
         self.chromium_driver_tarname = "chrome_driver.zip"
