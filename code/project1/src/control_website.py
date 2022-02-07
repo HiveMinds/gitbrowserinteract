@@ -40,8 +40,7 @@ def login(hardcoded):
 
     # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
     click_element_by_xpath(
-        website_controller,
-        '//*[@id="new_user"]/div[5]/input',
+        website_controller, '//*[@id="new_user"]/div[5]/input',
     )
     return website_controller
 

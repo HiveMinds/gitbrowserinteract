@@ -46,7 +46,7 @@ def click_display_token_through_css_V0(website_controller):
         return True
     except:
         print(
-            f'\n\n Note: did not find button to click "unhide" runner registration token. This code proceeds and assumes the token was directly visible.'
+            f'\n\n Note: did not find button to click "unhide" runner registration token with first method. Will try second method now.'
         )
         return False
 
@@ -66,7 +66,7 @@ def unhide_registration_token_through_xpath_V1(website_controller):
         return True
     except:
         print(
-            f'\n\n Note: did not find the dropdownbutton that shows the "unhide" registration token button, so I currently cannot get the runner registration token.'
+            f'\n\n Note: did not find button to click "unhide" runner registration token with second method. Will try third method now.'
         )
 
 
@@ -85,7 +85,7 @@ def click_dropdown_box_V2(website_controller):
     website_controller, succesfull = try_to_click_by_xpath(
         website_controller,
         '//*[@id="__BVID__31"]',
-        "\n\n Did not find dropdown button in website.",
+        "\n\n Note: did not find button to dropwdown the runner registration token box with third method. Will try fourth method now.",
         True,
     )
     return website_controller
@@ -96,7 +96,7 @@ def click_eye_button_through_id_V2(website_controller):
     website_controller, succesfull = try_to_click_by_id(
         website_controller,
         "eye",
-        "\n\n Did not find unhide button with element id:eye in website.",
+        '\n\n Note: did not find button to click the "eye" icon fourth method. Will try fifth method now.',
         False,
     )
     if not succesfull:
@@ -104,7 +104,7 @@ def click_eye_button_through_id_V2(website_controller):
         website_controller, succesfull = try_to_click_by_id(
             website_controller,
             "eye-icon",
-            "\n\n Did not find unhide button with element id:eye-icon in website.",
+            '\n\n Note: did not find button to click the "eye" icon fourth method. Will try sixth method now.',
             False,
         )
     return website_controller, succesfull
@@ -118,6 +118,7 @@ def click_eye_button_through_xpath_V2(website_controller):
         "xpath-eye try 0",
         False,
     )
+    time.sleep(1)
     if not succesfull:
         source = website_controller.driver.page_source
         website_controller, succesfull = try_to_click_by_xpath(
@@ -126,6 +127,7 @@ def click_eye_button_through_xpath_V2(website_controller):
             "xpath-eye try 1",
             False,
         )
+    time.sleep(1)
     if not succesfull:
         source = website_controller.driver.page_source
         website_controller, succesfull = try_to_click_by_xpath(
@@ -134,24 +136,24 @@ def click_eye_button_through_xpath_V2(website_controller):
             "xpath-eye try 2",
             False,
         )
+    time.sleep(1)
 
     if not succesfull:
         source = website_controller.driver.page_source
         website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            '//*[@id="eye"]',
-            "xpath-eye try 3",
-            False,
+            website_controller, '//*[@id="eye"]', "xpath-eye try 3", False,
         )
-
+    time.sleep(1)
     if not succesfull:
-        source = website_controller.driver.page_source
-        website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            "/symbol/path",
-            "xpath-eye try 4",
-            True,
-        )
+        raise Exception("Did not find the GitLab Runner Registration token.")
+    ###if not succesfull:
+    ###    source = website_controller.driver.page_source
+    ###    website_controller, succesfull = try_to_click_by_xpath(
+    ###        website_controller,
+    ###        "/symbol/path/",
+    ###        "xpath-eye try 4",
+    ###        True,
+    ###    )
 
     return website_controller
 
@@ -173,10 +175,7 @@ def try_to_click_by_id(website_controller, id, error_msg, raise_error):
 def try_to_click_by_xpath(website_controller, xpath, error_msg, raise_error):
     try:
         # Click the button to display registration code through element id
-        website_controller = click_element_by_xpath(
-            website_controller,
-            xpath,
-        )
+        website_controller = click_element_by_xpath(website_controller, xpath,)
         print(f"found_by_xpath")
         return website_controller, True
     except:
