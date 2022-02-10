@@ -14,7 +14,7 @@ from .helper import read_creds
 from .helper import source_contains
 
 from .control_website import open_url
-from .control_website import login
+from .control_website import gitlab_login
 from .control_website import two_factor_login
 
 from selenium.webdriver.common.action_chains import ActionChains
@@ -34,7 +34,7 @@ def get_website_controller(hc):
     get_browser_drivers(hc)
 
     # login GitHub
-    website_controller = login_github(hc)
+    website_controller = gitlab_login(hc)
     return website_controller
 
 
@@ -56,7 +56,7 @@ def login_github(hardcoded):
     # exit()
     if not has_pickled:
         # login
-        website_controller = login(hardcoded)
+        website_controller = gitlab_login(hardcoded)
 
         # check if 2factor
         if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):

@@ -114,7 +114,7 @@ def loiter_till_gitlab_server_is_ready_for_login(
         try:
             # TODO: get the open_url function from the control_website.py file.
             website_controller.driver = open_url(
-                website_controller.driver, hardcoded.login_url
+                website_controller.driver, hardcoded.gitlab_login_url
             )
             website_controller.driver.implicitly_wait(1)
         except:

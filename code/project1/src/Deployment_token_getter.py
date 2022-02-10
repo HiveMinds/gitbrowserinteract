@@ -1,22 +1,15 @@
 # Code that automatically copies all issues of a repository to another
-from .control_website import login
+from .ask_user_input import ask_two_factor_code
+from .control_website import click_element_by_xpath
+from .control_website import github_login
 from .Hardcoded import Hardcoded
-from .helper import get_labels_from_issues
-from .get_data import get_value_from_html_source
 from .get_gitlab_runner_token import get_runner_registration_token_from_page
-from .get_website_controller import get_website_controller
-from .helper import get_browser_drivers
-from .helper import parse_creds
-from .helper import click_element_by_xpath
 from .helper import get_runner_registration_token_filepath
 from .helper import source_contains
 from .helper import write_string_to_file
 from .helper import loiter_till_gitlab_server_is_ready_for_login
 from .control_website import open_url
 from .Website_controller import Website_controller
-from .get_data import get_issues
-from .set_data import set_labels
-from .set_data import set_issues
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -41,22 +34,23 @@ class Deployment_token_getter:
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
 
-        # get browser drivers
-        get_browser_drivers(self.hc)
+        # TODO: get github_user_name from hardcoded.txt
+        github_user_name = "a-t-0"
+        # TODO: get get-gitlab-runner-registration-token from hardcoded.txt
+        github_repo_name = "get-gitlab-runner-registration-token"
 
-        website_controller = get_website_controller(self.hc)
-
-        # Create for loop that checks if GitLab server page is loaded and ready for login.
-        # loop it for 900 seconds, check page source every 5 seconds
-        loiter_till_gitlab_server_is_ready_for_login(
-            self.hc, 1200, 5, website_controller
+        # website_controller = get_website_controller(self.hc)
+        website_controller = self.login_github_to_build_status_repo(
+            self.hc, github_user_name, github_repo_name
         )
-
-        # Log into GitLab server.
-        website_controller = login(self.hc)
 
         # wait five seconds for page to load
         time.sleep(5)
+
+        self.fill_in_ssh_key(self.hc, website_controller)
+
+        txt = input("Type something to test this out: ")
+        exit()
 
         runner_registration_token = get_runner_registration_token_from_page(
             website_controller
@@ -77,6 +71,70 @@ class Deployment_token_getter:
 
         print(
             f"Got the GitLab runner registration token, can now proceed with setting up the GitLab CI."
+        )
+
+    def login_github_to_build_status_repo(
+        self, hardcoded, github_username, github_build_status_repo_name
+    ):
+        """USED
+        Gets the issues from a github repo. Opens a separate browser instance and then
+        closes it again.
+        Returns the rsc_data object that contains the parsed availability of the relevant activities.
+
+        TODO: determine and document how get_next_activity manages the difference between primary and secondary
+        choice.
+
+        :param hardcoded: An object containing all the hardcoded settings used in this program.
+        :param user_choices: Object that contains the choices/schedule that user wants to follow.
+
+        """
+
+        # login
+        website_controller = github_login(hardcoded)
+
+        # check if 2factor
+        if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):
+
+            # if 2 factor ask code from user
+            two_factor_code = ask_two_factor_code()
+
+            # enter code
+            two_factor_login(two_factor_code, website_controller)
+
+        # repository_url = f"https://github.com/{github_username}/{github_build_status_repo_name}/issues"
+        repository_url = f"https://github.com/{github_username}/{github_build_status_repo_name}/settings/keys/new"
+
+        # Go to source repository
+        website_controller.driver = open_url(website_controller.driver, repository_url)
+
+        return website_controller
+
+    def fill_in_ssh_key(self, hardcoded, website_controller):
+        github_deployment_key_title_field = (
+            website_controller.driver.find_element_by_id(
+                hardcoded.github_deploy_key_title_element_id
+            )
+        )
+        github_deployment_key_key_field = website_controller.driver.find_element_by_id(
+            hardcoded.github_deploy_key_key_element_id
+        )
+
+        # generate key
+        ssh_key = "bla"
+
+        # Set the title and ssh key for the GitHub deploy key for the GitLab build status repo.
+        github_deployment_key_title_field.send_keys(hardcoded.deployment_key_title)
+        github_deployment_key_key_field.send_keys(ssh_key)
+
+        # Give write permission to deploy key for the GitLab build status repository (in GitHub)
+        click_element_by_xpath(
+            website_controller,
+            hardcoded.github_deploy_key_allow_write_access_button_xpath,
+        )
+
+        # Click: add the new deploy key to the GitHub repository.
+        click_element_by_xpath(
+            website_controller, hardcoded.add_github_deploy_key_button_xpath
         )
 
 

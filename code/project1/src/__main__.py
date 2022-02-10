@@ -28,13 +28,12 @@ parser.set_defaults(
 args = parser.parse_args()
 if args.deploy_token:
     print(f"Getting GitHub deploy token.")
-    args.gitlab_runner=False
+    args.gitlab_runner = False
     deployment_token_getter = Deployment_token_getter(project_nr)
 elif args.gitlab_runner:
     print(f"Getting GitLab runner token.")
-    args.gitlab_runner=False
+    args.gitlab_runner = False
     main = Main(project_nr)
-
 
 
 print(f"Done.")

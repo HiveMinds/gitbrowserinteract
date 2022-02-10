@@ -1,5 +1,5 @@
 # Code that automatically copies all issues of a repository to another
-from .control_website import login
+from .control_website import gitlab_login
 from .Hardcoded import Hardcoded
 from .helper import get_labels_from_issues
 from .get_data import get_value_from_html_source
@@ -53,7 +53,7 @@ class Main:
         )
 
         # Log into GitLab server.
-        website_controller = login(self.hc)
+        website_controller = gitlab_login(self.hc)
 
         # wait five seconds for page to load
         time.sleep(5)

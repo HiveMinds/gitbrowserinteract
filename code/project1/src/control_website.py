@@ -19,20 +19,32 @@ def open_url(driver, url):
     return driver
 
 
-def login(hardcoded):
-    """Performs login of user into Radboud Sports Center website.
+def login(
+    hardcoded,
+    login_url,
+    user_element_id,
+    pw_element_id,
+    signin_button_xpath,
+    username,
+    pswd,
+):
+    """Performs login of user into  website.
     Returns the website_controller  object.
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
 
     """
-    username, pswd = get_credentials(hardcoded)
 
     website_controller = Website_controller()
-    website_controller.driver = open_url(website_controller.driver, hardcoded.login_url)
+    website_controller.driver = open_url(website_controller.driver, login_url)
     website_controller.driver.implicitly_wait(6)
-    username_input = website_controller.driver.find_element_by_id("user_login")
-    password_input = website_controller.driver.find_element_by_id("user_password")
+    username_input = website_controller.driver.find_element_by_id(user_element_id)
+    password_input = website_controller.driver.find_element_by_id(pw_element_id)
+
+    if username is None:
+        username = get_username()
+    if pswd is None:
+        pswd = get_pswd()
 
     username_input.send_keys(username)
     password_input.send_keys(pswd)
@@ -40,15 +52,43 @@ def login(hardcoded):
 
     # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
     click_element_by_xpath(
-        website_controller, '//*[@id="new_user"]/div[5]/input',
+        website_controller,
+        signin_button_xpath,
+    )
+    return website_controller
+
+
+def github_login(hardcoded):
+    website_controller = login(
+        hardcoded,
+        hardcoded.github_login_url,
+        hardcoded.github_user_element_id,
+        hardcoded.github_pw_element_id,
+        hardcoded.github_signin_button_xpath,
+        None,
+        None,
+    )
+    return website_controller
+
+
+def gitlab_login(hardcoded):
+    username, pswd = get_credentials(hardcoded)
+    website_controller = login(
+        hardcoded,
+        hardcoded.gitlab_login_url,
+        hardcoded.gitlab_user_element_id,
+        hardcoded.gitlab_pw_element_id,
+        hardcoded.gitlab_signin_button_xpath,
+        username,
+        pswd,
     )
     return website_controller
 
 
 def two_factor_login(two_factor_code, website_controller):
     """USED
-    Performs login of user into Radboud Sports Center website.
-    Returns the website_controller  object.
+    Performs login of user into website.
+    Returns the website_controller object.
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
     :param two_factor_code: param website_controller:
@@ -65,7 +105,7 @@ def two_factor_login(two_factor_code, website_controller):
 
 
 def get_credentials(hardcoded):
-    """Gets the Radboud Sports Center credentials from a hardcoded file and asks the user for
+    """Gets  credentials from a hardcoded file and asks the user for
     them if they are not found.
 
     # TODO: export the credentials of the user if the user grants permission for that.
@@ -82,14 +122,14 @@ def get_credentials(hardcoded):
 
 
 def get_username():
-    """Gets the username for the Radboud Sports Center login and returns it."""
+    """Gets the username for login and returns it."""
     username = getpass("Website Username:")
 
     return username
 
 
 def get_pswd():
-    """Gets the password for the Radboud Sports Center login and returns it."""
+    """Gets the password for login and returns it."""
     pswd = getpass("Website Password:")
     return pswd
 

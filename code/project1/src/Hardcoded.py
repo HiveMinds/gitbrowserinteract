@@ -38,4 +38,23 @@ class Hardcoded:
         self.use_cred_file = True
         self.cred_path = "../src/creds.txt"
         # website properties
-        self.login_url = "http://127.0.0.1"
+        self.gitlab_login_url = "http://127.0.0.1"
+        self.gitlab_user_element_id = "user_login"
+        self.gitlab_pw_element_id = "user_password"
+        self.gitlab_signin_button_xpath = '//*[@id="new_user"]/div[5]/input'
+
+        self.github_login_url = "https://www.github.com/login"
+        self.github_user_element_id = "login_field"
+        self.github_pw_element_id = "password"
+        self.github_signin_button_xpath = '//*[@id="login"]/div[4]/form/div/input[12]'
+
+        self.github_deploy_key_title_element_id = "public_key_title"
+        self.github_deploy_key_key_element_id = "public_key_key"
+        self.deployment_key_title = "github_build_status_deployment_key"
+        self.github_deploy_key_allow_write_access_button_xpath = (
+            '//*[@id="public_key_read_only"]'
+        )
+        self.add_github_deploy_key_button_xpath = (
+            "/html/body/div[6]/div/main/div[2]/div/div/div[2]/div/div/form/button"
+        )
+        # print(f"github_login_url={self.github_login_url}")
