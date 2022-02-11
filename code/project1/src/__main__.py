@@ -24,7 +24,7 @@ parser.add_argument(
 parser.add_argument(
     "--ssh",
     dest="public_ssh_sha",
-    #action="store_true",
+    # action="store_true",
     type=str,
     help="boolean flag, determines whether the code gets the deploy token or not",
 )
@@ -36,8 +36,10 @@ args = parser.parse_args()
 if args.deploy_token:
     print(f"Getting GitHub deploy token.")
     args.gitlab_runner = False
-    print(f'the ssh={args.public_ssh_sha}')
-    deployment_token_getter = Deployment_token_getter(project_nr=project_nr,public_ssh_sha=args.public_ssh_sha)
+    print(f"the ssh={args.public_ssh_sha}")
+    deployment_token_getter = Deployment_token_getter(
+        project_nr=project_nr, public_ssh_sha=args.public_ssh_sha
+    )
 elif args.gitlab_runner:
     print(f"Getting GitLab runner token.")
     args.gitlab_runner = False

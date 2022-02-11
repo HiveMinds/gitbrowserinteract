@@ -1,3 +1,4 @@
+import time
 from .Website_controller import Website_controller
 from getpass import getpass
 from .helper import read_creds
@@ -46,6 +47,9 @@ def login(
     if pswd is None:
         pswd = get_pswd()
 
+    # TODO: Include check to determine whether the user has already manually
+    # logged into GitHub, if so, skip setting username and pwd and clicking
+    # the login button.
     username_input.send_keys(username)
     password_input.send_keys(pswd)
     website_controller.driver.implicitly_wait(6)
@@ -55,6 +59,8 @@ def login(
         website_controller,
         signin_button_xpath,
     )
+    # Wait till login completed
+    time.sleep(5)
     return website_controller
 
 

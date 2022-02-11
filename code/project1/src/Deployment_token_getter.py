@@ -19,7 +19,7 @@ import time
 class Deployment_token_getter:
     """ """
 
-    def __init__(self, project_nr,public_ssh_sha, should_login=True):
+    def __init__(self, project_nr, public_ssh_sha, should_login=True):
         """Initialises object that gets the browser controller, then it gets the issues
         from the source repo, and copies them to the target repo.
 
@@ -30,7 +30,7 @@ class Deployment_token_getter:
 
         # project_nr is an artifact of folder structure
         self.project_nr = project_nr
-        self.public_ssh_sha=public_ssh_sha
+        self.public_ssh_sha = public_ssh_sha
         self.relative_src_filepath = f"code/project{self.project_nr}/src/"
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
@@ -48,30 +48,13 @@ class Deployment_token_getter:
         # wait five seconds for page to load
         time.sleep(5)
 
-        self.fill_in_ssh_key(self.hc, website_controller,self.public_ssh_sha)
-
-        txt = input("Type something to test this out: ")
-        exit()
-
-        runner_registration_token = get_runner_registration_token_from_page(
-            website_controller
-        )
-
-        # Export runner registration token to file
-        if len(runner_registration_token) > 14:
-            write_string_to_file(
-                runner_registration_token, get_runner_registration_token_filepath()
-            )
-        else:
-            raise Exception(
-                "Expected runner registration token to be EXTRACTED from the source code, but it is not."
-            )
+        self.fill_in_ssh_key(self.hc, website_controller, self.public_ssh_sha)
 
         # close website controller
         website_controller.driver.close()
 
         print(
-            f"Got the GitLab runner registration token, can now proceed with setting up the GitLab CI."
+            f"Hi, I'm done setting the GitHub deployment token to your repository:{github_repo_name}."
         )
 
     def login_github_to_build_status_repo(
@@ -110,7 +93,7 @@ class Deployment_token_getter:
 
         return website_controller
 
-    def fill_in_ssh_key(self, hardcoded, website_controller,public_ssh_sha):
+    def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
         github_deployment_key_title_field = (
             website_controller.driver.find_element_by_id(
                 hardcoded.github_deploy_key_title_element_id
