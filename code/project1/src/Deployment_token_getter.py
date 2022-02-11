@@ -19,7 +19,7 @@ import time
 class Deployment_token_getter:
     """ """
 
-    def __init__(self, project_nr, should_login=True):
+    def __init__(self, project_nr,public_ssh_sha, should_login=True):
         """Initialises object that gets the browser controller, then it gets the issues
         from the source repo, and copies them to the target repo.
 
@@ -30,6 +30,7 @@ class Deployment_token_getter:
 
         # project_nr is an artifact of folder structure
         self.project_nr = project_nr
+        self.public_ssh_sha=public_ssh_sha
         self.relative_src_filepath = f"code/project{self.project_nr}/src/"
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
@@ -47,7 +48,7 @@ class Deployment_token_getter:
         # wait five seconds for page to load
         time.sleep(5)
 
-        self.fill_in_ssh_key(self.hc, website_controller)
+        self.fill_in_ssh_key(self.hc, website_controller,self.public_ssh_sha)
 
         txt = input("Type something to test this out: ")
         exit()
@@ -109,7 +110,7 @@ class Deployment_token_getter:
 
         return website_controller
 
-    def fill_in_ssh_key(self, hardcoded, website_controller):
+    def fill_in_ssh_key(self, hardcoded, website_controller,public_ssh_sha):
         github_deployment_key_title_field = (
             website_controller.driver.find_element_by_id(
                 hardcoded.github_deploy_key_title_element_id
@@ -119,12 +120,9 @@ class Deployment_token_getter:
             hardcoded.github_deploy_key_key_element_id
         )
 
-        # generate key
-        ssh_key = "bla"
-
         # Set the title and ssh key for the GitHub deploy key for the GitLab build status repo.
         github_deployment_key_title_field.send_keys(hardcoded.deployment_key_title)
-        github_deployment_key_key_field.send_keys(ssh_key)
+        github_deployment_key_key_field.send_keys(public_ssh_sha)
 
         # Give write permission to deploy key for the GitLab build status repository (in GitHub)
         click_element_by_xpath(
