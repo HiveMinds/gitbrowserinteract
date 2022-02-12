@@ -37,18 +37,26 @@ class Deployment_token_getter:
 
         # TODO: get github_user_name from hardcoded.txt
         github_user_name = "a-t-0"
-        # TODO: get get-gitlab-runner-registration-token from hardcoded.txt
-        github_repo_name = "get-gitlab-runner-registration-token"
+        # TODO: get gitlab-ci-build-statuses from hardcoded.txt
+        github_repo_name = "gitlab-ci-build-statuses"
 
         # website_controller = get_website_controller(self.hc)
         website_controller = self.login_github_to_build_status_repo(
             self.hc, github_user_name, github_repo_name
         )
 
+        # TODO: include check to see if (2FA) verification code is asked. (This check is
+        # already in login_github_to_build_status_repo() yet it did not work. So improve it)
+
         # wait five seconds for page to load
-        time.sleep(5)
+        input("Are you done with loggin into GitHub?")
 
         self.fill_in_ssh_key(self.hc, website_controller, self.public_ssh_sha)
+
+        print(
+            f"Done adding the ssh deploy key from your machine to:{github_repo_name}. Waiting 10 seconds and then the browser."
+        )
+        time.sleep(10)
 
         # close website controller
         website_controller.driver.close()
@@ -94,10 +102,8 @@ class Deployment_token_getter:
         return website_controller
 
     def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
-        github_deployment_key_title_field = (
-            website_controller.driver.find_element_by_id(
-                hardcoded.github_deploy_key_title_element_id
-            )
+        github_deployment_key_title_field = website_controller.driver.find_element_by_id(
+            hardcoded.github_deploy_key_title_element_id
         )
         github_deployment_key_key_field = website_controller.driver.find_element_by_id(
             hardcoded.github_deploy_key_key_element_id

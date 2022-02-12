@@ -29,8 +29,7 @@ parser.add_argument(
     help="boolean flag, determines whether the code gets the deploy token or not",
 )
 parser.set_defaults(
-    gitlab_runner=True,
-    deploy_token=False,
+    gitlab_runner=True, deploy_token=False,
 )
 args = parser.parse_args()
 if args.deploy_token:
