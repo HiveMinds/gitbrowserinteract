@@ -28,6 +28,7 @@ def login(
     signin_button_xpath,
     username,
     pswd,
+    company,
 ):
     """Performs login of user into  website.
     Returns the website_controller  object.
@@ -43,24 +44,60 @@ def login(
     password_input = website_controller.driver.find_element_by_id(pw_element_id)
 
     if username is None:
-        username = get_username()
+        username = get_username(company)
     if pswd is None:
-        pswd = get_pswd()
+        pswd = get_pswd(company)
 
     # TODO: Include check to determine whether the user has already manually
     # logged into GitHub, if so, skip setting username and pwd and clicking
     # the login button.
-    username_input.send_keys(username)
-    password_input.send_keys(pswd)
-    website_controller.driver.implicitly_wait(6)
-
-    # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
-    click_element_by_xpath(
-        website_controller, signin_button_xpath,
+    user_has_manually_logged_in = user_is_logged_in(
+        hardcoded, website_controller, company
     )
+    if not user_has_manually_logged_in:
+        username_input.send_keys(username)
+        password_input.send_keys(pswd)
+        website_controller.driver.implicitly_wait(15)
+
+        # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
+        click_element_by_xpath(
+            website_controller, signin_button_xpath,
+        )
+
     # Wait till login completed
     time.sleep(5)
+    if not user_is_logged_in(hardcoded, website_controller, company):
+        print(
+            f"Hi, we were not able to verify you are logged in, (which is needed to add the ssh-deploy key).\n We will now try again. To break this loop, press CTRL+C.\n\n"
+        )
+        website_controller.driver.close()
+        website_controller = None
+        return login(
+            hardcoded,
+            login_url,
+            user_element_id,
+            pw_element_id,
+            signin_button_xpath,
+            None,
+            None,
+            company,
+        )
     return website_controller
+
+
+def user_is_logged_in(hardcoded, website_controller, company):
+    if company == "GitLab":
+        # The code is faster than the user for GitLab, because the code doesn't
+        # have to wait on the user, so I will assume the user does not have the
+        # chance to log in manually.
+        return False
+    elif company == "GitHub":
+        # Read page source that indicates user is logged in.
+        source = website_controller.driver.page_source
+        if hardcoded.github_logged_in_or_not_string in source:
+            return True
+        else:
+            return False
 
 
 def github_login(hardcoded):
@@ -72,6 +109,7 @@ def github_login(hardcoded):
         hardcoded.github_signin_button_xpath,
         None,
         None,
+        "GitHub",
     )
     return website_controller
 
@@ -86,6 +124,7 @@ def gitlab_login(hardcoded):
         hardcoded.gitlab_signin_button_xpath,
         username,
         pswd,
+        "GitLab",
     )
     return website_controller
 
@@ -126,16 +165,21 @@ def get_credentials(hardcoded):
     return username, pswd
 
 
-def get_username():
+def get_username(company):
     """Gets the username for login and returns it."""
-    username = getpass("Website Username:")
-
+    username = getpass(
+        f"Please enter your {company} Username: \n(you can also manually log into {company},\n and fill in nonsense in this field,\n if you prefer typing your Username into GitHub directly.)\n"
+    )
+    if username == "nonsense" or username == "Nonsense":
+        print(f"That is funny. This is unprofessional.")
     return username
 
 
-def get_pswd():
+def get_pswd(company):
     """Gets the password for login and returns it."""
-    pswd = getpass("Website Password:")
+    pswd = getpass(
+        f"Please enter your {company} Password \n(you can also manually log into {company},\n and fill in gibberish in this field,\n if you prefer typing your Password into GitHub directly.)\n"
+    )
     return pswd
 
 

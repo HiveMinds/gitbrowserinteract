@@ -153,6 +153,9 @@ def check_if_login_page_is_loaded(website_controller):
     # This identifier only occurs in the second, and ready stage.
     ready_stage_identifier = "Sign in"
 
+    # Already logged into GitLab
+    already_logged_in = "<title>Projects · Dashboard · GitLab</title>"
+
     # Verify if that condition is met.
     source = website_controller.driver.page_source
     if error_stage_identifier in source:
@@ -160,6 +163,8 @@ def check_if_login_page_is_loaded(website_controller):
     elif too_soon_stage_identifier in source:
         return False
     elif ready_stage_identifier in source:
+        return True
+    elif already_logged_in in source:
         return True
     else:
         raise Exception(

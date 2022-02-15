@@ -49,7 +49,7 @@ class Deployment_token_getter:
         # already in login_github_to_build_status_repo() yet it did not work. So improve it)
 
         # wait five seconds for page to load
-        input("Are you done with loggin into GitHub?")
+        # input("Are you done with loggin into GitHub?")
 
         self.fill_in_ssh_key(self.hc, website_controller, self.public_ssh_sha)
 

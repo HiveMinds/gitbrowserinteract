@@ -58,3 +58,7 @@ class Hardcoded:
             "/html/body/div[6]/div/main/div[2]/div/div/div[2]/div/div/form/button"
         )
         # print(f"github_login_url={self.github_login_url}")
+        # This is in the page source if the user is logged in.
+        # It is assumed this string does not occur in the page source
+        # if the user is not logged in.
+        self.github_logged_in_or_not_string = "View profile and more"
