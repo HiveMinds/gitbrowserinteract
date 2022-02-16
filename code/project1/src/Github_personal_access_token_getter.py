@@ -1,9 +1,12 @@
 # Code that automatically copies all issues of a repository to another
+import os.path
+
 from .ask_user_input import ask_two_factor_code
 from .control_website import click_element_by_xpath
 from .control_website import github_login
 from .Hardcoded import Hardcoded
 from .get_gitlab_runner_token import get_runner_registration_token_from_page
+from .get_data import get_value_from_html_source
 from .helper import get_runner_registration_token_filepath
 from .helper import source_contains
 from .helper import write_string_to_file
@@ -56,7 +59,11 @@ class Github_personal_access_token_getter:
             f"Done GitHub personal access token. Waiting 10 seconds and then the browser."
         )
         time.sleep(10)
-        input("Done")
+        pac = self.read_github_personal_access_token(website_controller)
+        print(f"pac={pac}")
+
+        # Export GitHub personal access token to ../../personal_creds.txt
+
         exit()
         # close website controller
         website_controller.driver.close()
@@ -117,18 +124,67 @@ class Github_personal_access_token_getter:
         github_pac_input_field.send_keys("Set GitHub commit build status values.")
 
         # Give read and write permission to GitHub commit build statuses.
-        click_element_by_xpath(
-            website_controller, hardcoded.github_pac_repo_status_checkbox_xpath
-        )
+        self.click_repo_status_checkbox(website_controller, hardcoded)
 
         # Submit token.
-        click_element_by_xpath(
-            website_controller, hardcoded.github_pac_generate_token_button_xpath
-        )
+        self.click_submit_token(website_controller, hardcoded)
 
-    def read_github_personal_access_token(self, hardcoded):
+    def click_repo_status_checkbox(self, website_controller, hardcoded):
+        clicked = False
+        try:
+            click_element_by_xpath(
+                website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV0
+            )
+            clicked = True
+        except:
+            pass
+        if not clicked:
+            click_element_by_xpath(
+                website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV1
+            )
+
+    def click_submit_token(self, website_controller, hardcoded):
+        clicked = False
+        try:
+            click_element_by_xpath(
+                website_controller, hardcoded.github_pac_generate_token_button_xpathV0
+            )
+            clicked = True
+        except:
+            pass
+        if not clicked:
+            click_element_by_xpath(
+                website_controller, hardcoded.github_pac_generate_token_button_xpathV1
+            )
+
+    def read_github_personal_access_token(self, website_controller):
         print(f"hi")
         # <code id="new-oauth-token" class="token">sometoken</code>
+        # get the page source:
+        source = website_controller.driver.page_source
+
+        lhs = '<code id="new-oauth-token" class="token">'
+        rhs = "</code>"
+        if source_contains(website_controller, lhs):
+            if source_contains(website_controller, rhs):
+                return get_value_from_html_source(source, lhs, rhs)
+            else:
+                raise Exception("The token identification string:{rhs} was not found.")
+        else:
+            raise Exception("The token identification string:{rhs} was not found.")
+
+    def export_github_pac_to_personal_creds_txt(self, hardcoded, pac):
+
+        if os.path.isfile(self.personal_creds_path):
+            print(f"hi")
+            # if the precursor exists:
+            # Replace the line starting with:self.github_pac_bash_precursor
+            # else:
+            # append self.github_pac_bash_precursor.
+        else:
+            print(f"hi")
+            # Create the personal_creds file and append:
+            output_line = f"{self.github_pac_bash_precursor}{pac}"
 
 
 if __name__ == "__main__":

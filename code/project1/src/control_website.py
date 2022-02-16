@@ -169,7 +169,7 @@ def get_credentials(hardcoded):
 def get_username(company):
     """Gets the username for login and returns it."""
     username = getpass(
-        f"Please enter your {company} Username: \n(you can also manually log into {company},\n and fill in nonsense in this field,\n if you prefer typing your Username into GitHub directly.)\n"
+        f"\nPlease enter your {company} Username: \n(you can also manually log into {company},\n and fill in nonsense in this field,\n if you prefer typing your Username into GitHub directly.)\n"
     )
     if username == "nonsense" or username == "Nonsense":
         print(f"That is funny. This is unprofessional.")

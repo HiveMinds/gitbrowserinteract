@@ -37,6 +37,10 @@ class Hardcoded:
 
         self.use_cred_file = True
         self.cred_path = "../src/creds.txt"
+        # TODO: verify if called from path using bash, if the
+        # python path is still the same root.
+        self.personal_creds_path = "../src/personal_creds.txt"
+        self.github_pac_bash_precursor = f"GITHUB_PERSONAL_ACCESS_TOKEN_GLOBAL="
         # website properties
         self.gitlab_login_url = "http://127.0.0.1"
         self.gitlab_user_element_id = "user_login"
@@ -68,10 +72,14 @@ class Hardcoded:
 
         # Xpath of "repo:status" checkbox
         # /html/body/div[6]/main/div[2]/div[2]/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input
-        self.github_pac_repo_status_checkbox_xpath = "/html/body/div[6]/main/div[2]/div[2]/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
+        self.github_pac_repo_status_checkbox_xpathV0 = "/html/body/div[6]/main/div[2]/div[2]/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
+        self.github_pac_repo_status_checkbox_xpathV1 = "/html/body/div[6]/main/div[2]/div/div[2]/div/div/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
 
         # Xpath of "Generate token" button
         # /html/body/div[6]/main/div[2]/div[2]/form/p/button
-        self.github_pac_generate_token_button_xpath = (
+        self.github_pac_generate_token_button_xpathV0 = (
             "/html/body/div[6]/main/div[2]/div[2]/form/p/button"
+        )
+        self.github_pac_generate_token_button_xpathV1 = (
+            "/html/body/div[6]/main/div[2]/div/div[2]/div/div/form/p/button"
         )
