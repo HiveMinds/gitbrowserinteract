@@ -2,6 +2,7 @@ import argparse
 
 from .Main import Main
 from .Deployment_token_getter import Deployment_token_getter
+from .Github_personal_access_token_getter import Github_personal_access_token_getter
 
 print(
     f"Hi, I'll ask you from which source repo to which target repo you want to copy the issues, then I'll download browser controllers and ensure the firefox browser is installed. Next I will scrape the issues from the source repo, and add them as new issues to the target repo. You can simply see what I do in the browser. Terminate me with CTRL+C if you don't like it. I'll let you know when I'm done."
@@ -28,8 +29,16 @@ parser.add_argument(
     type=str,
     help="boolean flag, determines whether the code gets the deploy token or not",
 )
+parser.add_argument(
+    "--hubcpat",
+    dest="github_commit_status_personal_access_token_flag",
+    action="store_true",
+    help="boolean flag, determines whether the code gets the personal access token to set the build statusses of commits in GitHub.",
+)
 parser.set_defaults(
-    gitlab_runner=True, deploy_token=False,
+    gitlab_runner=True,
+    deploy_token=False,
+    github_commit_status_personal_access_token_flag=False,
 )
 args = parser.parse_args()
 if args.deploy_token:
@@ -38,6 +47,15 @@ if args.deploy_token:
     print(f"the ssh={args.public_ssh_sha}")
     deployment_token_getter = Deployment_token_getter(
         project_nr=project_nr, public_ssh_sha=args.public_ssh_sha
+    )
+elif args.github_commit_status_personal_access_token_flag:
+    print(
+        f"Getting GitHub personal access token to be able to set GitHub commit build statuses."
+    )
+    args.gitlab_runner = False
+    args.deployment_token = False
+    github_personal_access_token_getter = Github_personal_access_token_getter(
+        project_nr=project_nr,
     )
 elif args.gitlab_runner:
     print(f"Getting GitLab runner token.")

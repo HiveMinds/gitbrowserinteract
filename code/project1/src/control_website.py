@@ -61,7 +61,8 @@ def login(
 
         # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
         click_element_by_xpath(
-            website_controller, signin_button_xpath,
+            website_controller,
+            signin_button_xpath,
         )
 
     # Wait till login completed

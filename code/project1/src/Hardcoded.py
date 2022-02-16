@@ -62,3 +62,16 @@ class Hardcoded:
         # It is assumed this string does not occur in the page source
         # if the user is not logged in.
         self.github_logged_in_or_not_string = "View profile and more"
+
+        # Xpath of input field: Note, what's the token for?
+        self.github_pac_input_field_xpath = '//*[@id="oauth_access_description"]'
+
+        # Xpath of "repo:status" checkbox
+        # /html/body/div[6]/main/div[2]/div[2]/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input
+        self.github_pac_repo_status_checkbox_xpath = "/html/body/div[6]/main/div[2]/div[2]/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
+
+        # Xpath of "Generate token" button
+        # /html/body/div[6]/main/div[2]/div[2]/form/p/button
+        self.github_pac_generate_token_button_xpath = (
+            "/html/body/div[6]/main/div[2]/div[2]/form/p/button"
+        )

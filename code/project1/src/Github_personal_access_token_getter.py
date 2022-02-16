@@ -16,10 +16,10 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-class Deployment_token_getter:
+class Github_personal_access_token_getter:
     """ """
 
-    def __init__(self, project_nr, public_ssh_sha, should_login=True):
+    def __init__(self, project_nr, should_login=True):
         """Initialises object that gets the browser controller, then it gets the issues
         from the source repo, and copies them to the target repo.
 
@@ -30,20 +30,17 @@ class Deployment_token_getter:
 
         # project_nr is an artifact of folder structure
         self.project_nr = project_nr
-        self.public_ssh_sha = public_ssh_sha
         self.relative_src_filepath = f"code/project{self.project_nr}/src/"
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
 
-        # TODO: get github_user_name from hardcoded.txt
+        # TODO: get github_user_name from argument parser
         github_user_name = "a-t-0"
-        # TODO: get gitlab-ci-build-statuses from hardcoded.txt
-        github_repo_name = "gitlab-ci-build-statuses"
+        # TODO: get gitlab-ci-build-statuses from argument parser
+        # github_repo_name = "gitlab-ci-build-statuses"
 
         # website_controller = get_website_controller(self.hc)
-        website_controller = self.login_github_to_build_status_repo(
-            self.hc, github_user_name, github_repo_name
-        )
+        website_controller = self.login_github_for_personal_access_token(self.hc)
 
         # TODO: include check to see if (2FA) verification code is asked. (This check is
         # already in login_github_to_build_status_repo() yet it did not work. So improve it)
@@ -51,13 +48,16 @@ class Deployment_token_getter:
         # wait five seconds for page to load
         # input("Are you done with loggin into GitHub?")
 
-        self.fill_in_ssh_key(self.hc, website_controller, self.public_ssh_sha)
+        print(f"Logged in")
+
+        self.create_github_personal_access_token(self.hc, website_controller)
 
         print(
-            f"Done adding the ssh deploy key from your machine to:{github_repo_name}. Waiting 10 seconds and then the browser."
+            f"Done GitHub personal access token. Waiting 10 seconds and then the browser."
         )
         time.sleep(10)
-
+        input("Done")
+        exit()
         # close website controller
         website_controller.driver.close()
 
@@ -65,9 +65,7 @@ class Deployment_token_getter:
             f"Hi, I'm done setting the GitHub deployment token to your repository:{github_repo_name}."
         )
 
-    def login_github_to_build_status_repo(
-        self, hardcoded, github_username, github_build_status_repo_name
-    ):
+    def login_github_for_personal_access_token(self, hardcoded):
         """USED
         Gets the issues from a github repo. Opens a separate browser instance and then
         closes it again.
@@ -94,37 +92,43 @@ class Deployment_token_getter:
             two_factor_login(two_factor_code, website_controller)
 
         # repository_url = f"https://github.com/{github_username}/{github_build_status_repo_name}/issues"
-        repository_url = f"https://github.com/{github_username}/{github_build_status_repo_name}/settings/keys/new"
+        personal_access_token_url = f"https://github.com/settings/tokens/new"
 
         # Go to source repository
-        website_controller.driver = open_url(website_controller.driver, repository_url)
+        website_controller.driver = open_url(
+            website_controller.driver, personal_access_token_url
+        )
 
         return website_controller
 
-    def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
-        github_deployment_key_title_field = (
-            website_controller.driver.find_element_by_id(
-                hardcoded.github_deploy_key_title_element_id
-            )
-        )
-        github_deployment_key_key_field = website_controller.driver.find_element_by_id(
-            hardcoded.github_deploy_key_key_element_id
+    def create_github_personal_access_token(self, hardcoded, website_controller):
+        github_pac_input_field = website_controller.driver.find_element_by_xpath(
+            hardcoded.github_pac_input_field_xpath
         )
 
-        # Set the title and ssh key for the GitHub deploy key for the GitLab build status repo.
-        github_deployment_key_title_field.send_keys(hardcoded.deployment_key_title)
-        github_deployment_key_key_field.send_keys(public_ssh_sha)
+        # github_pac_repo_status_checkbox = website_controller.driver.find_element_by_id(
+        #    hardcoded.github_pac_repo_status_checkbox_xpath
+        # )
+        # github_pac_generate_token_button = website_controller.driver.find_element_by_id(
+        #    hardcoded.github_pac_generate_token_button_xpath
+        # )
 
-        # Give write permission to deploy key for the GitLab build status repository (in GitHub)
+        # Specify what the GitHub personal access token is used for.
+        github_pac_input_field.send_keys("Set GitHub commit build status values.")
+
+        # Give read and write permission to GitHub commit build statuses.
         click_element_by_xpath(
-            website_controller,
-            hardcoded.github_deploy_key_allow_write_access_button_xpath,
+            website_controller, hardcoded.github_pac_repo_status_checkbox_xpath
         )
 
-        # Click: add the new deploy key to the GitHub repository.
+        # Submit token.
         click_element_by_xpath(
-            website_controller, hardcoded.add_github_deploy_key_button_xpath
+            website_controller, hardcoded.github_pac_generate_token_button_xpath
         )
+
+    def read_github_personal_access_token(self, hardcoded):
+        print(f"hi")
+        # <code id="new-oauth-token" class="token">sometoken</code>
 
 
 if __name__ == "__main__":
