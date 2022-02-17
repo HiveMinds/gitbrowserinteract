@@ -91,7 +91,7 @@ class Test_main(unittest.TestCase):
         actual_result = export_token_add_two(4)
         self.assertEqual(expected_result, actual_result)
 
-    # Assert the file_contains_substring returns False if a substring is not 
+    # Assert the file_contains_substring returns False if a substring is not
     # contained in a file.
     def test_file_contains_without(self):
         self.create_test_file_without_substring()
@@ -101,8 +101,8 @@ class Test_main(unittest.TestCase):
             )
         )
 
-    # Assert the file_contains_substring returns True if a substring is 
-    # contained in a file. Does this for all 3 test files that contain the 
+    # Assert the file_contains_substring returns True if a substring is
+    # contained in a file. Does this for all 3 test files that contain the
     # substring (start, middle, end).
     def test_file_contains_with(self):
         self.create_test_file_with_substring_at_start()
@@ -166,7 +166,6 @@ class Test_main(unittest.TestCase):
             )
         )
 
-
     # Tests whether the append_line indeed appends a target line in start file,
     # by checking whether the file contains the target line.
     def test_append_line_without(self):
@@ -179,8 +178,8 @@ class Test_main(unittest.TestCase):
             file_contains_substring(self.filepath_without_substring, new_string)
         )
 
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
-    # replaces a target line in start file, by checking whether the file 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
+    # replaces a target line in start file, by checking whether the file
     # contains the target line.
     def test_replace_with_str_at_start(self):
         self.create_test_file_with_substring_at_start()
@@ -194,9 +193,8 @@ class Test_main(unittest.TestCase):
             file_contains_substring(self.filepath_with_filepath_at_start, new_string)
         )
 
-    
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
-    # replaces a target line in middle file, by checking whether the file 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
+    # replaces a target line in middle file, by checking whether the file
     # contains the target line.
     def test_replace_with_str_at_middle(self):
         self.create_test_file_with_substring_in_middle()
@@ -209,9 +207,8 @@ class Test_main(unittest.TestCase):
             file_contains_substring(self.filepath_with_filepath_at_middle, new_string)
         )
 
-    
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
-    # replaces a target line in end file, by checking whether the file 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
+    # replaces a target line in end file, by checking whether the file
     # contains the target line.
     def test_replace_with_str_at_end(self):
         self.create_test_file_with_substring_in_end()
@@ -224,7 +221,6 @@ class Test_main(unittest.TestCase):
             file_contains_substring(self.filepath_with_filepath_at_end, new_string)
         )
 
-
     # Tests whether the append_line indeed appends a target line in start file,
     # by checking whether the file contains the target line. And by verifying
     # its file contents.
@@ -233,7 +229,7 @@ class Test_main(unittest.TestCase):
         # Apply replacement
         filepath = self.filepath_without_substring
         new_string = f"{self.hc.github_pac_bash_precursor}{self.dummy_token}"
-        print(f'new_string={new_string}')
+        print(f"new_string={new_string}")
         append_line(filepath, new_string)
         self.assertTrue(
             file_contains_substring(self.filepath_without_substring, new_string)
@@ -244,8 +240,8 @@ class Test_main(unittest.TestCase):
                 self.expected_without_substring_content,
             )
         )
-    
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
+
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
     # replaces a target line in start file, by checking file content equality.
     def test_replace_with_str_at_start_entire_filecontent(self):
         self.create_test_file_with_substring_at_start()
@@ -264,8 +260,7 @@ class Test_main(unittest.TestCase):
             )
         )
 
-
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
     # replaces a target line in middle file, by checking file content equality.
     def test_replace_with_str_at_middle_entire_filecontent(self):
         self.create_test_file_with_substring_in_middle()
@@ -284,8 +279,7 @@ class Test_main(unittest.TestCase):
             )
         )
 
-
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
     # replaces a target line in end file, by checking file content equality.
     def test_replace_with_str_at_end_entire_filecontent(self):
         self.create_test_file_with_substring_in_end()
@@ -305,13 +299,13 @@ class Test_main(unittest.TestCase):
         )
 
     ## Test function that outputs token in all circumstances.
-    # Tests whether the export_github_pac_to_personal_creds_txt outputs the 
+    # Tests whether the export_github_pac_to_personal_creds_txt outputs the
     # GitHub personal access token if it is not yet in the output file.
     def test_export_github_pac_to_personal_creds_txt_without(self):
         self.create_test_file_without_substring()
         # Apply replacement
         filepath = self.filepath_without_substring
-        export_github_pac_to_personal_creds_txt(filepath,self.hc, self.dummy_token)
+        export_github_pac_to_personal_creds_txt(filepath, self.hc, self.dummy_token)
         self.assertTrue(
             file_contains_substring(self.filepath_without_substring, self.dummy_token)
         )
@@ -321,16 +315,18 @@ class Test_main(unittest.TestCase):
                 self.expected_without_substring_content,
             )
         )
-    
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
+
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
     # replaces a target line in start file, by checking file content equality.
     def test_export_github_pac_to_personal_creds_txt_start(self):
         self.create_test_file_with_substring_at_start()
         # Apply replacement
         filepath = self.filepath_with_filepath_at_start
-        export_github_pac_to_personal_creds_txt(filepath,self.hc, self.dummy_token)
+        export_github_pac_to_personal_creds_txt(filepath, self.hc, self.dummy_token)
         self.assertTrue(
-            file_contains_substring(self.filepath_with_filepath_at_start, self.dummy_token)
+            file_contains_substring(
+                self.filepath_with_filepath_at_start, self.dummy_token
+            )
         )
         self.assertTrue(
             file_content_equals(
@@ -339,16 +335,17 @@ class Test_main(unittest.TestCase):
             )
         )
 
-
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
     # replaces a target line in middle file, by checking file content equality.
     def test_export_github_pac_to_personal_creds_txt_middle(self):
         self.create_test_file_with_substring_in_middle()
         # Apply replacement
         filepath = self.filepath_with_filepath_at_middle
-        export_github_pac_to_personal_creds_txt(filepath,self.hc, self.dummy_token)
+        export_github_pac_to_personal_creds_txt(filepath, self.hc, self.dummy_token)
         self.assertTrue(
-            file_contains_substring(self.filepath_with_filepath_at_middle, self.dummy_token)
+            file_contains_substring(
+                self.filepath_with_filepath_at_middle, self.dummy_token
+            )
         )
         self.assertTrue(
             file_content_equals(
@@ -357,16 +354,17 @@ class Test_main(unittest.TestCase):
             )
         )
 
-
-    # Tests whether the replace_line_in_file_if_contains_substring indeed 
+    # Tests whether the replace_line_in_file_if_contains_substring indeed
     # replaces a target line in end file, by checking file content equality.
     def export_github_pac_to_personal_creds_txt_end(self):
         self.create_test_file_with_substring_in_end()
         # 2 Apply replacement
         filepath = self.filepath_with_filepath_at_end
-        export_github_pac_to_personal_creds_txt(filepath,self.hc, self.dummy_token)
+        export_github_pac_to_personal_creds_txt(filepath, self.hc, self.dummy_token)
         self.assertTrue(
-            file_contains_substring(self.filepath_with_filepath_at_end, self.dummy_token)
+            file_contains_substring(
+                self.filepath_with_filepath_at_end, self.dummy_token
+            )
         )
         self.assertTrue(
             file_content_equals(

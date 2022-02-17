@@ -11,6 +11,7 @@ from .helper import get_runner_registration_token_filepath
 from .helper import source_contains
 from .helper import write_string_to_file
 from .helper import loiter_till_gitlab_server_is_ready_for_login
+from .export_token import export_github_pac_to_personal_creds_txt
 from .control_website import open_url
 from .Website_controller import Website_controller
 from selenium import webdriver
@@ -63,13 +64,14 @@ class Github_personal_access_token_getter:
         print(f"pac={pac}")
 
         # Export GitHub personal access token to ../../personal_creds.txt
-
-        exit()
+        export_github_pac_to_personal_creds_txt(
+            self.hc.personal_creds_path, self.hc, pac
+        )
         # close website controller
         website_controller.driver.close()
 
         print(
-            f"Hi, I'm done setting the GitHub deployment token to your repository:{github_repo_name}."
+            f"Hi, I'm done creating the GitHub personal access token to set the GitHub commit build status."
         )
 
     def login_github_for_personal_access_token(self, hardcoded):

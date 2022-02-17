@@ -18,24 +18,27 @@ def add_two(x):
 
 
 def export_github_pac_to_personal_creds_txt(filepath, hardcoded, pac):
-
+    new_line = f"{hardcoded.github_pac_bash_precursor}{pac}"
     if os.path.isfile(filepath):
-        new_line=f"{hardcoded.github_pac_bash_precursor}{pac}"
         print(f"File exists,new_line={new_line}")
         # if the precursor exists:
         if file_contains_substring(filepath, hardcoded.github_pac_bash_precursor):
             # Replace the line starting with:self.github_pac_bash_precursor
-            replace_line_in_file_if_contains_substring(filepath, hardcoded.github_pac_bash_precursor, new_line)
+            replace_line_in_file_if_contains_substring(
+                filepath, hardcoded.github_pac_bash_precursor, new_line
+            )
         else:
             print(f"hi")
-            append_line(filepath,new_line)
+            append_line(filepath, new_line)
     else:
-        append_line(filepath,new_line)
+        append_line(filepath, new_line)
 
-def append_line(filepath,line):
-    print(f'line={line}')
-    with open(filepath, 'a') as fd:
-        fd.write(f'{line}')
+
+def append_line(filepath, line):
+    print(f"line={line}")
+    with open(filepath, "a") as fd:
+        fd.write(f"{line}")
+
 
 def file_contains_substring(filepath, substring):
     f = open(filepath, "r")
