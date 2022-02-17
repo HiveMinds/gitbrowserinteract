@@ -386,3 +386,10 @@ def read_file_content(filepath):
         for line in f:
             lines.append(line)
     return lines
+
+
+def delete_file_if_exists(filepath):
+    try:
+        os.remove(filepath)
+    except OSError:
+        pass

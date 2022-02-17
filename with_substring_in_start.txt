@@ -1,0 +1,3 @@
+GITHUB_PERSONAL_ACCESS_TOKEN_GLOBAL==something_in_start
+THISISAFILLER="something"
+THISISAFILLER2="something"

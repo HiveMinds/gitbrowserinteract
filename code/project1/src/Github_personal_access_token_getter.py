@@ -172,21 +172,3 @@ class Github_personal_access_token_getter:
                 raise Exception("The token identification string:{rhs} was not found.")
         else:
             raise Exception("The token identification string:{rhs} was not found.")
-
-    def export_github_pac_to_personal_creds_txt(self, hardcoded, pac):
-
-        if os.path.isfile(self.personal_creds_path):
-            print(f"hi")
-            # if the precursor exists:
-            # Replace the line starting with:self.github_pac_bash_precursor
-            # else:
-            # append self.github_pac_bash_precursor.
-        else:
-            print(f"hi")
-            # Create the personal_creds file and append:
-            output_line = f"{self.github_pac_bash_precursor}{pac}"
-
-
-if __name__ == "__main__":
-    # initialize main class
-    main = Main()
