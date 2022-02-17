@@ -1,7 +1,11 @@
 import getpass
 import os
+import sys
 import time
 import math
+import fileinput
+
+import shutil
 
 
 def add_two(x):
@@ -38,5 +42,51 @@ def file_contains_substring(filepath, substring):
         return False
 
 
-def replace_line_in_file_if_contains_substring():
+def replace_line_in_file_if_contains_substringV0(filepath, substring, new_string):
+
     print(f"hi")
+    for line in fileinput.input(filepath, inplace=True):
+        # print('{} {}'.format(fileinput.filelineno(), line), end='') # for Python 3
+        print(f"line={line}")
+        if substring in line:
+            line = new_string
+
+        sys.stdout.write(line)
+        # print "%d: %s" % (fileinput.filelineno(), line), # for Python 2
+
+
+def replace_line_in_file_if_contains_substringV1(filepath, substring, new_string):
+    print(f"hinew")
+    for line in fileinput.FileInput(filepath, inplace=1):
+        if substring in line:
+            # line = new_string
+            print(new_string)
+        else:
+            print(line)
+
+
+def replace_line_in_file_if_contains_substring(filepath, substring, new_string):
+    with open(filepath) as old, open("newtest", "w") as new:
+        for line in old:
+            if substring in line:
+                # NOTE: adds new line to substring.
+                new.write(f"{new_string}\n")
+            else:
+                new.write(line)
+    shutil.move("newtest", filepath)
+
+
+def file_content_equals(filepath, lines):
+    # This is how you should open files
+    with open(filepath, "r") as f:
+        # Get the entire contents of the file
+        file_contents = f.read()
+
+        # Remove any whitespace at the end, e.g. a newline
+        # file_contents = file_contents.strip()
+    if file_contents == lines:
+        return True
+    else:
+        print(f"file_contents={file_contents}")
+        print(f"lines={lines}")
+        return False
