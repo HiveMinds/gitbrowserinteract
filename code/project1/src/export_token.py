@@ -17,22 +17,25 @@ def add_two(x):
     return x + 2
 
 
-def export_github_pac_to_personal_creds_txt(filepath, hardcoded, substring):
+def export_github_pac_to_personal_creds_txt(filepath, hardcoded, pac):
 
     if os.path.isfile(filepath):
-        print(f"hi")
+        new_line=f"{hardcoded.github_pac_bash_precursor}{pac}"
+        print(f"File exists,new_line={new_line}")
         # if the precursor exists:
-        if file_contains_substring(filepath, substring):
+        if file_contains_substring(filepath, hardcoded.github_pac_bash_precursor):
             # Replace the line starting with:self.github_pac_bash_precursor
-            print(f"hi")
+            replace_line_in_file_if_contains_substring(filepath, hardcoded.github_pac_bash_precursor, new_line)
         else:
             print(f"hi")
-            # append self.github_pac_bash_precursor.
+            append_line(filepath,new_line)
     else:
+        append_line(filepath,new_line)
 
-        # Create the personal_creds file and append:
-        output_line = f"{hardcoded.github_pac_bash_precursor}{substring}"
-
+def append_line(filepath,line):
+    print(f'line={line}')
+    with open(filepath, 'a') as fd:
+        fd.write(f'{line}')
 
 def file_contains_substring(filepath, substring):
     f = open(filepath, "r")
@@ -40,29 +43,6 @@ def file_contains_substring(filepath, substring):
         return True
     else:
         return False
-
-
-def replace_line_in_file_if_contains_substringV0(filepath, substring, new_string):
-
-    print(f"hi")
-    for line in fileinput.input(filepath, inplace=True):
-        # print('{} {}'.format(fileinput.filelineno(), line), end='') # for Python 3
-        print(f"line={line}")
-        if substring in line:
-            line = new_string
-
-        sys.stdout.write(line)
-        # print "%d: %s" % (fileinput.filelineno(), line), # for Python 2
-
-
-def replace_line_in_file_if_contains_substringV1(filepath, substring, new_string):
-    print(f"hinew")
-    for line in fileinput.FileInput(filepath, inplace=1):
-        if substring in line:
-            # line = new_string
-            print(new_string)
-        else:
-            print(line)
 
 
 def replace_line_in_file_if_contains_substring(filepath, substring, new_string):
@@ -87,6 +67,6 @@ def file_content_equals(filepath, lines):
     if file_contents == lines:
         return True
     else:
-        print(f"file_contents={file_contents}")
-        print(f"lines={lines}")
+        print(f"actual content=\n\n{file_contents}")
+        print(f"expected content=\n\n{lines}")
         return False
