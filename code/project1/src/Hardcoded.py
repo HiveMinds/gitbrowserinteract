@@ -39,7 +39,7 @@ class Hardcoded:
         self.cred_path = "../src/creds.txt"
         # TODO: verify if called from path using bash, if the
         # python path is still the same root.
-        self.personal_creds_path = "../src/personal_creds.txt"
+        self.personal_creds_path = "../../personal_creds.txt"
         self.github_pac_bash_precursor = f"GITHUB_PERSONAL_ACCESS_TOKEN_GLOBAL="
         # website properties
         self.gitlab_login_url = "http://127.0.0.1"
