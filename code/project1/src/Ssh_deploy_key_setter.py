@@ -16,7 +16,7 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-class Deployment_token_getter:
+class Ssh_deploy_key_setter:
     """ """
 
     def __init__(self, project_nr, public_ssh_sha, should_login=True):
@@ -102,10 +102,8 @@ class Deployment_token_getter:
         return website_controller
 
     def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
-        github_deployment_key_title_field = (
-            website_controller.driver.find_element_by_id(
-                hardcoded.github_deploy_key_title_element_id
-            )
+        github_deployment_key_title_field = website_controller.driver.find_element_by_id(
+            hardcoded.github_deploy_key_title_element_id
         )
         github_deployment_key_key_field = website_controller.driver.find_element_by_id(
             hardcoded.github_deploy_key_key_element_id

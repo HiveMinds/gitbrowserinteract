@@ -141,10 +141,7 @@ def click_eye_button_through_xpath_V2(website_controller):
     if not succesfull:
         source = website_controller.driver.page_source
         website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            '//*[@id="eye"]',
-            "xpath-eye try 3",
-            False,
+            website_controller, '//*[@id="eye"]', "xpath-eye try 3", False,
         )
     time.sleep(1)
     if not succesfull:
@@ -178,10 +175,7 @@ def try_to_click_by_id(website_controller, id, error_msg, raise_error):
 def try_to_click_by_xpath(website_controller, xpath, error_msg, raise_error):
     try:
         # Click the button to display registration code through element id
-        website_controller = click_element_by_xpath(
-            website_controller,
-            xpath,
-        )
+        website_controller = click_element_by_xpath(website_controller, xpath,)
         print(f"found_by_xpath")
         return website_controller, True
     except:

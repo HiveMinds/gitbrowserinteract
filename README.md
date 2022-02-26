@@ -1,32 +1,9 @@
 # Gets GitLab runner registration token from root account
-Horrible boiler plate to get the token. It is designed to be embedded in another repo with the following structure:
-```
-parent_repo
-|_get-gitlab-runner-registration-token
-|_src/creds.txt
-|_src/hardcoded_variables.txt
-```
-And it will output:
-```
-parent_repo
-|_get-gitlab-runner-registration-token
-|_src/creds.txt
-|_src/hardcoded_variables
-|_src/runner_registration_token.txt
-```
-## Requirements
-0. Next to this repository create a `src` folder.
-1. In that src folder create the `src/creds.txt` file with content:
-```
-gitlab_server_account=root
-gitlab_server_password=yoursecretrootpasswordofyourgitlabserver
-```
+Horrible boiler plate to automate 2 tasks in GitHub, and 1 in GitLab:
 
-2. In that same src folder create the `src/hardcoded_variables.txt` file with content:
-```
-RUNNER_REGISTRATION_TOKEN_FILEPATH=src/runner_registration_token.txt
-```
-That's it.
+1. Set an ssh deploy key in your GitHub account, such that you can push the GitLab build status icons to a specific (hardcoded) repository in your GitHub account.
+2. Generate and get/export a GitHub personal access token, such that you can set the commit statuses of your GitHub commits. (This is used to display the GitLab CI results in your GitHub repository pull requests).
+3. Get a GitLab runner token in your own GitLab server. (I did not yet find out how to do that through docker itself using bash only).
 
 ## Usage: do once
 Download/clone this repository.
@@ -44,15 +21,29 @@ conda env create --file environment.yml
 
 3. Activate the conda environment you created:
 ```
-conda activate batch_copy_issues
+conda activate get_gitlab_generation_token
 ```
 
-## Usage: do every run:
+## Usage: do every run (Set ssh-deploy key in GitHub for pushing build status icons)
+```
+python -m code.project1.src --d --ssh <the public ssh key that was created>
+```
+ - The `--d` indicates you are setting the deploy ssh key in GitHub. 
+ - The `-ssh <some ssh key>` is used to absorb/take in the public ssh key that you want to add to github.
 
-3. Performe a run for assignment 1 (named project1) of main code (in `main.py`, called from `__main__.py`)
+
+## Usage: do every run (Create and get GitHub personal access token for setting commit build statuses)
 ```
-python -m code.project1.src
+python -m code.project1.src -hubcpat
 ```
+ - The `--hubcpat` indicates you are letting GitHub create a personal access token and storing it.
+
+
+## Usage: do every run (Create and get GitLab runnertoken)
+```
+python -m code.project1.src --g
+```
+ - The `--g` indicates you are letting GitLab generate a personal access token and storing it.
 
 ## Testing
 

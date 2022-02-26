@@ -1,7 +1,7 @@
 import argparse
 
 from .Main import Main
-from .Deployment_token_getter import Deployment_token_getter
+from .Ssh_deploy_key_setter import Ssh_deploy_key_setter
 from .Github_personal_access_token_getter import Github_personal_access_token_getter
 
 print(
@@ -25,9 +25,9 @@ parser.add_argument(
 parser.add_argument(
     "--ssh",
     dest="public_ssh_sha",
-    # action="store_true",
+    # action="store_true", # This is not a boolean, but stores the incoming argument value (ssh key)
     type=str,
-    help="boolean flag, determines whether the code gets the deploy token or not",
+    help="Indicator letting Python know the public ssh key is being passed to python. This key is then stored in the python variable:public_ssh_sha",
 )
 parser.add_argument(
     "--hubcpat",
@@ -42,10 +42,10 @@ parser.set_defaults(
 )
 args = parser.parse_args()
 if args.deploy_token:
-    print(f"Getting GitHub deploy token.")
+    print(f"Setting and getting GitHub ssh-deploy key (NOT TOKEN).")
     args.gitlab_runner = False
-    print(f"the ssh={args.public_ssh_sha}")
-    deployment_token_getter = Deployment_token_getter(
+    print(f"The ssh deploy key is:={args.public_ssh_sha}")
+    ssh_deploy_key_setter = Ssh_deploy_key_setter(
         project_nr=project_nr, public_ssh_sha=args.public_ssh_sha
     )
 elif args.github_commit_status_personal_access_token_flag:
