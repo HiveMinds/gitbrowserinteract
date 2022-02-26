@@ -16,10 +16,17 @@ from selenium.webdriver.common.keys import Keys
 import time
 
 
-class Deployment_token_getter:
+class Ssh_deploy_key_setter:
     """ """
 
-    def __init__(self, project_nr, public_ssh_sha, should_login=True):
+    def __init__(
+        self,
+        project_nr,
+        public_ssh_sha,
+        github_username=None,
+        github_pwd=None,
+        should_login=True,
+    ):
         """Initialises object that gets the browser controller, then it gets the issues
         from the source repo, and copies them to the target repo.
 
@@ -36,13 +43,17 @@ class Deployment_token_getter:
         self.hc = Hardcoded()
 
         # TODO: get github_user_name from hardcoded.txt
-        github_user_name = "a-t-0"
+        self.github_username = github_username
+        if self.github_username is None:
+            raise Exception("Error, expected a GitHub username as incoming argument.")
+        self.github_pwd = github_pwd
+
         # TODO: get gitlab-ci-build-statuses from hardcoded.txt
         github_repo_name = "gitlab-ci-build-statuses"
 
         # website_controller = get_website_controller(self.hc)
         website_controller = self.login_github_to_build_status_repo(
-            self.hc, github_user_name, github_repo_name
+            self.hc, self.github_username, github_repo_name, github_pwd=github_pwd
         )
 
         # TODO: include check to see if (2FA) verification code is asked. (This check is
@@ -66,7 +77,7 @@ class Deployment_token_getter:
         )
 
     def login_github_to_build_status_repo(
-        self, hardcoded, github_username, github_build_status_repo_name
+        self, hardcoded, github_username, github_build_status_repo_name, github_pwd=None
     ):
         """USED
         Gets the issues from a github repo. Opens a separate browser instance and then
@@ -82,7 +93,7 @@ class Deployment_token_getter:
         """
 
         # login
-        website_controller = github_login(hardcoded)
+        website_controller = github_login(hardcoded, github_pwd, github_username)
 
         # check if 2factor
         if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):

@@ -23,7 +23,9 @@ import time
 class Github_personal_access_token_getter:
     """ """
 
-    def __init__(self, project_nr, should_login=True):
+    def __init__(
+        self, project_nr, github_username=None, github_pwd=None, should_login=True
+    ):
         """Initialises object that gets the browser controller, then it gets the issues
         from the source repo, and copies them to the target repo.
 
@@ -39,12 +41,20 @@ class Github_personal_access_token_getter:
         self.hc = Hardcoded()
 
         # TODO: get github_user_name from argument parser
-        github_user_name = "a-t-0"
+        # TODO: get github_user_name from hardcoded.txt
+        self.github_username = github_username
+        if self.github_username is None:
+            raise Exception("Error, expected a GitHub username as incoming argument.")
+        self.github_pwd = github_pwd
+
         # TODO: get gitlab-ci-build-statuses from argument parser
         # github_repo_name = "gitlab-ci-build-statuses"
 
         # website_controller = get_website_controller(self.hc)
-        website_controller = self.login_github_for_personal_access_token(self.hc)
+        # TODO: change
+        website_controller = self.login_github_for_personal_access_token(
+            self.hc, github_username=self.github_username, github_pwd=self.github_pwd
+        )
 
         # TODO: include check to see if (2FA) verification code is asked. (This check is
         # already in login_github_to_build_status_repo() yet it did not work. So improve it)
@@ -74,7 +84,9 @@ class Github_personal_access_token_getter:
             f"Hi, I'm done creating the GitHub personal access token to set the GitHub commit build status."
         )
 
-    def login_github_for_personal_access_token(self, hardcoded):
+    def login_github_for_personal_access_token(
+        self, hardcoded, github_username, github_pwd
+    ):
         """USED
         Gets the issues from a github repo. Opens a separate browser instance and then
         closes it again.
@@ -89,7 +101,8 @@ class Github_personal_access_token_getter:
         """
 
         # login
-        website_controller = github_login(hardcoded)
+        website_controller = github_login(hardcoded, github_pwd, github_username)
+        # website_controller = github_login(hardcoded)
 
         # check if 2factor
         if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):
