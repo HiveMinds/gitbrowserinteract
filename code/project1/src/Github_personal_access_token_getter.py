@@ -52,7 +52,9 @@ class Github_personal_access_token_getter:
 
         # website_controller = get_website_controller(self.hc)
         # TODO: change
-        website_controller = self.login_github_for_personal_access_token(self.hc)
+        website_controller = self.login_github_for_personal_access_token(
+            self.hc, github_username=self.github_username, github_pwd=self.github_pwd
+        )
 
         # TODO: include check to see if (2FA) verification code is asked. (This check is
         # already in login_github_to_build_status_repo() yet it did not work. So improve it)
@@ -82,7 +84,9 @@ class Github_personal_access_token_getter:
             f"Hi, I'm done creating the GitHub personal access token to set the GitHub commit build status."
         )
 
-    def login_github_for_personal_access_token(self, hardcoded):
+    def login_github_for_personal_access_token(
+        self, hardcoded, github_username, github_pwd
+    ):
         """USED
         Gets the issues from a github repo. Opens a separate browser instance and then
         closes it again.
@@ -97,7 +101,8 @@ class Github_personal_access_token_getter:
         """
 
         # login
-        website_controller = github_login(hardcoded)
+        website_controller = github_login(hardcoded, github_pwd, github_username)
+        # website_controller = github_login(hardcoded)
 
         # check if 2factor
         if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):

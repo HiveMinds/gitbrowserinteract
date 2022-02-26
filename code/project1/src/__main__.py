@@ -76,6 +76,8 @@ elif args.github_commit_status_personal_access_token_flag:
     args.deployment_token = False
     github_personal_access_token_getter = Github_personal_access_token_getter(
         project_nr=project_nr,
+        github_username=args.github_username,
+        github_pwd=args.github_pwd,
     )
 elif args.gitlab_runner:
     print(f"Getting GitLab runner token.")
