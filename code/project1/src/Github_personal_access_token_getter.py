@@ -23,7 +23,9 @@ import time
 class Github_personal_access_token_getter:
     """ """
 
-    def __init__(self, project_nr, should_login=True):
+    def __init__(
+        self, project_nr, github_username=None, github_pwd=None, should_login=True
+    ):
         """Initialises object that gets the browser controller, then it gets the issues
         from the source repo, and copies them to the target repo.
 
@@ -39,11 +41,17 @@ class Github_personal_access_token_getter:
         self.hc = Hardcoded()
 
         # TODO: get github_user_name from argument parser
-        github_user_name = "a-t-0"
+        # TODO: get github_user_name from hardcoded.txt
+        self.github_username = github_username
+        if self.github_username is None:
+            raise Exception("Error, expected a GitHub username as incoming argument.")
+        self.github_pwd = github_pwd
+
         # TODO: get gitlab-ci-build-statuses from argument parser
         # github_repo_name = "gitlab-ci-build-statuses"
 
         # website_controller = get_website_controller(self.hc)
+        # TODO: change
         website_controller = self.login_github_for_personal_access_token(self.hc)
 
         # TODO: include check to see if (2FA) verification code is asked. (This check is

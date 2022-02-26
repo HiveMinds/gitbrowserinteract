@@ -8,16 +8,18 @@ import sys
 from selenium.webdriver.common.action_chains import ActionChains
 
 
-def open_url(driver, url):
-    """USED
-    Makes the browser open an url through the driver object in the webcontroller.
-
-    :param driver: object within website_controller that can controll the driver.
-    :param url: A link to a website.
-
-    """
-    driver.get(url)
-    return driver
+def github_login(hardcoded, github_pwd=None, github_username=None):
+    website_controller = login(
+        hardcoded,
+        hardcoded.github_login_url,
+        hardcoded.github_user_element_id,
+        hardcoded.github_pw_element_id,
+        hardcoded.github_signin_button_xpath,
+        github_username,
+        github_pwd,
+        "GitHub",
+    )
+    return website_controller
 
 
 def login(
@@ -47,6 +49,8 @@ def login(
         username = get_username(company)
     if pswd is None:
         pswd = get_pswd(company)
+    else:
+        user_passed_pwd_earlier = True
 
     # TODO: Include check to determine whether the user has already manually
     # logged into GitHub, if so, skip setting username and pwd and clicking
@@ -61,7 +65,8 @@ def login(
 
         # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
         click_element_by_xpath(
-            website_controller, signin_button_xpath,
+            website_controller,
+            signin_button_xpath,
         )
 
     # Wait till login completed
@@ -72,6 +77,10 @@ def login(
         )
         website_controller.driver.close()
         website_controller = None
+        if user_passed_pwd_earlier:
+            raise Exception(
+                "Error, you have passed the wrong password to this method, (or GitHub is changed/down). Please try again with the correct GitHub pwd, or manually log in."
+            )
         return login(
             hardcoded,
             login_url,
@@ -83,6 +92,18 @@ def login(
             company,
         )
     return website_controller
+
+
+def open_url(driver, url):
+    """USED
+    Makes the browser open an url through the driver object in the webcontroller.
+
+    :param driver: object within website_controller that can controll the driver.
+    :param url: A link to a website.
+
+    """
+    driver.get(url)
+    return driver
 
 
 def user_is_logged_in(hardcoded, website_controller, company):
@@ -98,20 +119,6 @@ def user_is_logged_in(hardcoded, website_controller, company):
             return True
         else:
             return False
-
-
-def github_login(hardcoded):
-    website_controller = login(
-        hardcoded,
-        hardcoded.github_login_url,
-        hardcoded.github_user_element_id,
-        hardcoded.github_pw_element_id,
-        hardcoded.github_signin_button_xpath,
-        None,
-        None,
-        "GitHub",
-    )
-    return website_controller
 
 
 def gitlab_login(hardcoded):
