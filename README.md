@@ -1,4 +1,5 @@
-# Gets GitLab runner registration token from root account
+# Automatically get and set GitHub & GitLab personal access tokens/ssh deploy keys
+
 Horrible boiler plate to automate 2 tasks in GitHub, and 1 in GitLab:
 
 1. Set an ssh deploy key in your GitHub account, such that you can push the GitLab build status icons to a specific (hardcoded) repository in your GitHub account.
@@ -7,6 +8,7 @@ Horrible boiler plate to automate 2 tasks in GitHub, and 1 in GitLab:
 
 ## Usage: do once
 Download/clone this repository.
+
 0. If you don't have pip: open Anaconda prompt and browse to the directory of this readme:
 ```
 cd /home/<your path to the repository folder>/
