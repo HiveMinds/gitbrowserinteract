@@ -66,6 +66,9 @@ class Hardcoded:
         # It is assumed this string does not occur in the page source
         # if the user is not logged in.
         self.github_logged_in_or_not_string = "View profile and more"
+        self.gitlab_logged_in_or_not_string = (
+            "<title>Projects · Dashboard · GitLab</title>"
+        )
 
         # Xpath of input field: Note, what's the token for?
         self.github_pac_input_field_xpath = '//*[@id="oauth_access_description"]'

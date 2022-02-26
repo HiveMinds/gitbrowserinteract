@@ -108,10 +108,11 @@ def open_url(driver, url):
 
 def user_is_logged_in(hardcoded, website_controller, company):
     if company == "GitLab":
-        # The code is faster than the user for GitLab, because the code doesn't
-        # have to wait on the user, so I will assume the user does not have the
-        # chance to log in manually.
-        return False
+        source = website_controller.driver.page_source
+        if hardcoded.gitlab_logged_in_or_not_string in source:
+            return True
+        else:
+            return False
     elif company == "GitHub":
         # Read page source that indicates user is logged in.
         source = website_controller.driver.page_source
