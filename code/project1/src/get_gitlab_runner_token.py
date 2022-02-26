@@ -137,7 +137,6 @@ def click_eye_button_through_xpath_V2(website_controller):
             False,
         )
     time.sleep(1)
-
     if not succesfull:
         source = website_controller.driver.page_source
         website_controller, succesfull = try_to_click_by_xpath(
@@ -147,6 +146,25 @@ def click_eye_button_through_xpath_V2(website_controller):
             False,
         )
     time.sleep(1)
+    if not succesfull:
+        source = website_controller.driver.page_source
+        website_controller, succesfull = try_to_click_by_xpath(
+            website_controller,
+            "/symbol/path",
+            "xpath-eye try 4",
+            False,
+        )
+    time.sleep(1)
+    if not succesfull:
+        source = website_controller.driver.page_source
+        website_controller, succesfull = try_to_click_by_xpath(
+            website_controller,
+            '//*[@id="eye"]',
+            "xpath-eye try 5",
+            False,
+        )
+    time.sleep(1)
+
     if not succesfull:
         raise Exception("Did not find the GitLab Runner Registration token.")
     ###if not succesfull:

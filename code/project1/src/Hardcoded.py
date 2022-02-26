@@ -36,7 +36,8 @@ class Hardcoded:
         self.pickle_website_controller_filename = "website_controller.p"
 
         self.use_cred_file = True
-        self.cred_path = "../src/creds.txt"
+        self.personal_creds_path = "../../personal_creds.txt"
+        self.cred_path = self.personal_creds_path
         # TODO: verify if called from path using bash, if the
         # python path is still the same root.
         self.personal_creds_path = "../../personal_creds.txt"

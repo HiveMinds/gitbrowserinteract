@@ -25,9 +25,8 @@ def do_browser():
 
 
 def read_creds(hardcoded):
-    """Reads username and password for Radboud University Sports Center from credentials file,
+    """Reads username and password from credentials file,
     if the file exists, asks the user to manually enter them if the file is not found.
-    Returns two strings representing the username and password for the Radboud University Sports Center login.
 
     TODO: verify this is not a duplicate method.
 
