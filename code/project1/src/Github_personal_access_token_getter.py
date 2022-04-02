@@ -154,8 +154,15 @@ class Github_personal_access_token_getter:
         except:
             pass
         if not clicked:
+            try:
+                click_element_by_xpath(
+                    website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV1
+                )
+            except:
+                pass
+        if not clicked:
             click_element_by_xpath(
-                website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV1
+                website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV2
             )
 
     def click_submit_token(self, website_controller, hardcoded):
@@ -168,8 +175,16 @@ class Github_personal_access_token_getter:
         except:
             pass
         if not clicked:
+            try:
+                click_element_by_xpath(
+                    website_controller, hardcoded.github_pac_generate_token_button_xpathV1
+                )
+                clicked = True
+            except:
+                pass
+        if not clicked:
             click_element_by_xpath(
-                website_controller, hardcoded.github_pac_generate_token_button_xpathV1
+                website_controller, hardcoded.github_pac_generate_token_button_xpathV2
             )
 
     def read_github_personal_access_token(self, website_controller):
