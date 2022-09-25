@@ -81,7 +81,7 @@ def login(
     # Wait till login completed
     time.sleep(5)
     
-    complete_github_two_factor_auth(website_controller)
+    complete_github_two_factor_auth(hardcoded,website_controller)
     if not user_is_logged_in(hardcoded, website_controller, company):
         print(
             f"Hi, we were not able to verify you are logged in, (which is needed to add the ssh-deploy key).\n We will now try again. To break this loop, press CTRL+C.\n\n"
@@ -104,7 +104,7 @@ def login(
         )
     return website_controller
 
-def complete_github_two_factor_auth(website_controller):
+def complete_github_two_factor_auth(hardcoded, website_controller):
     # check if 2factor
     if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):
 
@@ -112,7 +112,7 @@ def complete_github_two_factor_auth(website_controller):
         two_factor_code = ask_two_factor_code()
 
         # enter code
-        two_factor_login(two_factor_code, website_controller)
+        two_factor_login(hardcoded,two_factor_code, website_controller,"GitHub")
 
     # Verify user is logged in correctly.
 
@@ -171,8 +171,8 @@ def gitlab_login(hardcoded,gitlab_pwd=None, gitlab_username=None):
     return website_controller
 
 
-def two_factor_login(two_factor_code, website_controller):
-    """USED
+def two_factor_login(hardcoded,two_factor_code, website_controller, company):
+    """USED to login for GitHub.
     Performs login of user into website.
     Returns the website_controller object.
 
@@ -181,13 +181,28 @@ def two_factor_login(two_factor_code, website_controller):
     :param website_controller: Object controlling the browser.
 
     """
-    two_factor_input = website_controller.driver.find_element("id","totp")
-    #two_factor_input = website_controller.driver.find_element("name","otp")
+    user_completed_2fac_in_browser=True
+    try:
+        if company == "GitHub":
+            two_factor_input = website_controller.driver.find_element("id","totp")
+            #two_factor_input = website_controller.driver.find_element("name","otp")
+            user_completed_2fac_in_browser=False
+        else:
+            raise Exception(f"Error, 2fa not yet supported for:{company}.")
+    except:
+        # User has already manually logged in in browser iso CLI.
+        pass
 
-    two_factor_input.send_keys(two_factor_code)
-    website_controller.driver.implicitly_wait(6)
+    if not user_completed_2fac_in_browser:
+        two_factor_input.send_keys(two_factor_code)
+        website_controller.driver.implicitly_wait(6)
 
-    website_controller.driver.find_element("css selector",".btn-primary").click()
+        website_controller.driver.find_element("css selector",".btn-primary").click()
+
+    # Assert user is already logged in.
+    if not user_is_logged_in(hardcoded, website_controller, company):
+        raise Exception("Error user is not logged in after 2fa login.")
+
     return website_controller
 
 
