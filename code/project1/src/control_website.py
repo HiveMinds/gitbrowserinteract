@@ -118,7 +118,7 @@ def complete_github_two_factor_auth(hardcoded, website_controller):
 
 
 def open_url(driver, url):
-    """USED
+    """USED # TODO: eliminate duplicate function.
     Makes the browser open an url through the driver object in the webcontroller.
 
     :param driver: object within website_controller that can controll the driver.

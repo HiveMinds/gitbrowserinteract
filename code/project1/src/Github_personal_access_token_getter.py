@@ -1,6 +1,8 @@
 # Code that automatically copies all issues of a repository to another
 import os.path
 
+from code.project1.src.GitHub.remove_previous_github_pat import remove_previous_github_pat
+
 from .ask_user_input import ask_two_factor_code
 from .control_website import click_element_by_xpath, two_factor_login
 from .control_website import github_login
@@ -113,6 +115,10 @@ class Github_personal_access_token_getter:
             # enter code
             two_factor_login(two_factor_code, website_controller)
 
+        # Remove GitHub personal access token if it already exists.
+        remove_previous_github_pat(hardcoded,website_controller)
+
+
         # repository_url = f"https://github.com/{github_username}/{github_build_status_repo_name}/issues"
         personal_access_token_url = f"https://github.com/settings/tokens/new"
 
@@ -136,7 +142,7 @@ class Github_personal_access_token_getter:
         # )
 
         # Specify what the GitHub personal access token is used for.
-        github_pac_input_field.send_keys("Set GitHub commit build status values.")
+        github_pac_input_field.send_keys(hardcoded.github_pat_description)
 
         # Give read and write permission to GitHub commit build statuses.
         self.click_repo_status_checkbox(website_controller, hardcoded)
