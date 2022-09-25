@@ -1,3 +1,4 @@
+from code.project1.src.Website_controller import Website_controller
 from code.project1.src.control_website import open_url, wait_until_page_is_loaded
 from selenium.webdriver.common.by import By
 
@@ -44,7 +45,36 @@ def github_pat_description_exists(hardcoded,website_controller):
         link=elem.get_attribute('href')
         print(f'link={link}')
         print(f'text={elem.text}')
+        print(f'Set GitHub commit build status values.')
+        print(hardcoded.github_pat_description)
         if hardcoded.github_pat_description in elem.text:
             # Find delete button
-
+            find_delete_github_pat_button(link,hardcoded,website_controller)
             # Delete the GitHub personal access token.
+            
+
+def find_delete_github_pat_button(link,hardcoded,website_controller):
+    if link[:len(hardcoded.github_pat_tokens_url)] == hardcoded.github_pat_tokens_url:
+        github_pat_id=int(link[len(hardcoded.github_pat_tokens_url):])
+        print(f'github_pat_id={github_pat_id}')
+
+        delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'Box-footer')
+        
+        for delete_button in delete_github_pat_buttons:
+            data_id_elem=delete_button.get_attribute('data-id')
+            print(f'data_id_elem={data_id_elem}')
+            print(f'data_id_elem.text={data_id_elem.text}')
+
+            if int(data_id_elem) == github_pat_id:
+                delete_button.click()
+        #css_to_delete_button=f"html body.logged-in.env-production.page-responsive.intent-mouse div.application-main main div.pt-4.container-xl.p-responsive div.Layout.Layout--flowRow-until-md.Layout--sidebarPosition-start.Layout--sidebarPosition-flowRow-start div.Layout-main div.Layout-main-centered-md div.container-md div.settings-next div.listgroup div#access-token-{github_pat_id}.access-token.js-revoke-item div.listgroup-item div.d-flex.float-right"
+        #
+        #website_controller.driver.find_element("css selector",
+        #    css_to_delete_button
+        #).click()
+
+        
+        
+
+    else:
+        raise Exception(f'{link[:len(hardcoded.github_pat_tokens_url)]} is not:{hardcoded.github_pat_tokens_url}')
