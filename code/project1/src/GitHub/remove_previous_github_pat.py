@@ -64,27 +64,63 @@ def find_delete_github_pat_button(link,hardcoded,website_controller):
 
         #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'Box-footer')
         #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'js-revoke-access-form')
-        delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'listgroup-item')
+        #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'listgroup-item')
+        #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'btn-danger btn-sm btn')
+        print("access-token-id")
+        delete_github_pat_buttons = website_controller.driver.find_elements(By.ID,f'access-token-{github_pat_id}')
+        print_attributes_of_elements(delete_github_pat_buttons,website_controller)
+        print("box-footer")
+        delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'Box-footer')
+        print_attributes_of_elements(delete_github_pat_buttons,website_controller)
+        print("Danger")
+        #danger_button = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger.btn-sm.btn')
+        #danger_button = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger btn-sm btn')
+        danger_button = website_controller.driver.find_elements(By.CLASS_NAME,'btn-danger btn-sm btn')
+        print_attributes_of_elements(danger_button,website_controller)
+        print("Danger1")
+        danger_button1 = website_controller.driver.find_elements(By.CLASS_NAME,'ml-2 details-reset details-overlay details-overlay-dark')
+        print_attributes_of_elements(danger_button1,website_controller)
+        print("Danger2")
+        #danger_button1 = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger.btn.btn-block')
+        #danger_button1 = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger btn btn-block')
+        danger_button1 = website_controller.driver.find_elements(By.CLASS_NAME,'btn-danger btn btn-block')
+        print_attributes_of_elements(danger_button1,website_controller)
+        print("PRoceeding")
+        #delete_github_pat_buttons = website_controller.driver.find_elements("data-id",f'{github_pat_id}')
+        
+        #"btn-danger btn-sm btn"
         
         for delete_button in delete_github_pat_buttons:
+            pass 
+            #for key,value in attrs.items():
+            #    if key == "data-id":
+            #        if int(value) == github_pat_id:
+            #            print("FOUND")
+            #            print(delete_button.text)
+            #            delete_button.click()
+            #            sub_button = delete_button.find_elements(By.CSS_SELECTOR,'btn-danger.btn-sm.btn')
+            #            sub_button = delete_button.find_elements(By.CSS_SELECTOR,'btn-danger btn btn-block')
+            #            print("sub_button")
+            #            print(sub_button)
+            #            print(sub_button.text)
+            #            exit()
             #print(f'delete_button={delete_button}')
             #print(f'delete_button.text={delete_button.text}')
             #data_id_elem=delete_button.get_attribute('data-id')
             #js_revoke_form=delete_button.get_attribute('js-revoke-access-form')
             #print(f'js_revoke_form={js_revoke_form}')
             #print(f'js_revoke_form.text={js_revoke_form.text}')
-            data_id_elem=delete_button.get_attribute('data-id')
-            print(f'data_id_elem={data_id_elem}')
-            if  not data_id_elem is None and int(data_id_elem) == github_pat_id:
-                #print(f'data_id_elem.text={data_id_elem.text}')
-                if "firefox" in website_controller.driver.capabilities["browserName"]:
-                    scroll_shim(website_controller.driver, delete_button)
-                
+            ##data_id_elem=delete_button.get_attribute('data-id')
+            ##print(f'data_id_elem={data_id_elem}')
+            ##if  not data_id_elem is None and int(data_id_elem) == github_pat_id:
+            ##    #print(f'data_id_elem.text={data_id_elem.text}')
+            ##    if "firefox" in website_controller.driver.capabilities["browserName"]:
+            ##        scroll_shim(website_controller.driver, delete_button)
+            ##    
 
-                attrs = website_controller.driver.execute_script('var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;', delete_button)
-                pprint(attrs)
                 
-                website_controller.driver.find_elements(By.CLASS_NAME,"btn-danger btn btn-block")
+                
+            #website_controller.driver.find_elements(By.CLASS_NAME,"btn-danger btn btn-block")
                 
                 
                 #delete_button.click()
@@ -104,3 +140,9 @@ def find_delete_github_pat_button(link,hardcoded,website_controller):
 
     else:
         raise Exception(f'{link[:len(hardcoded.github_pat_tokens_url)]} is not:{hardcoded.github_pat_tokens_url}')
+
+
+def print_attributes_of_elements(elements,website_controller):
+    for elem in elements:
+        attrs = website_controller.driver.execute_script('var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;', elem)
+        pprint(attrs)
