@@ -62,82 +62,16 @@ def find_delete_github_pat_button(link,hardcoded,website_controller):
         github_pat_id=int(link[len(hardcoded.github_pat_tokens_url):])
         print(f'github_pat_id={github_pat_id}')
 
-        #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'Box-footer')
-        #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'js-revoke-access-form')
-        #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'listgroup-item')
-        #delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'btn-danger btn-sm btn')
-        print("access-token-id")
-        delete_github_pat_buttons = website_controller.driver.find_elements(By.ID,f'access-token-{github_pat_id}')
-        print_attributes_of_elements(delete_github_pat_buttons,website_controller)
-        print("box-footer")
-        delete_github_pat_buttons = website_controller.driver.find_elements(By.CLASS_NAME,'Box-footer')
-        print_attributes_of_elements(delete_github_pat_buttons,website_controller)
-        print("Danger")
-        #danger_button = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger.btn-sm.btn')
-        #danger_button = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger btn-sm btn')
-        danger_button = website_controller.driver.find_elements(By.CLASS_NAME,'btn-danger btn-sm btn')
-        print_attributes_of_elements(danger_button,website_controller)
-        print("Danger1")
-        danger_button1 = website_controller.driver.find_elements(By.CLASS_NAME,'ml-2 details-reset details-overlay details-overlay-dark')
-        print_attributes_of_elements(danger_button1,website_controller)
-        print("Danger2")
-        #danger_button1 = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger.btn.btn-block')
-        #danger_button1 = website_controller.driver.find_elements(By.CSS_SELECTOR,'btn-danger btn btn-block')
-        danger_button1 = website_controller.driver.find_elements(By.CLASS_NAME,'btn-danger btn btn-block')
-        print_attributes_of_elements(danger_button1,website_controller)
-        print("PRoceeding")
-        #delete_github_pat_buttons = website_controller.driver.find_elements("data-id",f'{github_pat_id}')
-        
-        #"btn-danger btn-sm btn"
-        
-        for delete_button in delete_github_pat_buttons:
-            pass 
-            #for key,value in attrs.items():
-            #    if key == "data-id":
-            #        if int(value) == github_pat_id:
-            #            print("FOUND")
-            #            print(delete_button.text)
-            #            delete_button.click()
-            #            sub_button = delete_button.find_elements(By.CSS_SELECTOR,'btn-danger.btn-sm.btn')
-            #            sub_button = delete_button.find_elements(By.CSS_SELECTOR,'btn-danger btn btn-block')
-            #            print("sub_button")
-            #            print(sub_button)
-            #            print(sub_button.text)
-            #            exit()
-            #print(f'delete_button={delete_button}')
-            #print(f'delete_button.text={delete_button.text}')
-            #data_id_elem=delete_button.get_attribute('data-id')
-            #js_revoke_form=delete_button.get_attribute('js-revoke-access-form')
-            #print(f'js_revoke_form={js_revoke_form}')
-            #print(f'js_revoke_form.text={js_revoke_form.text}')
-            ##data_id_elem=delete_button.get_attribute('data-id')
-            ##print(f'data_id_elem={data_id_elem}')
-            ##if  not data_id_elem is None and int(data_id_elem) == github_pat_id:
-            ##    #print(f'data_id_elem.text={data_id_elem.text}')
-            ##    if "firefox" in website_controller.driver.capabilities["browserName"]:
-            ##        scroll_shim(website_controller.driver, delete_button)
-            ##    
+        table = website_controller.driver.find_element(By.XPATH,
+        hardcoded.github_pat_table_xpath
+        )
+        print("table")
+        print(table)
+        print(table.text)
+        print_attributes_of_elements([table],website_controller)
 
-                
-                
-            #website_controller.driver.find_elements(By.CLASS_NAME,"btn-danger btn btn-block")
-                
-                
-                #delete_button.click()
-                # scroll_shim is just scrolling it into view, you still need to hover over it to click using an action chain.
-                #actions = ActionChains(website_controller.driver)
-                #actions.move_to_element(delete_button)
-                #actions.click()
-                #actions.perform()
-        #css_to_delete_button=f"html body.logged-in.env-production.page-responsive.intent-mouse div.application-main main div.pt-4.container-xl.p-responsive div.Layout.Layout--flowRow-until-md.Layout--sidebarPosition-start.Layout--sidebarPosition-flowRow-start div.Layout-main div.Layout-main-centered-md div.container-md div.settings-next div.listgroup div#access-token-{github_pat_id}.access-token.js-revoke-item div.listgroup-item div.d-flex.float-right"
-        #
-        #website_controller.driver.find_element("css selector",
-        #    css_to_delete_button
-        #).click()
-
-        
-        
-
+        valid_indices=list_of_valid_xpath_indices([],f"{hardcoded.github_pat_table_xpath}/div[","]",website_controller)
+        print(f'valid_indices={valid_indices}')
     else:
         raise Exception(f'{link[:len(hardcoded.github_pat_tokens_url)]} is not:{hardcoded.github_pat_tokens_url}')
 
@@ -146,3 +80,24 @@ def print_attributes_of_elements(elements,website_controller):
     for elem in elements:
         attrs = website_controller.driver.execute_script('var items = {}; for (index = 0; index < arguments[0].attributes.length; ++index) { items[arguments[0].attributes[index].name] = arguments[0].attributes[index].value }; return items;', elem)
         pprint(attrs)
+
+def list_of_valid_xpath_indices(valid_indices,left,right,website_controller):
+    if valid_indices == []:
+        latest_index=1
+    else:
+        latest_index=valid_indices[-1]+1
+
+    try:
+        row = website_controller.driver.find_element(By.XPATH,
+            f"{left}{latest_index}{right}"
+            )
+        if not row is None:
+            print(row.text)
+            valid_indices.append(latest_index)
+            return list_of_valid_xpath_indices(valid_indices,left,right,website_controller)
+        else:
+            return valid_indices
+    except:
+        if len(valid_indices) ==0:
+            raise Exception("Did not find any valid indices.")
+        return valid_indices

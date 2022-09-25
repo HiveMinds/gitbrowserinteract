@@ -74,6 +74,7 @@ class Hardcoded:
         self.github_pat_tokens_url="https://github.com/settings/tokens/"
         self.github_pat_description="Set GitHub commit build status values."
         self.github_pat_description_elem_classname="token-description"
+        self.github_pat_table_xpath="/html/body/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
 
         # Xpath of input field: Note, what's the token for?
         self.github_pac_input_field_xpath = '//*[@id="oauth_access_description"]'
