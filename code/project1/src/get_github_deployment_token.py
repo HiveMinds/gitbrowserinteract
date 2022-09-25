@@ -62,7 +62,7 @@ def unhide_registration_token_through_xpath_V1(website_controller):
         )
 
         # Click the button to display registration code through element id
-        website_controller.driver.find_element_by_id("eye").click()
+        website_controller.driver.pw_element_id("id","eye").click()
         return True
     except:
         print(

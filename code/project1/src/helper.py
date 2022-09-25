@@ -319,7 +319,7 @@ def click_element_by_xpath(website_controller, xpath):
     :param xpath: A direct link to an object in an html page.
 
     """
-    source_element = website_controller.driver.find_element_by_xpath(xpath)
+    source_element = website_controller.driver.find_element("xpath",xpath)
     if "firefox" in website_controller.driver.capabilities["browserName"]:
         scroll_shim(website_controller.driver, source_element)
 

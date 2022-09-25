@@ -32,7 +32,7 @@ def set_labels(labels, target_reponame, target_username, website_controller):
         # //*[@id="label-name-"]
         # click_element_by_xpath(website_controller, '//*[@id="label-name-"]')
         website_controller.driver.implicitly_wait(6)
-        label_input = website_controller.driver.find_element_by_id("label-name-")
+        label_input = website_controller.driver.find_element("id", "label-name-")
 
         label_input.send_keys(label)
         website_controller.driver.implicitly_wait(6)
@@ -188,7 +188,7 @@ def set_comments(issue, website_controller):
     website_controller.driver.implicitly_wait(6)
 
     # select entry field xpath
-    label_input = website_controller.driver.find_element_by_id("issue_title")
+    label_input = website_controller.driver.find_element("id", "issue_title")
     label_input.send_keys(issue.title)
     website_controller.driver.implicitly_wait(6)
 
@@ -201,7 +201,7 @@ def set_comments(issue, website_controller):
         comment = issue.comments[i]
         if not comment.content is None:
             if i == 0:
-                comment_input = website_controller.driver.find_element_by_id(
+                comment_input = website_controller.driver.find_element("id", 
                     "issue_body"
                 )
                 comment_input.send_keys(comment.content)

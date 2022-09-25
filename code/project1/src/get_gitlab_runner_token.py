@@ -62,7 +62,7 @@ def unhide_registration_token_through_xpath_V1(website_controller):
         )
 
         # Click the button to display registration code through element id
-        website_controller.driver.find_element_by_id("eye").click()
+        website_controller.driver.find_element("id", "eye").click()
         return True
     except:
         print(
@@ -182,7 +182,7 @@ def click_eye_button_through_xpath_V2(website_controller):
 def try_to_click_by_id(website_controller, id, error_msg, raise_error):
     try:
         # Click the button to display registration code through element id
-        website_controller.driver.find_element_by_id(id).click()
+        website_controller.driver.find_element("id", id).click()
         print(f"found_by_id")
         return website_controller, True
     except:

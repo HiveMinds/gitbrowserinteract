@@ -42,8 +42,8 @@ def login(
     website_controller = Website_controller()
     website_controller.driver = open_url(website_controller.driver, login_url)
     website_controller.driver.implicitly_wait(6)
-    username_input = website_controller.driver.find_element_by_id(user_element_id)
-    password_input = website_controller.driver.find_element_by_id(pw_element_id)
+    username_input = website_controller.driver.find_element("id", user_element_id)
+    password_input = website_controller.driver.find_element("id", pw_element_id)
 
     if username is None:
         username = get_username(company)
@@ -148,7 +148,7 @@ def two_factor_login(two_factor_code, website_controller):
     :param website_controller: Object controlling the browser.
 
     """
-    two_factor_input = website_controller.driver.find_element_by_id("otp")
+    two_factor_input = website_controller.driver.pw_element_id("id","otp")
 
     two_factor_input.send_keys(two_factor_code)
     website_controller.driver.implicitly_wait(6)
@@ -199,7 +199,7 @@ def click_element_by_xpath(website_controller, xpath):
     :param xpath: A direct link to an object in an html page.
 
     """
-    source_element = website_controller.driver.find_element_by_xpath(xpath)
+    source_element = website_controller.driver.find_element("xpath",xpath)
     if "firefox" in website_controller.driver.capabilities["browserName"]:
         scroll_shim(website_controller.driver, source_element)
 

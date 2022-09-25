@@ -124,7 +124,7 @@ class Github_personal_access_token_getter:
         return website_controller
 
     def create_github_personal_access_token(self, hardcoded, website_controller):
-        github_pac_input_field = website_controller.driver.find_element_by_xpath(
+        github_pac_input_field = website_controller.driver.find_element("xpath",
             hardcoded.github_pac_input_field_xpath
         )
 
