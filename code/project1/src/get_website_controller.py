@@ -58,13 +58,13 @@ def login_github(hardcoded):
         # login
         website_controller = gitlab_login(hardcoded)
 
-        # check if 2factor
+        # check if 2 factor.
         if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):
 
             # if 2 factor ask code from user
             two_factor_code = ask_two_factor_code()
 
-            # enter code
+            # enter code.
             two_factor_login(two_factor_code, website_controller)
 
         # Go to source repository

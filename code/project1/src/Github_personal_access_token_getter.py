@@ -2,7 +2,7 @@
 import os.path
 
 from .ask_user_input import ask_two_factor_code
-from .control_website import click_element_by_xpath
+from .control_website import click_element_by_xpath, two_factor_login
 from .control_website import github_login
 from .Hardcoded import Hardcoded
 from .get_gitlab_runner_token import get_runner_registration_token_from_page

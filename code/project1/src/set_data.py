@@ -149,8 +149,8 @@ def add_label_to_issue(issue, website_controller):
         website_controller.driver.refresh()
         # label-filter-field
         # click add label
-        # website_controller.driver.find_element_by_css_selector(".#labels-select-menu > summary:nth-child(1)").click()
-        website_controller.driver.find_element_by_css_selector(
+        # website_controller.driver.find_element("css selector",".#labels-select-menu > summary:nth-child(1)").click()
+        website_controller.driver.find_element("css selector",
             "#labels-select-menu > summary:nth-child(1)"
         ).click()
         website_controller.driver.implicitly_wait(6)

@@ -39,7 +39,7 @@ def visualise_runner_token(website_controller):
 def click_display_token_through_css_V0(website_controller):
     # click the button to display registration code through css selector (if it exists)
     try:
-        website_controller.driver.find_element_by_css_selector(
+        website_controller.driver.find_element("css selector",
             ".gl-text-body\! > svg:nth-child(1)"
         ).click()
         time.sleep(2)

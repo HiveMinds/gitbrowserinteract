@@ -1,7 +1,16 @@
+from pprint import pprint
 import time
+
+from selenium import webdriver
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.by import By
+from selenium.common.exceptions import TimeoutException
+
+from code.project1.src.ask_user_input import ask_two_factor_code
 from .Website_controller import Website_controller
 from getpass import getpass
-from .helper import read_creds
+from .helper import read_creds, source_contains
 from .helper import scroll_shim
 import sys
 
@@ -63,7 +72,7 @@ def login(
         password_input.send_keys(pswd)
         website_controller.driver.implicitly_wait(15)
 
-        # website_controller.driver.find_element_by_css_selector(".btn-primary").click()
+        # website_controller.driver.find_element("css selector",".btn-primary").click()
         click_element_by_xpath(
             website_controller,
             signin_button_xpath,
@@ -71,6 +80,8 @@ def login(
 
     # Wait till login completed
     time.sleep(5)
+    
+    complete_github_two_factor_auth(website_controller)
     if not user_is_logged_in(hardcoded, website_controller, company):
         print(
             f"Hi, we were not able to verify you are logged in, (which is needed to add the ssh-deploy key).\n We will now try again. To break this loop, press CTRL+C.\n\n"
@@ -92,6 +103,18 @@ def login(
             company,
         )
     return website_controller
+
+def complete_github_two_factor_auth(website_controller):
+    # check if 2factor
+    if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):
+
+        # if 2 factor ask code from user
+        two_factor_code = ask_two_factor_code()
+
+        # enter code
+        two_factor_login(two_factor_code, website_controller)
+
+    # Verify user is logged in correctly.
 
 
 def open_url(driver, url):
@@ -115,12 +138,22 @@ def user_is_logged_in(hardcoded, website_controller, company):
             return False
     elif company == "GitHub":
         # Read page source that indicates user is logged in.
+        wait_until_page_is_loaded(6,website_controller)
+
         source = website_controller.driver.page_source
+
         if hardcoded.github_logged_in_or_not_string in source:
             return True
         else:
             return False
 
+def wait_until_page_is_loaded(time_limit_sec:int,website_controller):
+    delay = time_limit_sec # seconds
+    try:
+        myElem = WebDriverWait(website_controller.driver, delay).until(EC.presence_of_element_located((By.CLASS_NAME, 'Header-link')))
+        print("Page is ready!")
+    except TimeoutException:
+        print("Loading took too much time!")
 
 def gitlab_login(hardcoded,gitlab_pwd=None, gitlab_username=None):
     if gitlab_pwd is None:
@@ -148,12 +181,13 @@ def two_factor_login(two_factor_code, website_controller):
     :param website_controller: Object controlling the browser.
 
     """
-    two_factor_input = website_controller.driver.pw_element_id("id","otp")
+    two_factor_input = website_controller.driver.find_element("id","totp")
+    #two_factor_input = website_controller.driver.find_element("name","otp")
 
     two_factor_input.send_keys(two_factor_code)
     website_controller.driver.implicitly_wait(6)
 
-    website_controller.driver.find_element_by_css_selector(".btn-primary").click()
+    website_controller.driver.find_element("css selector",".btn-primary").click()
     return website_controller
 
 

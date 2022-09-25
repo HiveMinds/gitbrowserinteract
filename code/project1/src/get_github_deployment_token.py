@@ -39,7 +39,7 @@ def visualise_runner_token(website_controller):
 def click_display_token_through_css_V0(website_controller):
     # click the button to display registration code through css selector (if it exists)
     try:
-        website_controller.driver.find_element_by_css_selector(
+        website_controller.driver.find_element("css selector",
             ".gl-text-body\! > svg:nth-child(1)"
         ).click()
         time.sleep(2)
@@ -62,7 +62,7 @@ def unhide_registration_token_through_xpath_V1(website_controller):
         )
 
         # Click the button to display registration code through element id
-        website_controller.driver.pw_element_id("id","eye").click()
+        website_controller.driver.find_element("id","eye").click()
         return True
     except:
         print(
