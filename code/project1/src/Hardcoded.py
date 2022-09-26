@@ -60,8 +60,10 @@ class Hardcoded:
             '//*[@id="public_key_read_only"]'
         )
         self.add_github_deploy_key_button_xpath = (
-            "/html/body/div[6]/div/main/div[2]/div/div/div[2]/div/div/form/button"
+            #"/html/body/div[6]/div/main/div[2]/div/div/div[2]/div/div/form/button"
+            "/html/body/div[5]/div/main/turbo-frame/div/div/div/div[2]/div/div/form/button"
         )
+
         # print(f"github_login_url={self.github_login_url}")
         # This is in the page source if the user is logged in.
         # It is assumed this string does not occur in the page source
