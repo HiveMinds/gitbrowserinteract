@@ -51,13 +51,20 @@ class Ssh_deploy_key_setter:
         # TODO: get gitlab-ci-build-statuses from hardcoded.txt
         github_repo_name = "gitlab-ci-build-statuses"
 
-        # website_controller = get_website_controller(self.hc)
+        # TODO: separate login and browsing to the add token page.
+        # TODO: re-use the 2fac authentication login method created for adding pac.
         website_controller = self.login_github_to_build_status_repo(
             self.hc, self.github_username, github_repo_name, github_pwd=github_pwd
         )
 
         # Remove pre-existing ssh keys matching target description.
-        remove_previous_github_ssh_key(self.hc,website_controller)
+        remove_previous_github_ssh_key(self.github_username,self.hc,website_controller)
+
+        # Reload add new token page
+        repository_url = f"https://github.com/{github_username}/{github_repo_name}/settings/keys/new"
+
+        # Go to source repository
+        website_controller.driver = open_url(website_controller.driver, repository_url)
 
         # wait five seconds for page to load
         # input("Are you done with loggin into GitHub?")
@@ -113,25 +120,29 @@ class Ssh_deploy_key_setter:
         return website_controller
 
     def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
+        input("start filling")
         github_deployment_key_title_field = (
             website_controller.driver.find_element("id", 
                 hardcoded.github_deploy_key_title_element_id
             )
         )
+        input("set title field")
         github_deployment_key_key_field = website_controller.driver.find_element("id", 
             hardcoded.github_deploy_key_key_element_id
         )
-
+        input("set some field")
         # Set the title and ssh key for the GitHub deploy key for the GitLab build status repo.
-        github_deployment_key_title_field.send_keys(hardcoded.deployment_key_title)
+        github_deployment_key_title_field.send_keys(hardcoded.github_ssh_key_description)
         github_deployment_key_key_field.send_keys(public_ssh_sha)
 
+        input("Click give permission")
         # Give write permission to deploy key for the GitLab build status repository (in GitHub)
         click_element_by_xpath(
             website_controller,
             hardcoded.github_deploy_key_allow_write_access_button_xpath,
         )
 
+        input("Click add")  
         # Click: add the new deploy key to the GitHub repository.
         click_element_by_xpath(
             website_controller, hardcoded.add_github_deploy_key_button_xpath

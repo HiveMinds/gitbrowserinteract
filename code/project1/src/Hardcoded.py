@@ -55,7 +55,6 @@ class Hardcoded:
 
         self.github_deploy_key_title_element_id = "public_key_title"
         self.github_deploy_key_key_element_id = "public_key_key"
-        self.deployment_key_title = "github_build_status_deployment_key"
         self.github_deploy_key_allow_write_access_button_xpath = (
             '//*[@id="public_key_read_only"]'
         )
@@ -77,6 +76,14 @@ class Hardcoded:
         self.github_pat_description="Set GitHub commit build status values."
         self.github_pat_description_elem_classname="token-description"
         self.github_pat_table_xpath="/html/body/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
+
+        self.github_ci_build_status_repo_name="gitlab-ci-build-statuses"
+        self.github_username_placeholder="github_username_placeholder"
+        self.github_ssh_key_tokens_url=f"https://github.com/{self.github_username_placeholder}/{self.github_ci_build_status_repo_name}/settings/keys/"
+        self.github_ssh_key_description="github_build_status_deployment_key"
+        self.github_ssh_key_description_elem_classname="flex-auto Details"
+        #self.github_ssh_key_description_elem_classname="flex-auto.Details"
+        self.github_ssh_key_table_xpath="/html/body/div[5]/div/main/turbo-frame/div/div/div/div[2]/div/div/ul"
 
         # Xpath of input field: Note, what's the token for?
         self.github_pac_input_field_xpath = '//*[@id="oauth_access_description"]'
