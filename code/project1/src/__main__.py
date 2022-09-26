@@ -3,8 +3,8 @@ import argparse
 from .helper import get_browser_drivers
 from .Hardcoded import Hardcoded
 from .Main import Main
-from .Ssh_deploy_key_setter import Ssh_deploy_key_setter
-from .Github_personal_access_token_getter import Github_personal_access_token_getter
+from .GitHub.Ssh_deploy_key_setter import Ssh_deploy_key_setter
+from .GitHub.Github_personal_access_token_getter import Github_personal_access_token_getter
 
 print(
     f"\n\nHi, I'll ask you from which source repo to which target repo you want to copy the issues, then I'll download browser controllers and ensure the firefox browser is installed. Next I will scrape the issues from the source repo, and add them as new issues to the target repo. You can simply see what I do in the browser. Terminate me with CTRL+C if you don't like it. I'll let you know when I'm done."

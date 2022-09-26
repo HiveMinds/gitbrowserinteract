@@ -3,19 +3,19 @@ import os.path
 
 from code.project1.src.GitHub.remove_previous_github_pat import remove_previous_github_pat
 
-from .ask_user_input import ask_two_factor_code
-from .control_website import click_element_by_xpath, two_factor_login
-from .control_website import github_login
-from .Hardcoded import Hardcoded
-from .get_gitlab_runner_token import get_runner_registration_token_from_page
-from .get_data import get_value_from_html_source
-from .helper import get_runner_registration_token_filepath
-from .helper import source_contains
-from .helper import write_string_to_file
-from .helper import loiter_till_gitlab_server_is_ready_for_login
-from .export_token import export_github_pac_to_personal_creds_txt
-from .control_website import open_url
-from .Website_controller import Website_controller
+from ..ask_user_input import ask_two_factor_code
+from ..control_website import click_element_by_xpath, two_factor_login
+from ..control_website import github_login
+from ..Hardcoded import Hardcoded
+from ..get_gitlab_runner_token import get_runner_registration_token_from_page
+from ..get_data import get_value_from_html_source
+from ..helper import get_runner_registration_token_filepath
+from ..helper import source_contains
+from ..helper import write_string_to_file
+from ..helper import loiter_till_gitlab_server_is_ready_for_login
+from ..export_token import export_github_pac_to_personal_creds_txt
+from ..control_website import open_url
+from ..Website_controller import Website_controller
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 

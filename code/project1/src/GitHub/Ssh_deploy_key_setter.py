@@ -1,15 +1,16 @@
 # Code that automatically copies all issues of a repository to another
-from .ask_user_input import ask_two_factor_code
-from .control_website import click_element_by_xpath
-from .control_website import github_login
-from .Hardcoded import Hardcoded
-from .get_gitlab_runner_token import get_runner_registration_token_from_page
-from .helper import get_runner_registration_token_filepath
-from .helper import source_contains
-from .helper import write_string_to_file
-from .helper import loiter_till_gitlab_server_is_ready_for_login
-from .control_website import open_url
-from .Website_controller import Website_controller
+from code.project1.src.GitHub.remove_previous_github_ssh_key import remove_previous_github_ssh_key
+from ..ask_user_input import ask_two_factor_code
+from ..control_website import click_element_by_xpath
+from ..control_website import github_login
+from ..Hardcoded import Hardcoded
+from ..get_gitlab_runner_token import get_runner_registration_token_from_page
+from ..helper import get_runner_registration_token_filepath
+from ..helper import source_contains
+from ..helper import write_string_to_file
+from ..helper import loiter_till_gitlab_server_is_ready_for_login
+from ..control_website import open_url
+from ..Website_controller import Website_controller
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 
@@ -42,7 +43,6 @@ class Ssh_deploy_key_setter:
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
 
-        # TODO: get github_user_name from hardcoded.txt
         self.github_username = github_username
         if self.github_username is None:
             raise Exception("Error, expected a GitHub username as incoming argument.")
@@ -56,8 +56,8 @@ class Ssh_deploy_key_setter:
             self.hc, self.github_username, github_repo_name, github_pwd=github_pwd
         )
 
-        # TODO: include check to see if (2FA) verification code is asked. (This check is
-        # already in login_github_to_build_status_repo() yet it did not work. So improve it)
+        # Remove pre-existing ssh keys matching target description.
+        remove_previous_github_ssh_key(self.hc,website_controller)
 
         # wait five seconds for page to load
         # input("Are you done with loggin into GitHub?")
@@ -137,7 +137,3 @@ class Ssh_deploy_key_setter:
             website_controller, hardcoded.add_github_deploy_key_button_xpath
         )
 
-
-if __name__ == "__main__":
-    # initialize main class
-    main = Main()
