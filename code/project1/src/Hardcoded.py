@@ -51,7 +51,8 @@ class Hardcoded:
         self.github_login_url = "https://www.github.com/login"
         self.github_user_element_id = "login_field"
         self.github_pw_element_id = "password"
-        self.github_signin_button_xpath = '//*[@id="login"]/div[4]/form/div/input[12]'
+        #self.github_signin_button_xpath = '//*[@id="login"]/div[4]/form/div/input[12]'
+        self.github_signin_button_xpath = '/html/body/div[3]/main/div/div[4]/form/div/input[11]'
 
         self.github_deploy_key_title_element_id = "public_key_title"
         self.github_deploy_key_key_element_id = "public_key_key"
