@@ -1,7 +1,6 @@
 # Code that automatically copies all issues of a repository to another
 from code.project1.src.GitHub.remove_previous_github_ssh_key import remove_previous_github_ssh_key
 from ..ask_user_input import ask_two_factor_code
-from ..control_website import click_element_by_xpath
 from ..control_website import github_login
 from ..Hardcoded import Hardcoded
 from ..get_gitlab_runner_token import get_gitlab_runner_registration_token_from_page

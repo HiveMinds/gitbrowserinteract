@@ -4,7 +4,7 @@ import os.path
 from code.project1.src.GitHub.remove_previous_github_pat import remove_previous_github_pat
 
 from ..ask_user_input import ask_two_factor_code
-from ..control_website import click_element_by_xpath, two_factor_login
+from ..control_website import  two_factor_login
 from ..control_website import github_login
 from ..Hardcoded import Hardcoded
 from ..get_gitlab_runner_token import get_gitlab_runner_registration_token_from_page

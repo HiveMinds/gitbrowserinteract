@@ -1,7 +1,7 @@
 from pprint import pprint
 from typing import List
 from code.project1.src.Website_controller import Website_controller
-from code.project1.src.control_website import click_element_by_xpath, open_url, wait_until_page_is_loaded
+from code.project1.src.control_website import  open_url, wait_until_page_is_loaded
 from selenium.webdriver.common.by import By
 
 from selenium.webdriver.common.action_chains import ActionChains
