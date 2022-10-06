@@ -119,7 +119,18 @@ def gitlab_click_eye_button_through_xpath_V2(hc,website_controller):
             website_controller, succesfull = try_to_click_by_xpath(
                 website_controller,
                 xpath,
-                "xpath-eye try 0",
+                "xpath-eye try loop",
+                False,
+            )
+        time.sleep(1)
+
+    for gitlab_eye_id in hc.gitlab_eye_ids:
+        if not successfull:
+            source = website_controller.driver.page_source
+            website_controller, succesfull = try_to_click_by_id(
+                website_controller,
+                gitlab_eye_id,
+                "gitlab_eye_id try",
                 False,
             )
         time.sleep(1)

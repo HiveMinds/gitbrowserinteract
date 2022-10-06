@@ -48,6 +48,7 @@ class Hardcoded:
         self.gitlab_pw_element_id = "user_password"
         #self.gitlab_signin_button_xpath = '//*[@id="new_user"]/div[5]/input'
         self.gitlab_signin_button_xpath = '/html/body/div[1]/div[2]/div/div[3]/div/div/div/div/div/form/div[5]/button'
+        url='/assets/icons-7b0fcccb8dc2c0d0883e05f97e4678621a71b996ab2d30bb42fafc906c1ee13f.svg#eye'
         self.gitlab_eye_xpaths=[
             #"/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]",
             #"/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]/svg",
@@ -58,6 +59,12 @@ class Hardcoded:
             #"/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/div/div/div/div/button[1]/svg/use",
             #'//*[@id="eye"]',
             #"/symbol/path",
+            '//a[@href="'+url+'"]',
+        ]
+        
+        self.gitlab_eye_ids=[
+            "eye",
+            "eye-icon",
         ]
 
         self.github_login_url = "https://www.github.com/login"

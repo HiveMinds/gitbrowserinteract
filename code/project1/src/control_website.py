@@ -239,22 +239,3 @@ def get_pswd(company):
         f"Please enter your {company} Password \n(you can also manually log into {company},\n and fill in gibberish in this field,\n if you prefer typing your Password into GitHub directly.)\n"
     )
     return pswd
-
-
-def click_element_by_xpath(website_controller, xpath):
-    """Clicks an html element based on its xpath.
-
-    :param website_controller: Object controlling the browser. Object that controls the browser.
-    :param xpath: A direct link to an object in an html page.
-
-    """
-    source_element = website_controller.driver.find_element("xpath",xpath)
-    if "firefox" in website_controller.driver.capabilities["browserName"]:
-        scroll_shim(website_controller.driver, source_element)
-
-    # scroll_shim is just scrolling it into view, you still need to hover over it to click using an action chain.
-    actions = ActionChains(website_controller.driver)
-    actions.move_to_element(source_element)
-    actions.click()
-    actions.perform()
-    return website_controller
