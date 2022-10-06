@@ -3,7 +3,7 @@ from .control_website import gitlab_login
 from .Hardcoded import Hardcoded
 from .helper import get_labels_from_issues
 from .get_data import get_value_from_html_source
-from .get_gitlab_runner_token import get_runner_registration_token_from_page
+from .get_gitlab_runner_token import get_gitlab_runner_registration_token_from_page
 from .get_website_controller import get_website_controller
 from .helper import get_browser_drivers
 from .helper import parse_creds
@@ -58,7 +58,8 @@ class Main:
         # wait five seconds for page to load
         time.sleep(5)
 
-        runner_registration_token = get_runner_registration_token_from_page(
+        runner_registration_token = get_gitlab_runner_registration_token_from_page(
+            self.hc,
             website_controller
         )
 

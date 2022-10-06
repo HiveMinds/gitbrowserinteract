@@ -5,9 +5,9 @@ from .get_data import get_value_from_html_source
 from .helper import click_element_by_xpath
 
 
-def get_runner_registration_token_from_page(website_controller):
+def get_gitlab_runner_registration_token_from_page(hc,website_controller):
     goto_runner_token_site(website_controller)
-    visualise_runner_token(website_controller)
+    visualise_runner_token(hc,website_controller)
     gitlab_runner_token = read_gitlab_runner_token_from_page(website_controller)
     print(f"gitlab_runner_token={gitlab_runner_token}")
     return gitlab_runner_token
@@ -23,7 +23,7 @@ def goto_runner_token_site(website_controller):
     time.sleep(5)
 
 
-def visualise_runner_token(website_controller):
+def visualise_runner_token(hc,website_controller):
     if click_display_token_through_css_V0(website_controller):
         return website_controller
     elif unhide_registration_token_through_xpath_V1(website_controller):
@@ -31,6 +31,7 @@ def visualise_runner_token(website_controller):
         return website_controller
     source = website_controller.driver.page_source
     website_controller = visualise_runner_token_through_dropdown_boxV2(
+        hc,
         website_controller
     )
     return website_controller
@@ -70,12 +71,12 @@ def unhide_registration_token_through_xpath_V1(website_controller):
         )
 
 
-def visualise_runner_token_through_dropdown_boxV2(website_controller):
+def visualise_runner_token_through_dropdown_boxV2(hc,website_controller):
     website_controller = click_dropdown_box_V2(website_controller)
     source = website_controller.driver.page_source
     website_controller, succesfull = click_eye_button_through_id_V2(website_controller)
     if not succesfull:
-        website_controller = click_eye_button_through_xpath_V2(website_controller)
+        website_controller = click_eye_button_through_xpath_V2(hc,website_controller)
     return website_controller
 
 
@@ -110,7 +111,7 @@ def click_eye_button_through_id_V2(website_controller):
     return website_controller, succesfull
 
 
-def click_eye_button_through_xpath_V2(website_controller):
+def click_eye_button_through_xpath_V2(hc,website_controller):
     source = website_controller.driver.page_source
     website_controller, succesfull = try_to_click_by_xpath(
         website_controller,

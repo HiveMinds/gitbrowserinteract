@@ -32,6 +32,7 @@ def run_bash_command(bashCommand):
 
 
 def remove_snap_firefox():
+    """TODO: remove this and rely on the bash script instead at Self-host..."""
     output =run_bash_command("yes | sudo snap remove firefox")
     print(f'output0={output}')
     
@@ -50,8 +51,6 @@ Pin-Priority: 1001
     
 
     output1 =run_bash_command(change_install_priority)
-    print(f'output1={output1}')
-    # TODO: verify file exists.
 
     lower_firefox_snap_priority="""echo "
 Package: firefox
@@ -63,7 +62,7 @@ Pin-Priority: 99
     print(f'output2={output2}')
 
     #auto_update_firefox="""echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:${distro_codename}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox'"""
-    auto_update_firefox="""echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:ubuntu";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox"""
+    auto_update_firefox="""echo 'Unattended-Upgrade::Allowed-Origins:: "LP-PPA-mozillateam:$\{distro_codename\}";' | sudo tee /etc/apt/apt.conf.d/51unattended-upgrades-firefox"""
     #exit()
     output3 =run_bash_command(auto_update_firefox)
     print(f'output3={output3}')

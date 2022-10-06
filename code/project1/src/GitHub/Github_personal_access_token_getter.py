@@ -7,7 +7,7 @@ from ..ask_user_input import ask_two_factor_code
 from ..control_website import click_element_by_xpath, two_factor_login
 from ..control_website import github_login
 from ..Hardcoded import Hardcoded
-from ..get_gitlab_runner_token import get_runner_registration_token_from_page
+from ..get_gitlab_runner_token import get_gitlab_runner_registration_token_from_page
 from ..get_data import get_value_from_html_source
 from ..helper import get_runner_registration_token_filepath
 from ..helper import source_contains
