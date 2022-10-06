@@ -118,7 +118,7 @@ def gitlab_click_eye_button_through_xpath_V2(hc,website_controller):
             source = website_controller.driver.page_source
             website_controller, succesfull = try_to_click_by_xpath(
                 website_controller,
-                xpath,for xpa
+                xpath,
                 "xpath-eye try 0",
                 False,
             )
