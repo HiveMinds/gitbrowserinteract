@@ -112,7 +112,7 @@ def click_eye_button_through_id_V2(website_controller):
 
 
 def gitlab_click_eye_button_through_xpath_V2(hc,website_controller):
-     successfull=False
+    successfull=False
     for xpath in hc.gitlab_eye_xpaths:
         if not successfull:
         source = website_controller.driver.page_source
