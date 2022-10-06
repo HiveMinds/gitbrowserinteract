@@ -46,7 +46,8 @@ class Hardcoded:
         self.gitlab_login_url = "http://127.0.0.1"
         self.gitlab_user_element_id = "user_login"
         self.gitlab_pw_element_id = "user_password"
-        self.gitlab_signin_button_xpath = '//*[@id="new_user"]/div[5]/input'
+        #self.gitlab_signin_button_xpath = '//*[@id="new_user"]/div[5]/input'
+        self.gitlab_signin_button_xpath = '/html/body/div[1]/div[2]/div/div[3]/div/div/div/div/div/form/div[5]/button'
 
         self.github_login_url = "https://www.github.com/login"
         self.github_user_element_id = "login_field"
