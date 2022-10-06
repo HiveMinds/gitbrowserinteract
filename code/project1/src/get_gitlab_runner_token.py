@@ -76,7 +76,7 @@ def visualise_runner_token_through_dropdown_boxV2(hc,website_controller):
     source = website_controller.driver.page_source
     website_controller, succesfull = click_eye_button_through_id_V2(website_controller)
     if not succesfull:
-        website_controller = click_eye_button_through_xpath_V2(hc,website_controller)
+        website_controller = gitlab_click_eye_button_through_xpath_V2(hc,website_controller)
     return website_controller
 
 
@@ -111,60 +111,18 @@ def click_eye_button_through_id_V2(website_controller):
     return website_controller, succesfull
 
 
-def click_eye_button_through_xpath_V2(hc,website_controller):
-    source = website_controller.driver.page_source
-    website_controller, succesfull = try_to_click_by_xpath(
-        website_controller,
-        "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]",
-        "xpath-eye try 0",
-        False,
-    )
-    time.sleep(1)
-    if not succesfull:
+def gitlab_click_eye_button_through_xpath_V2(hc,website_controller):
+     successfull=False
+    for xpath in hc.gitlab_eye_xpaths:
+        if not successfull:
         source = website_controller.driver.page_source
         website_controller, succesfull = try_to_click_by_xpath(
             website_controller,
-            "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]/svg",
-            "xpath-eye try 1",
+            xpath,for xpa
+            "xpath-eye try 0",
             False,
         )
-    time.sleep(1)
-    if not succesfull:
-        source = website_controller.driver.page_source
-        website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]/svg/use",
-            "xpath-eye try 2",
-            False,
-        )
-    time.sleep(1)
-    if not succesfull:
-        source = website_controller.driver.page_source
-        website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            '//*[@id="eye"]',
-            "xpath-eye try 3",
-            False,
-        )
-    time.sleep(1)
-    if not succesfull:
-        source = website_controller.driver.page_source
-        website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            "/symbol/path",
-            "xpath-eye try 4",
-            False,
-        )
-    time.sleep(1)
-    if not succesfull:
-        source = website_controller.driver.page_source
-        website_controller, succesfull = try_to_click_by_xpath(
-            website_controller,
-            '//*[@id="eye"]',
-            "xpath-eye try 5",
-            False,
-        )
-    time.sleep(1)
+        time.sleep(1)
 
     if not succesfull:
         raise Exception("Did not find the GitLab Runner Registration token.")
