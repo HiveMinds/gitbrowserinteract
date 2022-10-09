@@ -9,27 +9,20 @@ from .GitHub.Github_personal_access_token_getter import (
     Github_personal_access_token_getter,
 )
 from .GitHub.Ssh_deploy_key_setter import Ssh_deploy_key_setter
+from .GitLab.GitLab_runner_token_getter import Get_gitlab_runner_token
 from .Hardcoded import Hardcoded
 from .helper import get_browser_drivers
-from .Main import Main
 
-print(
-    "\n\n Hi, I'll ask you from which source repo to which target repo you "
-    "want to copy the issues, then I'll download browser controllers and "
-    " ensure the firefox browser is installed. Next I will scrape the issues"
-    " from the source repo, and add them as new issues to the target repo. "
-    "You can simply see what I do in the browser. Terminate me with CTRL+C if "
-    "you don't like it. I'll let you know when I'm done."
-)
 project_nr = 1
 
 # get browser drivers
 hc = Hardcoded()
 get_browser_drivers(hc)
 
+# Parse user arguments to determine what to do.
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--g",
+    "--glr",
     dest="gitlab_runner",
     action="store_true",
     help="boolean flag, determines whether the code gets the GitLab Runner token or not.",
@@ -75,7 +68,7 @@ parser.add_argument(
 )
 
 parser.set_defaults(
-    gitlab_runner=True,
+    gitlab_runner=False,
     deploy_token=False,
     github_commit_status_personal_access_token_flag=False,
     github_username=None,
@@ -106,8 +99,8 @@ elif args.github_commit_status_personal_access_token_flag:
     )
 elif args.gitlab_runner:
     print("Getting GitLab runner token.")
-    args.gitlab_runner = False
-    _ = Main(project_nr)
+    # args.gitlab_runner = False
+    _ = Get_gitlab_runner_token()
 
 
 print("Done.")

@@ -5,11 +5,10 @@ TODO: Change to get it from within docker instead
 of using browser controller.
 """
 import time
-
-from .control_website import open_url
-from .helper import (
+from code.project1.src.helper import (
     click_element_by_xpath,
     get_value_from_html_source,
+    open_url,
     source_contains,
 )
 
@@ -52,11 +51,11 @@ def visualise_runner_token(hc, website_controller):
     :param website_controller:
 
     """
-    if click_display_token_through_css_V0(website_controller):
-        return website_controller
-    if unhide_registration_token_through_xpath_V1(website_controller):
-        # TODO: verify whether after this function, another button must be clicked.
-        return website_controller
+    # if click_display_token_through_css_V0(website_controller):
+    #    return website_controller
+    # if unhide_registration_token_through_xpath_V1(website_controller):
+    #    # TODO: verify whether after this function, another button must be clicked.
+    #    return website_controller
 
     website_controller = gitlab_visualise_runner_token_through_dropdown_boxV2(
         hc, website_controller
@@ -120,14 +119,22 @@ def gitlab_visualise_runner_token_through_dropdown_boxV2(
 
     """
     website_controller = click_dropdown_box_V2(website_controller)
-
-    website_controller, succesfull = click_eye_button_through_id_V2(
-        website_controller
+    time.sleep(2)
+    website_controller, successfull = gitlab_click_eye_button_through_xpath_V2(
+        hc, website_controller
     )
-    if not succesfull:
-        website_controller = gitlab_click_eye_button_through_xpath_V2(
-            hc, website_controller
+    if not successfull:
+        (
+            website_controller,
+            successfull,
+        ) = gitlab_click_eye_button_through_id_V2(hc, website_controller)
+    if not successfull:
+        input(
+            "Please manually click the eye button to show the GitLab"
+            + "runner registration token."
         )
+        # raise Exception("Did not find the GitLab Runner Registration token.")
+
     return website_controller
 
 
@@ -151,37 +158,29 @@ def click_dropdown_box_V2(website_controller):
     return website_controller
 
 
-def click_eye_button_through_id_V2(website_controller):
+def gitlab_click_eye_button_through_xpath_V2(hc, website_controller):
     """
 
     :param website_controller:
 
     """
 
-    website_controller, succesfull = try_to_click_by_id(
-        website_controller,
-        "eye",
-        (
-            '\n \n Note: did not find button to click the "eye" icon fourth method.'
-            + " Will try fifth method now."
-        ),
-        False,
-    )
-    if not succesfull:
+    successfull = False
+    for i, xpath in enumerate(hc.gitlab_eye_xpaths):
+        print(f"{i},xpath={xpath}")
+        if not successfull:
 
-        website_controller, succesfull = try_to_click_by_id(
-            website_controller,
-            "eye-icon",
-            (
-                '\n \n Note: did not find button to click the "eye" icon fourth'
-                + " method. Will try sixth method now."
-            ),
-            False,
-        )
-    return website_controller, succesfull
+            website_controller, successfull = try_to_click_by_xpath(
+                website_controller,
+                xpath,
+                "xpath-eye try loop",
+                False,
+            )
+        time.sleep(1)
+    return website_controller, successfull
 
 
-def gitlab_click_eye_button_through_xpath_V2(hc, website_controller):
+def gitlab_click_eye_button_through_id_V2(hc, website_controller):
     """
 
     :param hc:
@@ -189,31 +188,19 @@ def gitlab_click_eye_button_through_xpath_V2(hc, website_controller):
 
     """
     successfull = False
-    for xpath in hc.gitlab_eye_xpaths:
+
+    for i, gitlab_eye_id in enumerate(hc.gitlab_eye_ids):
+        print(f"{i},gitlab_eye_id={gitlab_eye_id}")
         if not successfull:
 
-            website_controller, succesfull = try_to_click_by_xpath(
-                website_controller,
-                xpath,
-                "xpath-eye try loop",
-                False,
-            )
-        time.sleep(1)
-
-    for gitlab_eye_id in hc.gitlab_eye_ids:
-        if not successfull:
-
-            website_controller, succesfull = try_to_click_by_id(
+            website_controller, successfull = try_to_click_by_id(
                 website_controller,
                 gitlab_eye_id,
                 "gitlab_eye_id try",
                 False,
             )
         time.sleep(1)
-
-    if not succesfull:
-        raise Exception("Did not find the GitLab Runner Registration token.")
-    return website_controller
+    return website_controller, successfull
 
 
 def try_to_click_by_id(website_controller, some_id, error_msg, raise_error):

@@ -7,6 +7,32 @@ import time
 from selenium.webdriver.common.action_chains import ActionChains
 
 
+def creds_file_contains_gitlab_username(hardcoded):
+    """Returns True if the credentials file contains the GitLab username."""
+    with open(hardcoded.cred_path, encoding="utf-8") as f:
+        lines = []
+        for line in f:
+            lines.append(line)
+    username_identifier = "GITLAB_SERVER_ACCOUNT_GLOBAL="
+    for line in lines:
+        if line[: len(username_identifier)] == username_identifier:
+            return True
+    return False
+
+
+def creds_file_contains_gitlab_pwd(hardcoded):
+    """Returns True if the credentials file contains the GitLab pwd."""
+    with open(hardcoded.cred_path, encoding="utf-8") as f:
+        lines = []
+        for line in f:
+            lines.append(line)
+    pwd_identifier = "GITLAB_SERVER_PASSWORD_GLOBAL="  # nosec
+    for line in lines:
+        if line[: len(pwd_identifier)] == pwd_identifier:
+            return True
+    return False
+
+
 def read_creds(hardcoded):
     """Reads username and password from credentials file, if the file exists,
     asks the user to manually enter them if the file is not found.
@@ -23,7 +49,7 @@ def read_creds(hardcoded):
 
     # creds.txt is changed to bash format in other project so the credentials need to be parsed
     # username = lines[0][:-1]
-    # pswd = lines[1]
+    # pwd = lines[1]
     username, pwd = parse_creds(lines)
 
     return username, pwd
