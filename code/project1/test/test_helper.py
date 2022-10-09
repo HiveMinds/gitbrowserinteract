@@ -1,25 +1,19 @@
+"""Tests whether the parse_creds function returns the correct credentials based
+on a given input."""
 import unittest
-import os
-from ..src.Main import Main
-import testbook
+from code.project1.src.helper import parse_creds
 
 
-class Test_main(unittest.TestCase):
+class Test_parse_creds(unittest.TestCase):
+    """Object used to test a parse_creds function."""
 
     # Initialize test object
     def __init__(self, *args, **kwargs):
-        super(Test_main, self).__init__(*args, **kwargs)
-        self.script_dir = self.get_script_dir()
+        super().__init__(*args, **kwargs)
 
-        self.main = Main(1, False)
-        print(f"self.main.addTwo(3)={self.main.addTwo(3)}")
-
-    # returns the directory of this script regardles of from which level the code is executed
-    def get_script_dir(self):
-        return os.path.dirname(__file__)
-
-    # tests unit test on addTwo function of main class
-    def skip_test_parse_creds(self):
+    def test_parse_creds(self):
+        """Tests whether the parse_creds function returns the correct
+        credentials based on a given input."""
 
         expected_result = "someusername"
         lines = []
@@ -29,7 +23,7 @@ class Test_main(unittest.TestCase):
         )
         lines.append("gitlab_server_password=yoursecretone")
         lines.append("GITLAB_ROOT_EMAIL=root@protonmail.com")
-        result_username, result_pwd = self.main.parse_creds(lines)
+        result_username, _ = parse_creds(lines)
         self.assertEqual(expected_result, result_username)
 
 
