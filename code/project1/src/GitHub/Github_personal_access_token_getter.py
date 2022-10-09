@@ -1,35 +1,31 @@
 # Code that automatically copies all issues of a repository to another
-import os.path
-
-from code.project1.src.GitHub.remove_previous_github_pat import remove_previous_github_pat
+import time
+from code.project1.src.GitHub.remove_previous_github_pat import (
+    remove_previous_github_pat,
+)
 
 from ..ask_user_input import ask_two_factor_code
-from ..control_website import  two_factor_login
-from ..control_website import github_login
-from ..Hardcoded import Hardcoded
-from ..get_gitlab_runner_token import get_gitlab_runner_registration_token_from_page
-from ..get_data import get_value_from_html_source
-from ..helper import get_runner_registration_token_filepath
-from ..helper import source_contains
-from ..helper import write_string_to_file
-from ..helper import loiter_till_gitlab_server_is_ready_for_login
+from ..control_website import github_login, github_two_factor_login, open_url
 from ..export_token import export_github_pac_to_personal_creds_txt
-from ..control_website import open_url
-from ..Website_controller import Website_controller
-from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-
-import time
+from ..Hardcoded import Hardcoded
+from ..helper import (
+    click_element_by_xpath,
+    get_value_from_html_source,
+    source_contains,
+)
 
 
 class Github_personal_access_token_getter:
-    """ """
+    """Gets a GitHub personal access token."""
 
     def __init__(
-        self, project_nr, github_username=None, github_pwd=None, should_login=True
+        self,
+        project_nr,
+        github_username=None,
+        github_pwd=None,
     ):
-        """Initialises object that gets the browser controller, then it gets the issues
-        from the source repo, and copies them to the target repo.
+        """Initialises object that gets the browser controller, then it gets
+        the issues from the source repo, and copies them to the target repo.
 
         :param project_nr: [Int] that indicates the folder in which this code is stored.
         :param login: [Boolean] True if the website_controller object should be
@@ -38,7 +34,7 @@ class Github_personal_access_token_getter:
 
         # project_nr is an artifact of folder structure
         self.project_nr = project_nr
-        self.relative_src_filepath = f"code/project{self.project_nr}/src/"
+
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
 
@@ -46,7 +42,9 @@ class Github_personal_access_token_getter:
         # TODO: get github_user_name from hardcoded.txt
         self.github_username = github_username
         if self.github_username is None:
-            raise Exception("Error, expected a GitHub username as incoming argument.")
+            raise Exception(
+                "Error, expected a GitHub username as incoming argument."
+            )
         self.github_pwd = github_pwd
 
         # TODO: get gitlab-ci-build-statuses from argument parser
@@ -55,7 +53,9 @@ class Github_personal_access_token_getter:
         # website_controller = get_website_controller(self.hc)
         # TODO: change
         website_controller = self.login_github_for_personal_access_token(
-            self.hc, github_username=self.github_username, github_pwd=self.github_pwd
+            self.hc,
+            github_username=self.github_username,
+            github_pwd=self.github_pwd,
         )
 
         # TODO: include check to see if (2FA) verification code is asked. (This check is
@@ -64,12 +64,12 @@ class Github_personal_access_token_getter:
         # wait five seconds for page to load
         # input("Are you done with loggin into GitHub?")
 
-        print(f"Logged in")
+        print("Logged in")
 
         self.create_github_personal_access_token(self.hc, website_controller)
 
         print(
-            f"Done GitHub personal access token. Waiting 10 seconds and then the browser."
+            "Done GitHub personal access token. Waiting 10 seconds and then the browser."
         )
         time.sleep(10)
         pac = self.read_github_personal_access_token(website_controller)
@@ -83,44 +83,51 @@ class Github_personal_access_token_getter:
         website_controller.driver.close()
 
         print(
-            f"Hi, I'm done creating the GitHub personal access token to set the GitHub commit build status."
+            "Hi, I'm done creating the GitHub personal access token to set the GitHub commit build status."
         )
 
     def login_github_for_personal_access_token(
         self, hardcoded, github_username, github_pwd
     ):
-        """USED
-        Gets the issues from a github repo. Opens a separate browser instance and then
-        closes it again.
-        Returns the rsc_data object that contains the parsed availability of the relevant activities.
+        """USED Gets the issues from a github repo. Opens a separate browser
+        instance and then closes it again. Returns the rsc_data object that
+        contains the parsed availability of the relevant activities.
 
         TODO: determine and document how get_next_activity manages the difference between primary and secondary
         choice.
 
         :param hardcoded: An object containing all the hardcoded settings used in this program.
         :param user_choices: Object that contains the choices/schedule that user wants to follow.
-
+        :param github_username:
+        :param github_pwd:
         """
 
         # login
-        website_controller = github_login(hardcoded, github_pwd, github_username)
+        website_controller = github_login(
+            hardcoded, github_pwd, github_username
+        )
         # website_controller = github_login(hardcoded)
 
         # check if 2factor
-        if source_contains(website_controller, "<h1>Two-factor authentication</h1>"):
+        if source_contains(
+            website_controller, "<h1>Two-factor authentication</h1>"
+        ):
 
             # if 2 factor ask code from user
             two_factor_code = ask_two_factor_code()
 
             # enter code
-            two_factor_login(two_factor_code, website_controller)
+            github_two_factor_login(
+                hardcoded, two_factor_code, website_controller, "GitHub"
+            )
 
         # Remove GitHub personal access token if it already exists.
-        remove_previous_github_pat(hardcoded,website_controller)
-
+        remove_previous_github_pat(hardcoded, website_controller)
 
         # repository_url = f"https://github.com/{github_username}/{github_build_status_repo_name}/issues"
-        personal_access_token_url = f"https://github.com/settings/tokens/new"
+        personal_access_token_url = (
+            "https://github.com/settings/tokens/new"  # nosec
+        )
 
         # Go to source repository
         website_controller.driver = open_url(
@@ -129,9 +136,17 @@ class Github_personal_access_token_getter:
 
         return website_controller
 
-    def create_github_personal_access_token(self, hardcoded, website_controller):
-        github_pac_input_field = website_controller.driver.find_element("xpath",
-            hardcoded.github_pac_input_field_xpath
+    def create_github_personal_access_token(
+        self, hardcoded, website_controller
+    ):
+        """
+
+        :param hardcoded:
+        :param website_controller:
+
+        """
+        github_pac_input_field = website_controller.driver.find_element(
+            "xpath", hardcoded.github_pac_input_field_xpath
         )
 
         # github_pac_repo_status_checkbox = website_controller.driver.find_element_by_id(
@@ -151,50 +166,71 @@ class Github_personal_access_token_getter:
         self.click_submit_token(website_controller, hardcoded)
 
     def click_repo_status_checkbox(self, website_controller, hardcoded):
+        """
+
+        :param website_controller:
+        :param hardcoded:
+
+        """
         clicked = False
         try:
             click_element_by_xpath(
-                website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV0
+                website_controller,
+                hardcoded.github_pac_repo_status_checkbox_xpathV0,
             )
             clicked = True
-        except:
+        except:  # nosec
             pass
         if not clicked:
             try:
                 click_element_by_xpath(
-                    website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV1
+                    website_controller,
+                    hardcoded.github_pac_repo_status_checkbox_xpathV1,
                 )
-            except:
+            except:  # nosec
                 pass
         if not clicked:
             click_element_by_xpath(
-                website_controller, hardcoded.github_pac_repo_status_checkbox_xpathV2
+                website_controller,
+                hardcoded.github_pac_repo_status_checkbox_xpathV2,
             )
 
     def click_submit_token(self, website_controller, hardcoded):
+        """
+
+        :param website_controller:
+        :param hardcoded:
+
+        """
         clicked = False
         try:
             click_element_by_xpath(
-                website_controller, hardcoded.github_pac_generate_token_button_xpathV0
+                website_controller,
+                hardcoded.github_pac_generate_token_button_xpathV0,
             )
             clicked = True
-        except:
+        except:  # nosec
             pass
         if not clicked:
             try:
                 click_element_by_xpath(
-                    website_controller, hardcoded.github_pac_generate_token_button_xpathV1
+                    website_controller,
+                    hardcoded.github_pac_generate_token_button_xpathV1,
                 )
                 clicked = True
-            except:
+            except:  # nosec
                 pass
         if not clicked:
             click_element_by_xpath(
-                website_controller, hardcoded.github_pac_generate_token_button_xpathV2
+                website_controller,
+                hardcoded.github_pac_generate_token_button_xpathV2,
             )
 
     def read_github_personal_access_token(self, website_controller):
-        print(f"hi")
+        """Reads the GitHub personal acccess token from website.
+
+        :param website_controller:
+        """
         # <code id="new-oauth-token" class="token">sometoken</code>
         # get the page source:
         source = website_controller.driver.page_source
@@ -205,6 +241,10 @@ class Github_personal_access_token_getter:
             if source_contains(website_controller, rhs):
                 return get_value_from_html_source(source, lhs, rhs)
             else:
-                raise Exception("The token identification string:{rhs} was not found.")
+                raise Exception(
+                    "The token identification string:{rhs} was not found."
+                )
         else:
-            raise Exception("The token identification string:{rhs} was not found.")
+            raise Exception(
+                "The token identification string:{rhs} was not found."
+            )

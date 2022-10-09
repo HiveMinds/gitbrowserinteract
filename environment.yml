@@ -3,18 +3,59 @@
 name: get_gitlab_generation_token
 channels:
   - conda-forge
-  - conda
 dependencies:
-- anaconda
-- conda:
-  - numpy>=1.19
-  - pytest=6.1.2
-  - selenium
-- pip
-- pip:
-  # works for regular pip packages
-  - testbook
-  - pyment
-  - pdoc3
+# Specify specific python version.
+  - python=3.8
+# Run python tests.
+  - pytest-cov
+# Turns relative import paths into absolute import paths.
+  - absolufy-imports
+# Auto format Python code to make it flake8 compliant.
+  - autoflake
+# Scan Python code for security issues.
+  - bandit
+# Code formatting compliance.
   - black
-  - vulture
+# Correct code misspellings.
+  - codespell
+# Verify percentage of code that has at least 1 test.
+  - coverage
+# Auto formats the Python documentation written in the code.
+  - docformatter
+# Auto generate docstrings.
+  - flake8
+# Auto sort the import statements.
+  - isort
+# Auto format Markdown files.
+  - mdformat
+# Auto check static typing.
+  - mypy
+# Another static type checker for python like mypy.
+  - pyright
+# Include GitHub pre-commit hook.
+  - pre-commit
+# Automatically upgrades Python syntax to the new Python version syntax.
+  - pyupgrade
+# Auto generate docstrings.
+  - pyment
+# Auto check programming style aspects.
+  - pylint
+# Auto check static typing.
+  - mypy
+# Auto format Markdown files.
+  - mdformat
+# Auto sort the import statements.
+  - isort
+  - pip
+  - pip:
+    # TODO: identify exact function(and usage).
+    # Auto generate documentation.
+    - pdoc3
+    # Seems to be an autoformatter like black, but installed using npm instead of pip.
+    - prettier
+    # Tag files using Python.
+    - pytaggit
+    # Control browser
+    - Selenium
+    # Identify and remove dead code.
+    - vulture
