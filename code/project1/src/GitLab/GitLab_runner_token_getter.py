@@ -1,13 +1,11 @@
 """Object to run code based on incoming arguments."""
 import time
-
-from .control_website import gitlab_login
-from .get_gitlab_runner_token import (
+from code.project1.src.control_website import gitlab_login
+from code.project1.src.GitLab.get_gitlab_runner_token import (
     get_gitlab_runner_registration_token_from_page,
 )
-from .get_website_controller import get_website_controller
-from .Hardcoded import Hardcoded
-from .helper import (
+from code.project1.src.Hardcoded import Hardcoded
+from code.project1.src.helper import (
     get_browser_drivers,
     get_runner_registration_token_filepath,
     loiter_till_gitlab_server_is_ready_for_login,
@@ -16,20 +14,16 @@ from .helper import (
 
 
 # pylint: disable=R0903
-class Main:
-    """Object to run code based on incoming arguments."""
+class Get_gitlab_runner_token:
+    """Gets the GitLab runner from the GitLab server."""
 
-    def __init__(self, project_nr):
+    def __init__(self):
         """Initialises object that gets the browser controller, then it gets
         the issues from the source repo, and copies them to the target repo.
 
-        :param project_nr: [Int] that indicates the folder in which this code is stored.
         :param login: [Boolean] True if the website_controller object should be
         created and should login to GitHub.
         """
-
-        # project_nr is an artifact of folder structure
-        self.project_nr = project_nr
 
         # Store the hardcoded values used within this project
         self.hc = Hardcoded()
@@ -37,16 +31,23 @@ class Main:
         # get browser drivers
         get_browser_drivers(self.hc)
 
-        website_controller = get_website_controller(self.hc)
+        debugging = True
+        if not debugging:
+            website_controller, gitlab_username, gitlab_pwd = gitlab_login(
+                self.hc
+            )
 
-        # Create for loop that checks if GitLab server page is loaded and ready for login.
-        # loop it for 900 seconds, check page source every 5 seconds
-        loiter_till_gitlab_server_is_ready_for_login(
-            self.hc, 1200, 5, website_controller
-        )
+            # Create for loop that checks if GitLab server page is loaded and ready for login.
+            # loop it for 900 seconds, check page source every 5 seconds
+            loiter_till_gitlab_server_is_ready_for_login(
+                self.hc, 1200, 5, website_controller
+            )
+            website_controller, _, _ = gitlab_login(
+                self.hc, gitlab_username, gitlab_pwd
+            )
+        else:
 
-        # Log into GitLab server.
-        website_controller = gitlab_login(self.hc)
+            website_controller, _, _ = gitlab_login(self.hc, None, None)
 
         # wait five seconds for page to load
         time.sleep(5)

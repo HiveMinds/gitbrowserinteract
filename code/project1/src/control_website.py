@@ -12,6 +12,8 @@ from selenium.webdriver.support.ui import WebDriverWait
 
 from .helper import (
     click_element_by_xpath,
+    creds_file_contains_gitlab_pwd,
+    creds_file_contains_gitlab_username,
     open_url,
     read_creds,
     source_contains,
@@ -42,7 +44,7 @@ def login(
     pw_element_id,
     signin_button_xpath,
     username,
-    pswd,
+    pwd,
     company,
 ):
     """Performs login of user into  website. Returns the website_controller
@@ -63,8 +65,8 @@ def login(
 
     if username is None:
         username = get_username(company)
-    if pswd is None:
-        pswd = get_pswd(company)
+    if pwd is None:
+        pwd = get_pwd(company)
     else:
         user_passed_pwd_earlier = True
 
@@ -76,7 +78,7 @@ def login(
     )
     if not user_has_manually_logged_in:
         username_input.send_keys(username)
-        password_input.send_keys(pswd)
+        password_input.send_keys(pwd)
         website_controller.driver.implicitly_wait(15)
 
         # website_controller.driver.find_element("css selector",".btn-primary").click()
@@ -167,21 +169,28 @@ def wait_until_page_is_loaded(time_limit_sec: int, website_controller):
         print("Loading took too much time!")
 
 
-def gitlab_login(hardcoded, gitlab_pwd=None):
+def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):
     """Gets the GitLab login."""
-    if gitlab_pwd is None:
-        username, pswd = get_credentials(hardcoded)
+    print(f"GOT ={gitlab_pwd}")
+    if gitlab_pwd is None or gitlab_username is None:
+        gitlab_username, gitlab_pwd = get_gitlab_credentials(
+            hardcoded, "GitLab", gitlab_username, gitlab_pwd
+        )
+        if gitlab_username is None:
+            raise Exception("Did not get Username.")
+        if gitlab_pwd is None:
+            raise Exception("Did not get pwd.")
     website_controller = login(
         hardcoded,
         hardcoded.gitlab_login_url,
         hardcoded.gitlab_user_element_id,
         hardcoded.gitlab_pw_element_id,
         hardcoded.gitlab_signin_button_xpath,
-        username,
-        pswd,
+        gitlab_username,
+        gitlab_pwd,
         "GitLab",
     )
-    return website_controller
+    return website_controller, gitlab_username, gitlab_pwd
 
 
 def github_two_factor_login(
@@ -224,7 +233,9 @@ def github_two_factor_login(
     return website_controller
 
 
-def get_credentials(hardcoded):
+def get_gitlab_credentials(
+    hardcoded, company, gitlab_username=None, gitlab_pwd=None
+):
     """Gets  credentials from a hardcoded file and asks the user for them if
     they are not found.
 
@@ -232,14 +243,18 @@ def get_credentials(hardcoded):
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
     """
-    if hardcoded.use_cred_file:
-        username, pswd = read_creds(hardcoded)
+    if (
+        hardcoded.use_cred_file
+        and creds_file_contains_gitlab_username(hardcoded)
+        and creds_file_contains_gitlab_pwd(hardcoded)
+    ):
+        gitlab_username, gitlab_pwd = read_creds(hardcoded)
     else:
-        # TODO: Ensure correct company is passed.
-        username = get_username("github_or_gitlab")
-        # TODO: Ensure correct company is passed.
-        pswd = get_pswd("github_or_gitlab")
-    return username, pswd
+        if gitlab_username is None:
+            gitlab_username = get_username(company)
+        if gitlab_pwd is None:
+            gitlab_pwd = get_pwd(company)
+    return gitlab_username, gitlab_pwd
 
 
 def get_username(company):
@@ -254,11 +269,11 @@ def get_username(company):
     return username
 
 
-def get_pswd(company):
+def get_pwd(company):
     """Gets the password for login and returns it."""
-    pswd = getpass(
+    pwd = getpass(
         f"Please enter your {company} Password \n(you can also manually log "
         + "into {company},\n and fill in gibberish in this field,\n if you "
         + "prefer typing your Password into GitHub directly.)\n"
     )
-    return pswd
+    return pwd
