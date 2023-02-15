@@ -1,3 +1,24 @@
+# This file lists which files are automatically excluded when you want to push
+# something to Git(Hub/Lab) using the program GIT.
+chrome_driver/*
+firefox_driver/*
+
+meme/output.gif
+
+demo/*
+latex/Images/graphs/*
+Images/*
+results/*
+results.txt
+monkeytype.sqlite3
+type_info.json
+
+# Don't include code visualisation structure.
+pycallgraph.png
+
+# Exclude test coverage report from being synced.
+cov.xml
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
@@ -127,8 +148,3 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-
-# project dependent
-code/project1/src/creds.txt
-chrome_driver/*
-firefox_driver/*

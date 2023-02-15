@@ -6,13 +6,13 @@
 # So to resolve that, a mirror is created that includes such a file.
 
 default_language_version:
-    python: python3.8.  # or python3
+    python: python3.10.  # or python3
 
 
 repos:
 # Test if the python code is formatted according to the Black standard.
  - repo: https://github.com/Quantco/pre-commit-mirrors-black
-   rev: 22.6.0
+   rev: 22.3.0
    hooks:
      - id: black-conda
        args:
@@ -21,10 +21,9 @@ repos:
 
 # Test if the python code is formatted according to the flake8 standard.
  - repo: https://github.com/Quantco/pre-commit-mirrors-flake8
-   rev: 5.0.4
+   rev: 4.0.1
    hooks:
     - id: flake8-conda
-      args: ["--ignore=E501,W503,W504,E722,E203"]
 
 # Test if the import statements are sorted correctly.
  - repo: https://github.com/PyCQA/isort
@@ -33,21 +32,32 @@ repos:
     - id: isort
       args: ["--profile", "black", --line-length=79]
 
-## Test if the variable typing is correct. (Variable typing is when you say:
-## def is_larger(nr: int) -> bool: instead of def is_larger(nr). It makes
-## it explicit what type of input and output a function has.
-## - repo: https://github.com/python/mypy
-# - repo: https://github.com/pre-commit/mirrors-mypy
-#### - repo: https://github.com/a-t-0/mypy
-#   rev: v0.982
-#   hooks:
-#    - id: mypy
+# Test if the variable typing is correct. (Variable typing is when you say:
+# def is_larger(nr: int) -> bool: instead of def is_larger(nr). It makes
+# it explicit what type of input and output a function has.
+# - repo: https://github.com/python/mypy
+ - repo: https://github.com/pre-commit/mirrors-mypy
+### - repo: https://github.com/a-t-0/mypy
+   rev: v0.950
+   hooks:
+    - id: mypy
+      args: ["--disallow-untyped-calls", "--disallow-untyped-defs"]
 
-## Tests if there are spelling errors in the code.
-# - repo: https://github.com/codespell-project/codespell
-#   rev: v2.2.1
-#   hooks:
-#    - id: codespell
+  # TODO:
+  #--strict
+  #--disallow-incomplete-defs
+  #--disallow-any-unimported
+  #--disallow-any-expr
+  #--disallow-any-decorated
+  #--disallow-any-explicit
+  #--disallow-any-generics
+  #--disallow-subclassing-any
+
+# Tests if there are spelling errors in the code.
+ - repo: https://github.com/codespell-project/codespell
+   rev: v2.1.0
+   hooks:
+    - id: codespell
 
 # Performs static code analysis to check for programming errors.
  - repo: local
@@ -61,15 +71,14 @@ repos:
          [
            "-rn", # Only display messages
            "-sn", # Don't display the score
-           #"--ignore-long-lines", # Ignores long lines.
          ]
 
 # Runs additional tests that are created by the pre-commit software itself.
  - repo: https://github.com/pre-commit/pre-commit-hooks
-   rev: v4.3.0
+   rev: v4.2.0
    hooks:
     # Check user did not add large files.
-    - id: check-added-large-files
+    #- id: check-added-large-files
     # Check if `.py` files are written in valid Python syntax.
     - id: check-ast
     # Require literal syntax when initializing empty or zero Python builtin types.
@@ -126,7 +135,7 @@ repos:
 
 
  - repo: https://github.com/PyCQA/autoflake
-   rev: v1.7.1
+   rev: v1.4
    hooks:
     - id: autoflake
       args: ["--in-place", "--remove-unused-variables", "--remove-all-unused-imports", "--recursive"]
@@ -143,23 +152,24 @@ repos:
 
 # Enforces formatting style in Markdown (.md) files.
  - repo: https://github.com/executablebooks/mdformat
-   rev: 0.7.16
+   rev: 0.7.14
    hooks:
    - id: mdformat
+     #args: ["-r ~MD013"]
      additional_dependencies:
      - mdformat-toc
      - mdformat-gfm
      - mdformat-black
 
- - repo: https://github.com/MarcoGorelli/absolufy-imports
-   rev: v0.3.1
-   hooks:
-   - id: absolufy-imports
-     files: '^src/.+\.py$'
-     args: ['--never', '--application-directories', 'src']
+ #- repo: https://github.com/MarcoGorelli/absolufy-imports
+ #  rev: v0.3.1
+ #  hooks:
+ #  - id: absolufy-imports
+ #    files: '^src/.+\.py$'
+ #    args: ['--never', '--application-directories', 'src']
 
  - repo: https://github.com/myint/docformatter
-   rev: v1.5.0
+   rev: v1.4
    hooks:
    - id: docformatter
 
@@ -173,7 +183,7 @@ repos:
 # Updates the syntax of `.py` files to the specified python version.
 # It is not compatible with: pre-commit hook: fix-encoding-pragma
  - repo: https://github.com/asottile/pyupgrade
-   rev: v3.0.0
+   rev: v2.32.1
    hooks:
      - id: pyupgrade
        args: [--py38-plus]

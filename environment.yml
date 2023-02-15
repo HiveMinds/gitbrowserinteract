@@ -1,11 +1,18 @@
-# run: conda env create --file environment.yml
-# include new packages: conda env update --file environment.yml
-name: get_gitlab_generation_token
+# This file is to automatically configure your environment. It allows you to
+# run the code with a single command without having to install anything
+# (extra).
+
+# First run: conda env create --file environment.yml
+# If you change this file, run: conda env update --file environment.yml
+
+# Conda configuration settings. (Specify which modules/packages are installed.)
+name: browse-like-us
 channels:
   - conda-forge
 dependencies:
 # Specify specific python version.
-  - python=3.8
+  - python=3.10
+# Pre-commit packages for code quality:
 # Run python tests.
   - pytest-cov
 # Turns relative import paths into absolute import paths.
@@ -30,27 +37,34 @@ dependencies:
   - mdformat
 # Auto check static typing.
   - mypy
+# Auto generate documentation.
+  - pdoc3
 # Another static type checker for python like mypy.
   - pyright
 # Include GitHub pre-commit hook.
   - pre-commit
+# Visualise the structure of the code based on a command.
+  - pycallgraph2
 # Automatically upgrades Python syntax to the new Python version syntax.
   - pyupgrade
 # Auto generate docstrings.
   - pyment
 # Auto check programming style aspects.
   - pylint
-# Auto check static typing.
-  - mypy
-# Auto format Markdown files.
-  - mdformat
-# Auto sort the import statements.
-  - isort
+# Enable publishing the pip package.
+  - twine
+# Ensure the python function arguments are verified at runtime.
+  - typeguard
+# Enable creating the pip package.
+  - setuptools
+  - wheel
+# pip packages:
   - pip
   - pip:
-    # TODO: identify exact function(and usage).
-    # Auto generate documentation.
-    - pdoc3
+    # Install Ubuntu browser controller
+    - browsercontroller
+    # Create gif of SNN behaviour.
+    - imageio
     # Seems to be an autoformatter like black, but installed using npm instead of pip.
     - prettier
     # Tag files using Python.
@@ -59,3 +73,6 @@ dependencies:
     - Selenium
     # Identify and remove dead code.
     - vulture
+    #- pipreqs
+    # Allow for auto generation of type-hints during runtime.
+    - pyannotate

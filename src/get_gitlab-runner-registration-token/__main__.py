@@ -1,23 +1,9 @@
-"""Entry point of this project, call with arguments to:
+"""Entry point for the project."""
 
-Get GitLab runner token from local GitLab server. Set GitHub ssh deploy
-key. Set GitHub personal access token.
-"""
-import argparse
+from typing import List
 
-from .GitHub.Github_personal_access_token_getter import (
-    Github_personal_access_token_getter,
-)
-from .GitHub.Ssh_deploy_key_setter import Ssh_deploy_key_setter
-from .GitLab.GitLab_runner_token_getter import Get_gitlab_runner_token
-from .Hardcoded import Hardcoded
-from .helper import get_browser_drivers
-
-project_nr = 1
-
-# get browser drivers
-hc = Hardcoded()
-get_browser_drivers(hc)
+from meme.create_gif import create_gif
+from meme.create_meme_content import create_meme_content
 
 # Parse user arguments to determine what to do.
 parser = argparse.ArgumentParser()
@@ -104,3 +90,6 @@ elif args.gitlab_runner:
 
 
 print("Done.")
+
+
+Go_to_url
