@@ -4,7 +4,7 @@ from code.project1.src.GitHub.login import github_login
 from code.project1.src.GitHub.remove_previous_github_pat import (
     remove_previous_github_pat,
 )
-
+from browsercontroller.helper import open_url
 from browsercontroller.helper import click_element_by_xpath, source_contains
 
 from ..export_token import export_github_pac_to_personal_creds_txt
@@ -160,12 +160,22 @@ class Github_personal_access_token_getter:
                     driver,
                     hardcoded.github_pac_repo_status_checkbox_xpathV1,
                 )
+                clicked = True
+            except:  # nosec
+                pass
+        if not clicked:
+            try:
+                click_element_by_xpath(
+                    driver,
+                    hardcoded.github_pac_repo_status_checkbox_xpathV2,
+                )
+                clicked = True
             except:  # nosec
                 pass
         if not clicked:
             click_element_by_xpath(
                 driver,
-                hardcoded.github_pac_repo_status_checkbox_xpathV2,
+                hardcoded.github_pac_repo_status_checkbox_xpathV3,
             )
 
     def click_submit_token(self, driver, hardcoded):
