@@ -35,7 +35,7 @@ class Hardcoded:
 
         self.source_repo_url = f"https://github.com/{self.source_username}/{self.source_reponame}/issues"
 
-        self.pickle_website_controller_filename = "website_controller.p"
+        self.pickle_driver_filename = "driver.p"
 
         self.use_cred_file = True
         self.personal_creds_path = "../../personal_creds.txt"
@@ -74,8 +74,12 @@ class Hardcoded:
         self.github_pw_element_id = "password"
         # self.github_signin_button_xpath = '//*[@id="login"]/div[4]/form/div/input[12]'
         self.github_signin_button_xpath = (
-            "/html/body/div[3]/main/div/div[4]/form/div/input[11]"
+            # "/html/body/div[3]/main/div/div[4]/form/div/input[11]"
+            "/html/body/div[1]/div[3]/main/div/div[4]/form/div/input[11]"
         )
+
+        # xpath two_factor code input field:
+        self.github_2fa_input_filed_xpath = '//*[@id="sms_totp"]'
 
         self.github_deploy_key_title_element_id = "public_key_title"
         self.github_deploy_key_key_element_id = "public_key_key"
@@ -100,7 +104,9 @@ class Hardcoded:
         self.github_pat_description = "Set GitHub commit build status values."
         self.github_pat_description_elem_classname = "token-description"
         self.github_pat_table_xpath = (
-            "/html/body/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
+            # "/html/body/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
+            # "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]/div/div"
+            "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
         )
 
         self.github_ci_build_status_repo_name = "gitlab-ci-build-statuses"

@@ -6,7 +6,7 @@ from typing import List
 from selenium.webdriver.common.by import By
 
 
-def remove_previous_github_pat(hardcoded, website_controller):
+def remove_previous_github_pat(*, hardcoded, driver):
     """Assumes the user is logged in into GitHub.
 
     Then lists the already existing GitHub personal access token (PAT)
@@ -16,20 +16,17 @@ def remove_previous_github_pat(hardcoded, website_controller):
     """
 
     # Check if the token exists, and if yes, get a link containing token id.
-    github_pat_exists, link = github_pat_description_exists(
-        hardcoded, website_controller
-    )
+    github_pat_exists, link = github_pat_description_exists(hardcoded, driver)
     if github_pat_exists:
-
         # Delete the GitHub personal access token.
-        delete_github_pat(link, hardcoded, website_controller)
+        delete_github_pat(link, hardcoded, driver)
 
     # Verify token is deleted.
-    if github_pat_description_exists(hardcoded, website_controller)[0]:
+    if github_pat_description_exists(hardcoded, driver)[0]:
         raise Exception("Error, GitHub pat is not deleted succesfully.")
 
 
-def github_pat_description_exists(hardcoded, website_controller):
+def github_pat_description_exists(hardcoded, driver):
     """Assumes the user is logged in into GitHub.
 
     Then lists the already existing GitHub personal access token (PAT)
@@ -38,15 +35,15 @@ def github_pat_description_exists(hardcoded, website_controller):
     the GitHub pat that contains the token id.
     """
     # Go to url containing GitHub pat.
-    website_controller.driver = open_url(
-        website_controller.driver,
+    driver = open_url(
+        driver,
         hardcoded.github_pat_tokens_url,
     )
     # Wait until url is loaded.
-    wait_until_page_is_loaded(6, website_controller)
+    wait_until_page_is_loaded(6, driver)
 
     # Get the token descriptions through the href element.
-    elems = website_controller.driver.find_elements(
+    elems = driver.find_elements(
         By.CSS_SELECTOR,
         f".{hardcoded.github_pat_description_elem_classname} [href]",
     )
@@ -57,7 +54,7 @@ def github_pat_description_exists(hardcoded, website_controller):
     return False, None
 
 
-def delete_github_pat(link, hardcoded, website_controller):
+def delete_github_pat(link, hardcoded, driver):
     """Gets the GitHub pat id from the link, then clicks the delete button, and
     the confirm deletion button, to delete the GitHub pat."""
 
@@ -73,14 +70,12 @@ def delete_github_pat(link, hardcoded, website_controller):
             [],
             f"{hardcoded.github_pat_table_xpath}/div[",
             "]",
-            website_controller,
+            driver,
         )
-        row_nr = get_desired_token_index(
-            hardcoded, website_controller, valid_indices
-        )
+        row_nr = get_desired_token_index(hardcoded, driver, valid_indices)
 
         # Click delete button and deletion confirmation button.
-        click_github_pat_delete_button(hardcoded, website_controller, row_nr)
+        click_github_pat_delete_button(hardcoded, driver, row_nr)
     else:
         raise Exception(
             f"{link[:len(hardcoded.github_pat_tokens_url)]}"
@@ -88,9 +83,7 @@ def delete_github_pat(link, hardcoded, website_controller):
         )
 
 
-def list_of_valid_xpath_indices(
-    valid_indices, left, right, website_controller
-):
+def list_of_valid_xpath_indices(valid_indices, left, right, driver):
     """Returns the row numbers of the GitHub personal access tokens table,
     starting at index =1.
 
@@ -102,14 +95,12 @@ def list_of_valid_xpath_indices(
         latest_index = valid_indices[-1] + 1
 
     try:
-        row = website_controller.driver.find_element(
-            By.XPATH, f"{left}{latest_index}{right}"
-        )
+        row = driver.find_element(By.XPATH, f"{left}{latest_index}{right}")
         if row is not None:
             print(row.text)
             valid_indices.append(latest_index)
             return list_of_valid_xpath_indices(
-                valid_indices, left, right, website_controller
+                valid_indices, left, right, driver
             )
         return valid_indices
     # pylint: disable=W0702
@@ -121,31 +112,29 @@ def list_of_valid_xpath_indices(
 
 
 # pylint: disable=R1710
-def get_desired_token_index(
-    hardcoded, website_controller, valid_indices: List[int]
-):
+def get_desired_token_index(hardcoded, driver, valid_indices: List[int]):
     """TODO: remove duplicate function, fix pylint: disable=R1710.
     Finds the index/row number of the GitHub pat's that corresponds to the
     description of the GitHub pat that is to be created, and returns this
     index."""
     for row_nr in valid_indices:
-        row_elem = website_controller.driver.find_element(
+        row_elem = driver.find_element(
             By.XPATH, f"{hardcoded.github_pat_table_xpath}/div[{row_nr}]"
         )
         if hardcoded.github_pat_description in row_elem.text:
             return row_nr
 
 
-def click_github_pat_delete_button(hardcoded, website_controller, row_nr: int):
+def click_github_pat_delete_button(hardcoded, driver, row_nr: int):
     """Clicks the delete GitHub pat button, and then clicks the confirm
     deletion button."""
-    delete_button = website_controller.driver.find_element(
+    delete_button = driver.find_element(
         By.XPATH,
         f"{hardcoded.github_pat_table_xpath}/div[{row_nr}]/div/div[1]/details/summary",
     )
     delete_button.click()
 
-    confirm_deletion_button = website_controller.driver.find_element(
+    confirm_deletion_button = driver.find_element(
         By.XPATH,
         (
             f"{hardcoded.github_pat_table_xpath}/div[{row_nr}]"

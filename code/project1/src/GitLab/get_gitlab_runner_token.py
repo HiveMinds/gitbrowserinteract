@@ -13,65 +13,59 @@ from code.project1.src.helper import (
 )
 
 
-def get_gitlab_runner_registration_token_from_page(hc, website_controller):
+def get_gitlab_runner_registration_token_from_page(hc, driver):
     """
 
     :param hc:
-    :param website_controller:
+    :param driver:
 
     """
-    goto_runner_token_site(website_controller)
-    visualise_runner_token(hc, website_controller)
-    gitlab_runner_token = read_gitlab_runner_token_from_page(
-        website_controller
-    )
+    goto_runner_token_site(driver)
+    visualise_runner_token(hc, driver)
+    gitlab_runner_token = read_gitlab_runner_token_from_page(driver)
     print(f"gitlab_runner_token={gitlab_runner_token}")
     return gitlab_runner_token
 
 
-def goto_runner_token_site(website_controller):
+def goto_runner_token_site(driver):
     """
 
-    :param website_controller:
+    :param driver:
 
     """
     # visit website with runner token
-    website_controller.driver = open_url(
-        website_controller.driver, "http://127.0.0.1/admin/runners"
-    )
+    driver = open_url(driver, "http://127.0.0.1/admin/runners")
 
     # wait five seconds for page to load
     time.sleep(5)
 
 
-def visualise_runner_token(hc, website_controller):
+def visualise_runner_token(hc, driver):
     """
 
     :param hc:
-    :param website_controller:
+    :param driver:
 
     """
-    # if click_display_token_through_css_V0(website_controller):
-    #    return website_controller
-    # if unhide_registration_token_through_xpath_V1(website_controller):
+    # if click_display_token_through_css_V0(driver):
+    #    return driver
+    # if unhide_registration_token_through_xpath_V1(driver):
     #    # TODO: verify whether after this function, another button must be clicked.
-    #    return website_controller
+    #    return driver
 
-    website_controller = gitlab_visualise_runner_token_through_dropdown_boxV2(
-        hc, website_controller
-    )
-    return website_controller
+    driver = gitlab_visualise_runner_token_through_dropdown_boxV2(hc, driver)
+    return driver
 
 
-def click_display_token_through_css_V0(website_controller):
+def click_display_token_through_css_V0(driver):
     """
 
-    :param website_controller:
+    :param driver:
 
     """
     # click the button to display registration code through css selector (if it exists)
     try:
-        website_controller.driver.find_element(
+        driver.find_element(
             "css selector", r".gl-text-body\! > svg:nth-child(1)"
         ).click()
         time.sleep(2)
@@ -85,20 +79,20 @@ def click_display_token_through_css_V0(website_controller):
         return False
 
 
-def unhide_registration_token_through_xpath_V1(website_controller):
+def unhide_registration_token_through_xpath_V1(driver):
     """Tries to show the GitLab runner registration token.
 
-    :param website_controller:
+    :param driver:
     """
     try:
         # Click unhide registration-token through xpath
         click_element_by_xpath(
-            website_controller,
+            driver,
             '//*[@id="eye"]',
         )
 
         # Click the button to display registration code through element id
-        website_controller.driver.find_element("id", "eye").click()
+        driver.find_element("id", "eye").click()
         return True
     # pylint: disable=W0702
     except:
@@ -109,25 +103,21 @@ def unhide_registration_token_through_xpath_V1(website_controller):
         return False
 
 
-def gitlab_visualise_runner_token_through_dropdown_boxV2(
-    hc, website_controller
-):
+def gitlab_visualise_runner_token_through_dropdown_boxV2(hc, driver):
     """
 
     :param hc:
-    :param website_controller:
+    :param driver:
 
     """
-    website_controller = click_dropdown_box_V2(website_controller)
+    driver = click_dropdown_box_V2(driver)
     time.sleep(2)
-    website_controller, successfull = gitlab_click_eye_button_through_xpath_V2(
-        hc, website_controller
-    )
+    driver, successfull = gitlab_click_eye_button_through_xpath_V2(hc, driver)
     if not successfull:
         (
-            website_controller,
+            driver,
             successfull,
-        ) = gitlab_click_eye_button_through_id_V2(hc, website_controller)
+        ) = gitlab_click_eye_button_through_id_V2(hc, driver)
     if not successfull:
         input(
             "Please manually click the eye button to show the GitLab"
@@ -135,19 +125,19 @@ def gitlab_visualise_runner_token_through_dropdown_boxV2(
         )
         # raise Exception("Did not find the GitLab Runner Registration token.")
 
-    return website_controller
+    return driver
 
 
-def click_dropdown_box_V2(website_controller):
+def click_dropdown_box_V2(driver):
     """
 
-    :param website_controller:
+    :param driver:
 
     """
 
     # Click dropdown button
-    website_controller, _ = try_to_click_by_xpath(
-        website_controller,
+    driver, _ = try_to_click_by_xpath(
+        driver,
         '//*[@id="__BVID__31"]',
         (
             "\n \n Note: did not find button to dropwdown the runner registration"
@@ -155,13 +145,13 @@ def click_dropdown_box_V2(website_controller):
         ),
         True,
     )
-    return website_controller
+    return driver
 
 
-def gitlab_click_eye_button_through_xpath_V2(hc, website_controller):
+def gitlab_click_eye_button_through_xpath_V2(hc, driver):
     """
 
-    :param website_controller:
+    :param driver:
 
     """
 
@@ -169,22 +159,21 @@ def gitlab_click_eye_button_through_xpath_V2(hc, website_controller):
     for i, xpath in enumerate(hc.gitlab_eye_xpaths):
         print(f"{i},xpath={xpath}")
         if not successfull:
-
-            website_controller, successfull = try_to_click_by_xpath(
-                website_controller,
+            driver, successfull = try_to_click_by_xpath(
+                driver,
                 xpath,
                 "xpath-eye try loop",
                 False,
             )
         time.sleep(1)
-    return website_controller, successfull
+    return driver, successfull
 
 
-def gitlab_click_eye_button_through_id_V2(hc, website_controller):
+def gitlab_click_eye_button_through_id_V2(hc, driver):
     """
 
     :param hc:
-    :param website_controller:
+    :param driver:
 
     """
     successfull = False
@@ -192,30 +181,29 @@ def gitlab_click_eye_button_through_id_V2(hc, website_controller):
     for i, gitlab_eye_id in enumerate(hc.gitlab_eye_ids):
         print(f"{i},gitlab_eye_id={gitlab_eye_id}")
         if not successfull:
-
-            website_controller, successfull = try_to_click_by_id(
-                website_controller,
+            driver, successfull = try_to_click_by_id(
+                driver,
                 gitlab_eye_id,
                 "gitlab_eye_id try",
                 False,
             )
         time.sleep(1)
-    return website_controller, successfull
+    return driver, successfull
 
 
-def try_to_click_by_id(website_controller, some_id, error_msg, raise_error):
+def try_to_click_by_id(driver, some_id, error_msg, raise_error):
     """Tries to click an object in website using the class id.
 
-    :param website_controller:
+    :param driver:
     :param id:
     :param error_msg:
     :param raise_error:
     """
     try:
         # Click the button to display registration code through element id
-        website_controller.driver.find_element("id", some_id).click()
+        driver.find_element("id", some_id).click()
 
-        return website_controller, True
+        return driver, True
     # pylint: disable=W1309
     # pylint: disable=W0702
     except:
@@ -223,40 +211,40 @@ def try_to_click_by_id(website_controller, some_id, error_msg, raise_error):
         if raise_error:
             # pylint: disable=W0707
             raise Exception(error_msg)
-        return website_controller, False
+        return driver, False
 
 
-def try_to_click_by_xpath(website_controller, xpath, error_msg, raise_error):
+def try_to_click_by_xpath(driver, xpath, error_msg, raise_error):
     """Tries to click an object in website using the xpath of that object.
 
-    :param website_controller:
+    :param driver:
     :param xpath:
     :param error_msg:
     :param raise_error:
     """
     try:
         # Click the button to display registration code through element id
-        website_controller = click_element_by_xpath(
-            website_controller,
+        driver = click_element_by_xpath(
+            driver,
             xpath,
         )
-        return website_controller, True
+        return driver, True
     # pylint: disable=W0702
     except:
         if raise_error:
             # pylint: disable=W0707
             raise Exception(error_msg)
-        return website_controller, False
+        return driver, False
 
 
-def read_gitlab_runner_token_from_page(website_controller):
+def read_gitlab_runner_token_from_page(driver):
     """
 
-    :param website_controller:
+    :param driver:
 
     """
     # get the page source:
-    source = website_controller.driver.page_source
+    source = driver.page_source
 
     token_identification_string_0 = '<code id="registration_token">'  # nosec
     token_identification_string_1 = 'data-registration-token="'  # nosec
@@ -269,16 +257,10 @@ def read_gitlab_runner_token_from_page(website_controller):
     # TODO: New update requires clicking dropdown box, xpath=
 
     # verify the source contains the runner token
-    if not source_contains(website_controller, token_identification_string_0):
-        if not source_contains(
-            website_controller, token_identification_string_1
-        ):
-            if not source_contains(
-                website_controller, token_identification_string_2
-            ):
-                if not source_contains(
-                    website_controller, token_identification_string_3
-                ):
+    if not source_contains(driver, token_identification_string_0):
+        if not source_contains(driver, token_identification_string_1):
+            if not source_contains(driver, token_identification_string_2):
+                if not source_contains(driver, token_identification_string_3):
                     raise Exception(
                         "Expected runner registration token to be CONTAINED"
                         f" in the source code, but it is not: {source}."

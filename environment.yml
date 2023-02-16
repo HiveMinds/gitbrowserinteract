@@ -5,7 +5,7 @@ channels:
   - conda-forge
 dependencies:
 # Specify specific python version.
-  - python=3.8
+  - python=3.10
 # Run python tests.
   - pytest-cov
 # Turns relative import paths into absolute import paths.
@@ -48,7 +48,8 @@ dependencies:
   - isort
   - pip
   - pip:
-    # TODO: identify exact function(and usage).
+    # Get apt firefox driver object.
+    - browsercontroller>=0.0.3
     # Auto generate documentation.
     - pdoc3
     # Seems to be an autoformatter like black, but installed using npm instead of pip.

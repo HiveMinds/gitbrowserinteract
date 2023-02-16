@@ -30,7 +30,7 @@ class Ssh_deploy_key_setter:
         the issues from the source repo, and copies them to the target repo.
 
         :param project_nr: [Int] that indicates the folder in which this code is stored.
-        :param login: [Boolean] True if the website_controller object should be
+        :param login: [Boolean] True if the driver object should be
         created and should login to GitHub.
         """
 
@@ -53,7 +53,7 @@ class Ssh_deploy_key_setter:
 
         # TODO: separate login and browsing to the add token page.
         # TODO: re-use the 2fac authentication login method created for adding pac.
-        website_controller = self.login_github_to_build_status_repo(
+        driver = self.login_github_to_build_status_repo(
             self.hc,
             self.github_username,
             github_repo_name,
@@ -61,9 +61,7 @@ class Ssh_deploy_key_setter:
         )
 
         # Remove pre-existing ssh keys matching target description.
-        remove_previous_github_ssh_key(
-            self.github_username, self.hc, website_controller
-        )
+        remove_previous_github_ssh_key(self.github_username, self.hc, driver)
 
         # Reload add new token page
         repository_url = (
@@ -72,14 +70,12 @@ class Ssh_deploy_key_setter:
         )
 
         # Go to source repository
-        website_controller.driver = open_url(
-            website_controller.driver, repository_url
-        )
+        driver = open_url(driver, repository_url)
 
         # wait five seconds for page to load
         # input("Are you done with loggin into GitHub?")
 
-        self.fill_in_ssh_key(self.hc, website_controller, self.public_ssh_sha)
+        self.fill_in_ssh_key(self.hc, driver, self.public_ssh_sha)
 
         print(
             "Done adding the ssh deploy key from your machine to:"
@@ -88,7 +84,7 @@ class Ssh_deploy_key_setter:
         time.sleep(10)
 
         # close website controller
-        website_controller.driver.close()
+        driver.close()
 
         print(f"Done setting GitHub deployment token repo:{github_repo_name}.")
 
@@ -116,21 +112,16 @@ class Ssh_deploy_key_setter:
         """
 
         # login
-        website_controller = github_login(
-            hardcoded, github_pwd, github_username
-        )
+        driver = github_login(hardcoded, github_pwd, github_username)
 
         # check if 2factor
-        if source_contains(
-            website_controller, "<h1>Two-factor authentication</h1>"
-        ):
-
+        if source_contains(driver, "<h1>Two-factor authentication</h1>"):
             # if 2 factor ask code from user
             two_factor_code = ask_two_factor_code()
 
             # enter code
             github_two_factor_login(
-                hardcoded, two_factor_code, website_controller, "GitHub"
+                hardcoded, two_factor_code, driver, "GitHub"
             )
 
         repository_url = (
@@ -139,31 +130,25 @@ class Ssh_deploy_key_setter:
         )
 
         # Go to source repository
-        website_controller.driver = open_url(
-            website_controller.driver, repository_url
-        )
+        driver = open_url(driver, repository_url)
 
-        return website_controller
+        return driver
 
-    def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
+    def fill_in_ssh_key(self, hardcoded, driver, public_ssh_sha):
         """
 
         :param hardcoded:
-        :param website_controller:
+        :param driver:
         :param public_ssh_sha:
 
         """
 
-        github_deployment_key_title_field = (
-            website_controller.driver.find_element(
-                "id", hardcoded.github_deploy_key_title_element_id
-            )
+        github_deployment_key_title_field = driver.find_element(
+            "id", hardcoded.github_deploy_key_title_element_id
         )
 
-        github_deployment_key_key_field = (
-            website_controller.driver.find_element(
-                "id", hardcoded.github_deploy_key_key_element_id
-            )
+        github_deployment_key_key_field = driver.find_element(
+            "id", hardcoded.github_deploy_key_key_element_id
         )
 
         # Set the title and ssh key for the GitHub deploy key for the GitLab build status repo.
@@ -174,11 +159,11 @@ class Ssh_deploy_key_setter:
 
         # Give write permission to deploy key for the GitLab build status repository (in GitHub)
         click_element_by_xpath(
-            website_controller,
+            driver,
             hardcoded.github_deploy_key_allow_write_access_button_xpath,
         )
 
         # Click: add the new deploy key to the GitHub repository.
         click_element_by_xpath(
-            website_controller, hardcoded.add_github_deploy_key_button_xpath
+            driver, hardcoded.add_github_deploy_key_button_xpath
         )

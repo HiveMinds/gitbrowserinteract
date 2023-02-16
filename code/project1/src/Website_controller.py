@@ -5,7 +5,7 @@ from .Hardcoded import Hardcoded
 
 
 # pylint: disable=R0903
-class Website_controller:
+class driver:
     """Controls/commands website using selenium."""
 
     def __init__(self):

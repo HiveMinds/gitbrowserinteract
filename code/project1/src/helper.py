@@ -4,8 +4,6 @@ import math
 import os
 import time
 
-from selenium.webdriver.common.action_chains import ActionChains
-
 
 def creds_file_contains_gitlab_username(hardcoded):
     """Returns True if the credentials file contains the GitLab username."""
@@ -98,25 +96,23 @@ def get_creds_if_not_exist(hardcoded):
 
 
 def loiter_till_gitlab_server_is_ready_for_login(
-    hardcoded, scan_duration, interval_duration, website_controller
+    hardcoded, scan_duration, interval_duration, driver
 ):
     """Waits untill a GitLab server is ready for the user to log in.
 
     :param hardcoded:
     :param scan_duration:
     :param interval_duration:
-    :param website_controller:
+    :param driver:
     """
-    # website_controller = Website_controller()
+    # driver = driver()
 
     for _ in range(0, math.ceil(scan_duration / interval_duration)):
         # Refresh page
         try:
             # TODO: get the open_url function from the control_website.py file.
-            website_controller.driver = open_url(
-                website_controller.driver, hardcoded.gitlab_login_url
-            )
-            website_controller.driver.implicitly_wait(1)
+            driver = open_url(driver, hardcoded.gitlab_login_url)
+            driver.implicitly_wait(1)
         # pylint: disable=W0702
         except:
             print("GitLab server was not yet ready to show website")
@@ -127,22 +123,22 @@ def loiter_till_gitlab_server_is_ready_for_login(
         time.sleep(interval_duration)
 
         # Break loop if page is succesfully loaded.
-        if check_if_login_page_is_loaded(website_controller):
+        if check_if_gitlab_login_page_is_loaded(driver):
             # GitLab server page is loaded correctly, can move on in script.
             break
 
     # close website controller
-    website_controller.driver.close()
+    driver.close()
     print(
         "GitLab server is ready for first login. "
         "Code proceeding now to login and get GitLab runner Token."
     )
 
 
-def check_if_login_page_is_loaded(website_controller):
+def check_if_gitlab_login_page_is_loaded(driver):
     """Checks if a GitLab login page is loaded or not.
 
-    :param website_controller:
+    :param driver:
     """
     # This identifier only occurs in the first, and not-yet-ready stage.
     error_stage_identifier = (
@@ -159,7 +155,7 @@ def check_if_login_page_is_loaded(website_controller):
     already_logged_in = "<title>Projects · Dashboard · GitLab</title>"
 
     # Verify if that condition is met.
-    source = website_controller.driver.page_source
+    source = driver.page_source
     if error_stage_identifier in source:
         return False
     if too_soon_stage_identifier in source:
@@ -172,39 +168,6 @@ def check_if_login_page_is_loaded(website_controller):
         "The GitLab server webpage is in a state that is not yet known/"
         + f"recognised, its source code contains:{source}"
     )
-
-
-def source_contains(website_controller, string):
-    """USED Evaluates complete html source of the website that is being
-    controlled, to determine if it contains the incoming string. Returns true
-    if the string is found in the html source of the website, false if it is
-    not found.
-
-    :param website_controller: Object controlling the browser. Object that controls the browser.
-    :param string: Set of characters that is searched for in the html code.
-    """
-    source = website_controller.driver.page_source
-    source_contains_string = string in source
-    return source_contains_string
-
-
-def get_browser_drivers(hardcoded):
-    """USED Installs wget and then uses that to download the firefox and
-    chromium browser controller drivers.
-
-    :param hardcoded: An object containing all the hardcoded settings used in this program.
-    """
-    os.system("yes | sudo apt install wget")  # nosec
-
-    if not file_is_found(
-        f"{hardcoded.firefox_driver_folder}/{hardcoded.firefox_driver_filename}",
-    ):
-        get_firefox_browser_driver(hardcoded)
-        install_firefox_browser()
-    if not file_is_found(
-        f"{hardcoded.chromium_driver_folder}/{hardcoded.chromium_driver_filename}",
-    ):
-        get_chromium_browser_driver(hardcoded)
 
 
 def file_is_found(filepath):
@@ -311,26 +274,6 @@ def get_chromium_browser_driver(hardcoded):
     os.system(rename_chromium_driver)  # nosec
 
 
-def click_element_by_xpath(website_controller, xpath):
-    """Clicks an html element based on its xpath.
-
-    :param website_controller: Object controlling the browser. Object that
-    controls the browser.
-    :param xpath: A direct link to an object in an html page.
-    """
-    source_element = website_controller.driver.find_element("xpath", xpath)
-    if "firefox" in website_controller.driver.capabilities["browserName"]:
-        scroll_shim(website_controller.driver, source_element)
-
-    # scroll_shim is just scrolling it into view, you still need to hover over
-    # it to click using an action chain.
-    actions = ActionChains(website_controller.driver)
-    actions.move_to_element(source_element)
-    actions.click()
-    actions.perform()
-    return website_controller
-
-
 def scroll_shim(passed_in_driver, browser_object):
     """Scrolls down till object is found.
 
@@ -395,7 +338,7 @@ def open_url(driver, url):
     """USED # TODO: eliminate duplicate function. Makes the browser open an url
     through the driver object in the webcontroller.
 
-    :param driver: object within website_controller that can controll the driver.
+    :param driver: object within driver that can controll the driver.
     :param url: A link to a website.
     """
     driver.get(url)
