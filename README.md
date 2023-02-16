@@ -58,6 +58,11 @@ python -m code.project1.src -hubcpat
 - The `--hubcpat` indicates you are letting GitHub create a personal access
   token and storing it.
 
+More complete:
+```sh
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --hubcpat -hu $github_username -hp $github_pwd
+```
+
 ## Usage: do every run (Create and get GitLab runnertoken)
 
 ```
