@@ -1,12 +1,12 @@
 """Sets the GitHub SSH deploy key."""
 import time
 from code.project1.src.GitHub.github_login import github_login
-from code.project1.src.ask_user_input import ask_two_factor_code
 from code.project1.src.GitHub.remove_previous_github_ssh_key import (
     remove_previous_github_ssh_key,
 )
 from code.project1.src.Hardcoded import Hardcoded
-from browsercontroller.helper import click_element_by_xpath, source_contains
+
+from browsercontroller.helper import click_element_by_xpath
 
 
 class Ssh_deploy_key_setter:
@@ -84,9 +84,6 @@ class Ssh_deploy_key_setter:
             f"{github_repo_name}. Waiting 10 seconds and then the browser."
         )
         time.sleep(10)
-        
-        
-        
 
         # close website controller
         driver.close()
@@ -121,7 +118,6 @@ class Ssh_deploy_key_setter:
 
         # Go to source repository
         driver.get(repository_url)
-        
 
         return driver
 

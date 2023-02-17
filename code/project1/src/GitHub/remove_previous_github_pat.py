@@ -1,6 +1,5 @@
 """Removes previously existing GitHub personal access tokens, if they exist."""
 from code.project1.src.control_website import wait_until_page_is_loaded
-from code.project1.src.helper import open_url
 from typing import List
 
 from selenium.webdriver.common.by import By
@@ -36,7 +35,7 @@ def github_pat_description_exists(hardcoded, driver):
     """
     # Go to url containing GitHub pat.
     driver.get(hardcoded.github_pat_tokens_url)
-    
+
     # Wait until url is loaded.
     wait_until_page_is_loaded(6, driver)
 

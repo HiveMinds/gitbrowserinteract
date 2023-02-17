@@ -4,8 +4,9 @@ Get GitLab runner token from local GitLab server. Set GitHub ssh deploy
 key. Set GitHub personal access token.
 """
 import argparse
-
-from code.project1.src.GitHub.Ssh_deploy_key_setter import Ssh_deploy_key_setter
+from code.project1.src.GitHub.Ssh_deploy_key_setter import (
+    Ssh_deploy_key_setter,
+)
 
 from .GitHub.Github_personal_access_token_getter import (
     Github_personal_access_token_getter,
@@ -78,9 +79,9 @@ if args.deploy_token:
     args.gitlab_runner = False
     print(f"The ssh deploy key is:={args.public_ssh_sha}")
     _ = Ssh_deploy_key_setter(
-    public_ssh_sha=args.public_ssh_sha,
-    github_username=args.github_username,
-    github_pwd=args.github_pwd,
+        public_ssh_sha=args.public_ssh_sha,
+        github_username=args.github_username,
+        github_pwd=args.github_pwd,
     )
 elif args.github_commit_status_personal_access_token_flag:
     print(
