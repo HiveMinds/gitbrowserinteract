@@ -62,6 +62,7 @@ More complete:
 
 ```sh
 cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --hubcpat -hu $github_username -hp $github_pwd
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --d -hu $github_username -hp $github_pwd
 ```
 
 ## Usage: do every run (Create and get GitLab runnertoken)

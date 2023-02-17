@@ -88,7 +88,8 @@ class Hardcoded:
         )
         self.add_github_deploy_key_button_xpath = (
             # "/html/body/div[6]/div/main/div[2]/div/div/div[2]/div/div/form/button"
-            "/html/body/div[5]/div/main/turbo-frame/div/div/div/div[2]/div/div/form/button"
+            # "/html/body/div[5]/div/main/turbo-frame/div/div/div/div[2]/div/div/form/button"
+            "/html/body/div[1]/div[5]/div/main/turbo-frame/div/div/div/div[2]/div/div/form/div/button/span/span"
         )
 
         # print(f"github_login_url={self.github_login_url}")

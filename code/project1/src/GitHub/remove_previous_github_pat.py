@@ -35,10 +35,8 @@ def github_pat_description_exists(hardcoded, driver):
     the GitHub pat that contains the token id.
     """
     # Go to url containing GitHub pat.
-    driver = open_url(
-        driver,
-        hardcoded.github_pat_tokens_url,
-    )
+    driver.get(hardcoded.github_pat_tokens_url)
+    
     # Wait until url is loaded.
     wait_until_page_is_loaded(6, driver)
 
