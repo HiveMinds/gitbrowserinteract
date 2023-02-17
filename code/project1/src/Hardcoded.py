@@ -56,13 +56,16 @@ class Hardcoded:
             # "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]/svg",
             # "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/fieldset/div/div/button[1]/svg/use",
             # '//*[@id="eye"]',
-            "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/div/div/div/div/button[1]",
+            #"/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/div/div/div/div/button[1]",
             # "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/div/div/div/div/button[1]/svg",
             # "/html/body/div[3]/div/div[3]/main/div[2]/div[2]/div[2]/ul/div/div/li[3]/form/div/div/div/div/button[1]/svg/use",
             # '//*[@id="eye"]',
             # "/symbol/path",
             '//a[@href="' + url + '"]',
+            '/html/body/div[3]/div/div[3]/main/div[2]/div[1]/div[2]/ul/div/div/li[3]/form/div/div/div/div/button[1]'
         ]
+        # self.gitlab_dropdown_arrow_xpath="/html/body/div[3]/div/div[3]/main/div[2]/div[1]/div[2]/button/svg"
+        self.gitlab_dropdown_arrow_xpath='//*[@id="__BVID__21"]'
 
         self.gitlab_eye_ids = [
             "eye",

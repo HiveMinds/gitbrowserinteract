@@ -1,12 +1,13 @@
 """Object to run code based on incoming arguments."""
 import time
-from code.project1.src.control_website import gitlab_login
+from typing import Optional
+
 from code.project1.src.GitLab.get_gitlab_runner_token import (
     get_gitlab_runner_registration_token_from_page,
 )
+from code.project1.src.GitLab.login_gitlab import gitlab_login
 from code.project1.src.Hardcoded import Hardcoded
 from code.project1.src.helper import (
-    get_browser_drivers,
     get_runner_registration_token_filepath,
     loiter_till_gitlab_server_is_ready_for_login,
     write_string_to_file,
@@ -17,7 +18,9 @@ from code.project1.src.helper import (
 class Get_gitlab_runner_token:
     """Gets the GitLab runner from the GitLab server."""
 
-    def __init__(self):
+    def __init__(self,
+                gitlab_username:Optional[str]=None,
+                gitlab_pwd:Optional[str]=None,):
         """Initialises object that gets the browser controller, then it gets
         the issues from the source repo, and copies them to the target repo.
 
@@ -26,29 +29,37 @@ class Get_gitlab_runner_token:
         """
 
         # Store the hardcoded values used within this project
-        self.hc = Hardcoded()
-
-        # get browser drivers
-        get_browser_drivers(self.hc)
+        hardcoded = Hardcoded()
 
         debugging = True
         if not debugging:
-            driver, gitlab_username, gitlab_pwd = gitlab_login(self.hc)
+            driver, gitlab_username, gitlab_pwd = gitlab_login(
+                hardcoded=hardcoded,
+                gitlab_username=gitlab_username,
+                gitlab_pwd=gitlab_pwd,
+                )
 
             # Create for loop that checks if GitLab server page is loaded and ready for login.
             # loop it for 900 seconds, check page source every 5 seconds
             loiter_till_gitlab_server_is_ready_for_login(
-                self.hc, 1200, 5, driver
+                hardcoded, 1200, 5, driver
             )
-            driver, _, _ = gitlab_login(self.hc, gitlab_username, gitlab_pwd)
+            driver, _, _ = gitlab_login(
+                hardcoded=hardcoded,
+                gitlab_username=gitlab_username,
+                gitlab_pwd=gitlab_pwd,)
         else:
-            driver, _, _ = gitlab_login(self.hc, None, None)
+            driver, _, _ = gitlab_login(
+                hardcoded=hardcoded,
+                gitlab_username=gitlab_username,
+                gitlab_pwd=gitlab_pwd,
+            )
 
         # wait five seconds for page to load
         time.sleep(5)
 
         runner_registration_token = (
-            get_gitlab_runner_registration_token_from_page(self.hc, driver)
+            get_gitlab_runner_registration_token_from_page(hardcoded, driver)
         )
 
         # Export runner registration token to file

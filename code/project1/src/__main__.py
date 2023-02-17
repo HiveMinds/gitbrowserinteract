@@ -7,6 +7,9 @@ import argparse
 from code.project1.src.GitHub.Ssh_deploy_key_setter import (
     Ssh_deploy_key_setter,
 )
+from code.project1.src.GitLab.GitLab_runner_token_getter import (
+    Get_gitlab_runner_token,
+)
 
 from .GitHub.Github_personal_access_token_getter import (
     Github_personal_access_token_getter,
@@ -66,12 +69,28 @@ parser.add_argument(
     help="Indicator letting Python know the GitHub password is being passed next.",
 )
 
+parser.add_argument(
+    "-lu",
+    dest="gitlab_username",
+    type=str,
+    help="Indicator letting Python know the GitLab username is being passed next.",
+)
+
+parser.add_argument(
+    "-lp",
+    dest="gitlab_pwd",
+    type=str,
+    help="Indicator letting Python know the GitLab password is being passed next.",
+)
+
 parser.set_defaults(
     gitlab_runner=False,
     deploy_token=False,
     github_commit_status_personal_access_token_flag=False,
     github_username=None,
     github_pwd=None,
+    gitlab_username=None,
+    gitlab_pwd=None,
 )
 args = parser.parse_args()
 if args.deploy_token:
@@ -96,8 +115,12 @@ elif args.github_commit_status_personal_access_token_flag:
     )
 elif args.gitlab_runner:
     print("Getting GitLab runner token.")
-    # args.gitlab_runner = False
-    # _ = Get_gitlab_runner_token()
+    args.gitlab_runner = False
+    print(f'args.gitlab_username={args.gitlab_username}')
+    _ = Get_gitlab_runner_token(
+        gitlab_username=args.gitlab_username,
+        gitlab_pwd=args.gitlab_pwd,
+    )
 
 
 print("Done.")

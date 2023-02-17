@@ -5,11 +5,9 @@ TODO: Change to get it from within docker instead
 of using browser controller.
 """
 import time
+from browsercontroller.helper import click_element_by_xpath, source_contains
 from code.project1.src.helper import (
-    click_element_by_xpath,
     get_value_from_html_source,
-    open_url,
-    source_contains,
 )
 
 
@@ -34,7 +32,7 @@ def goto_runner_token_site(driver):
 
     """
     # visit website with runner token
-    driver = open_url(driver, "http://127.0.0.1/admin/runners")
+    driver.get("http://127.0.0.1/admin/runners")
 
     # wait five seconds for page to load
     time.sleep(5)
@@ -52,8 +50,10 @@ def visualise_runner_token(hc, driver):
     # if unhide_registration_token_through_xpath_V1(driver):
     #    # TODO: verify whether after this function, another button must be clicked.
     #    return driver
+    click_element_by_xpath(driver=driver,xpath=hc.gitlab_dropdown_arrow_xpath)
+    click_element_by_xpath(driver=driver,xpath=hc.gitlab_eye_xpaths[-1])
 
-    driver = gitlab_visualise_runner_token_through_dropdown_boxV2(hc, driver)
+    #driver = gitlab_visualise_runner_token_through_dropdown_boxV2(hc, driver)
     return driver
 
 
