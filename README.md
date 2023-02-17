@@ -59,8 +59,10 @@ python -m code.project1.src -hubcpat
   token and storing it.
 
 More complete:
+
 ```sh
 cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --hubcpat -hu $github_username -hp $github_pwd
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --d -hu $github_username -hp $github_pwd
 ```
 
 ## Usage: do every run (Create and get GitLab runnertoken)
@@ -84,3 +86,28 @@ python -m pytest
 from the root directory of this project.
 
 <!-- Un-wrapped URL's below (Mostly for Badges) -->
+
+## Updating
+
+Build the pip package with:
+
+```
+pip install --upgrade pip setuptools wheel
+# pip install "keyring>=23.11"
+pip install twine
+```
+
+Install the pip package locally with:
+
+```
+pip install -e .
+```
+
+Upload the pip package to the world with:
+
+```
+rm -r dist
+rm -r build
+python3 setup.py sdist bdist_wheel
+python -m twine upload dist/\*
+```

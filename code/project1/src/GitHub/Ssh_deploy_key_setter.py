@@ -1,19 +1,12 @@
 """Sets the GitHub SSH deploy key."""
 import time
-from code.project1.src.ask_user_input import ask_two_factor_code
-from code.project1.src.control_website import (
-    github_login,
-    github_two_factor_login,
-)
+from code.project1.src.GitHub.github_login import github_login
 from code.project1.src.GitHub.remove_previous_github_ssh_key import (
     remove_previous_github_ssh_key,
 )
 from code.project1.src.Hardcoded import Hardcoded
-from code.project1.src.helper import (
-    click_element_by_xpath,
-    open_url,
-    source_contains,
-)
+
+from browsercontroller.helper import click_element_by_xpath
 
 
 class Ssh_deploy_key_setter:
@@ -21,7 +14,6 @@ class Ssh_deploy_key_setter:
 
     def __init__(
         self,
-        project_nr,
         public_ssh_sha,
         github_username=None,
         github_pwd=None,
@@ -30,16 +22,14 @@ class Ssh_deploy_key_setter:
         the issues from the source repo, and copies them to the target repo.
 
         :param project_nr: [Int] that indicates the folder in which this code is stored.
-        :param login: [Boolean] True if the website_controller object should be
+        :param login: [Boolean] True if the driver object should be
         created and should login to GitHub.
         """
-
-        # project_nr is an artifact of folder structure
-        self.project_nr = project_nr
+        # TODO: write function to verify ssh key format.
         self.public_ssh_sha = public_ssh_sha
 
         # Store the hardcoded values used within this project
-        self.hc = Hardcoded()
+        hardcoded = Hardcoded()
 
         self.github_username = github_username
         if self.github_username is None:
@@ -51,19 +41,25 @@ class Ssh_deploy_key_setter:
         # TODO: get gitlab-ci-build-statuses from hardcoded.txt
         github_repo_name = "gitlab-ci-build-statuses"
 
-        # TODO: separate login and browsing to the add token page.
-        # TODO: re-use the 2fac authentication login method created for adding pac.
-        website_controller = self.login_github_to_build_status_repo(
-            self.hc,
-            self.github_username,
-            github_repo_name,
-            github_pwd=github_pwd,
+        # login
+        driver = github_login(
+            hardcoded=hardcoded,
+            login_url=hardcoded.github_login_url,
+            user_element_id=hardcoded.github_user_element_id,
+            pw_element_id=hardcoded.github_pw_element_id,
+            signin_button_xpath=hardcoded.github_signin_button_xpath,
+            username=github_username,
+            pwd=github_pwd,
+        )
+
+        driver = self.open_github_build_status_repo_keys(
+            driver=driver,
+            github_username=self.github_username,
+            github_build_status_repo_name=github_repo_name,
         )
 
         # Remove pre-existing ssh keys matching target description.
-        remove_previous_github_ssh_key(
-            self.github_username, self.hc, website_controller
-        )
+        remove_previous_github_ssh_key(self.github_username, hardcoded, driver)
 
         # Reload add new token page
         repository_url = (
@@ -72,14 +68,16 @@ class Ssh_deploy_key_setter:
         )
 
         # Go to source repository
-        website_controller.driver = open_url(
-            website_controller.driver, repository_url
-        )
+        driver.get(repository_url)
 
         # wait five seconds for page to load
         # input("Are you done with loggin into GitHub?")
 
-        self.fill_in_ssh_key(self.hc, website_controller, self.public_ssh_sha)
+        self.fill_in_ssh_key(hardcoded, driver, self.public_ssh_sha)
+
+        # TODO: verify output fill_in_ssh_key does not contain:
+        # "Key is invalid. You must supply a key in OpenSSH public key format"
+        # TODO: verify key is indeed added.
 
         print(
             "Done adding the ssh deploy key from your machine to:"
@@ -88,16 +86,15 @@ class Ssh_deploy_key_setter:
         time.sleep(10)
 
         # close website controller
-        website_controller.driver.close()
+        driver.close()
 
         print(f"Done setting GitHub deployment token repo:{github_repo_name}.")
 
-    def login_github_to_build_status_repo(
+    def open_github_build_status_repo_keys(
         self,
-        hardcoded,
+        driver,
         github_username,
         github_build_status_repo_name,
-        github_pwd=None,
     ):
         """USED Gets the issues from a github repo. Opens a separate browser
         instance and then closes it again. Returns the rsc_data object that
@@ -114,56 +111,31 @@ class Ssh_deploy_key_setter:
         :param github_build_status_repo_name:
         :param github_pwd:  (Default value = None)
         """
-
-        # login
-        website_controller = github_login(
-            hardcoded, github_pwd, github_username
-        )
-
-        # check if 2factor
-        if source_contains(
-            website_controller, "<h1>Two-factor authentication</h1>"
-        ):
-
-            # if 2 factor ask code from user
-            two_factor_code = ask_two_factor_code()
-
-            # enter code
-            github_two_factor_login(
-                hardcoded, two_factor_code, website_controller, "GitHub"
-            )
-
         repository_url = (
             f"https://github.com/{github_username}/"
             + f"{github_build_status_repo_name}/settings/keys/new"
         )
 
         # Go to source repository
-        website_controller.driver = open_url(
-            website_controller.driver, repository_url
-        )
+        driver.get(repository_url)
 
-        return website_controller
+        return driver
 
-    def fill_in_ssh_key(self, hardcoded, website_controller, public_ssh_sha):
+    def fill_in_ssh_key(self, hardcoded, driver, public_ssh_sha):
         """
 
         :param hardcoded:
-        :param website_controller:
+        :param driver:
         :param public_ssh_sha:
 
         """
 
-        github_deployment_key_title_field = (
-            website_controller.driver.find_element(
-                "id", hardcoded.github_deploy_key_title_element_id
-            )
+        github_deployment_key_title_field = driver.find_element(
+            "id", hardcoded.github_deploy_key_title_element_id
         )
 
-        github_deployment_key_key_field = (
-            website_controller.driver.find_element(
-                "id", hardcoded.github_deploy_key_key_element_id
-            )
+        github_deployment_key_key_field = driver.find_element(
+            "id", hardcoded.github_deploy_key_key_element_id
         )
 
         # Set the title and ssh key for the GitHub deploy key for the GitLab build status repo.
@@ -174,11 +146,11 @@ class Ssh_deploy_key_setter:
 
         # Give write permission to deploy key for the GitLab build status repository (in GitHub)
         click_element_by_xpath(
-            website_controller,
+            driver,
             hardcoded.github_deploy_key_allow_write_access_button_xpath,
         )
 
         # Click: add the new deploy key to the GitHub repository.
         click_element_by_xpath(
-            website_controller, hardcoded.add_github_deploy_key_button_xpath
+            driver, hardcoded.add_github_deploy_key_button_xpath
         )

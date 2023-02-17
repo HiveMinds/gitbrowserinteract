@@ -4,20 +4,19 @@ Get GitLab runner token from local GitLab server. Set GitHub ssh deploy
 key. Set GitHub personal access token.
 """
 import argparse
+from code.project1.src.GitHub.Ssh_deploy_key_setter import (
+    Ssh_deploy_key_setter,
+)
 
 from .GitHub.Github_personal_access_token_getter import (
     Github_personal_access_token_getter,
 )
-from .GitHub.Ssh_deploy_key_setter import Ssh_deploy_key_setter
-from .GitLab.GitLab_runner_token_getter import Get_gitlab_runner_token
 from .Hardcoded import Hardcoded
-from .helper import get_browser_drivers
 
 project_nr = 1
 
 # get browser drivers
 hc = Hardcoded()
-get_browser_drivers(hc)
 
 # Parse user arguments to determine what to do.
 parser = argparse.ArgumentParser()
@@ -80,7 +79,6 @@ if args.deploy_token:
     args.gitlab_runner = False
     print(f"The ssh deploy key is:={args.public_ssh_sha}")
     _ = Ssh_deploy_key_setter(
-        project_nr=project_nr,
         public_ssh_sha=args.public_ssh_sha,
         github_username=args.github_username,
         github_pwd=args.github_pwd,
@@ -93,14 +91,13 @@ elif args.github_commit_status_personal_access_token_flag:
     args.gitlab_runner = False
     args.deployment_token = False
     _ = Github_personal_access_token_getter(
-        project_nr=project_nr,
         github_username=args.github_username,
         github_pwd=args.github_pwd,
     )
 elif args.gitlab_runner:
     print("Getting GitLab runner token.")
     # args.gitlab_runner = False
-    _ = Get_gitlab_runner_token()
+    # _ = Get_gitlab_runner_token()
 
 
 print("Done.")
