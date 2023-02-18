@@ -116,7 +116,7 @@ elif args.github_commit_status_personal_access_token_flag:
 elif args.gitlab_runner:
     print("Getting GitLab runner token.")
     args.gitlab_runner = False
-    print(f'args.gitlab_username={args.gitlab_username}')
+    print(f"args.gitlab_username={args.gitlab_username}")
     _ = Get_gitlab_runner_token(
         gitlab_username=args.gitlab_username,
         gitlab_pwd=args.gitlab_pwd,

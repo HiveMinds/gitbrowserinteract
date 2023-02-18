@@ -1,7 +1,5 @@
 """Object to run code based on incoming arguments."""
 import time
-from typing import Optional
-
 from code.project1.src.GitLab.get_gitlab_runner_token import (
     get_gitlab_runner_registration_token_from_page,
 )
@@ -12,15 +10,18 @@ from code.project1.src.helper import (
     loiter_till_gitlab_server_is_ready_for_login,
     write_string_to_file,
 )
+from typing import Optional
 
 
 # pylint: disable=R0903
 class Get_gitlab_runner_token:
     """Gets the GitLab runner from the GitLab server."""
 
-    def __init__(self,
-                gitlab_username:Optional[str]=None,
-                gitlab_pwd:Optional[str]=None,):
+    def __init__(
+        self,
+        gitlab_username: Optional[str] = None,
+        gitlab_pwd: Optional[str] = None,
+    ):
         """Initialises object that gets the browser controller, then it gets
         the issues from the source repo, and copies them to the target repo.
 
@@ -37,7 +38,7 @@ class Get_gitlab_runner_token:
                 hardcoded=hardcoded,
                 gitlab_username=gitlab_username,
                 gitlab_pwd=gitlab_pwd,
-                )
+            )
 
             # Create for loop that checks if GitLab server page is loaded and ready for login.
             # loop it for 900 seconds, check page source every 5 seconds
@@ -47,7 +48,8 @@ class Get_gitlab_runner_token:
             driver, _, _ = gitlab_login(
                 hardcoded=hardcoded,
                 gitlab_username=gitlab_username,
-                gitlab_pwd=gitlab_pwd,)
+                gitlab_pwd=gitlab_pwd,
+            )
         else:
             driver, _, _ = gitlab_login(
                 hardcoded=hardcoded,

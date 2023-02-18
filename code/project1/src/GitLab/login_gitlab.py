@@ -12,11 +12,11 @@ from browsercontroller.helper import click_element_by_xpath
 
 def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):
     """Gets the GitLab login."""
-    print(f'gitlab_username={gitlab_username}')
-    print(f'gitlab_pwd={gitlab_pwd}')
+    print(f"gitlab_username={gitlab_username}")
+    print(f"gitlab_pwd={gitlab_pwd}")
     if gitlab_pwd is None or gitlab_username is None:
         gitlab_username, gitlab_pwd = get_gitlab_credentials(
-            hardcoded, "GitLab", gitlab_username, gitlab_pwd
+            hardcoded, gitlab_username, gitlab_pwd
         )
         if gitlab_username is None:
             raise Exception("Did not get Username.")
@@ -64,9 +64,7 @@ def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):
     return driver, gitlab_username, gitlab_pwd
 
 
-def get_gitlab_credentials(
-    hardcoded, company, gitlab_username=None, gitlab_pwd=None
-):
+def get_gitlab_credentials(hardcoded, gitlab_username=None, gitlab_pwd=None):
     """Gets  credentials from a hardcoded file and asks the user for them if
     they are not found.
 

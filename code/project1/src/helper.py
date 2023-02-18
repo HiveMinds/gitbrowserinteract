@@ -1,8 +1,8 @@
 """Contains functions that are used to help other Python files."""
-from getpass import getpass
 import math
 import os
 import time
+from getpass import getpass
 
 
 def loiter_till_gitlab_server_is_ready_for_login(
