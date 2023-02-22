@@ -33,8 +33,7 @@ def github_login(
     # TODO: create buffer for alternative tabs that need to be closed.
 
     driver.implicitly_wait(6)
-    username_input = driver.find_element("id", user_element_id)
-    password_input = driver.find_element("id", pw_element_id)
+    
 
     # Check to determine whether the user has already manually
     # logged into GitHub, if so, skip setting username and pwd and clicking
@@ -43,6 +42,9 @@ def github_login(
         hardcoded, driver
     )
     if not user_has_manually_logged_in:
+        username_input = driver.find_element("id", user_element_id)
+        password_input = driver.find_element("id", pw_element_id)
+        
         username_input.send_keys(username)
         password_input.send_keys(pwd)
         driver.implicitly_wait(15)
