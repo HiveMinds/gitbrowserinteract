@@ -49,7 +49,7 @@ dependencies:
   - pip
   - pip:
     # Get apt firefox driver object.
-    - browsercontroller>=0.0.6
+    - browsercontroller>=0.0.7
     # Auto generate documentation.
     - pdoc3
     # Seems to be an autoformatter like black, but installed using npm instead of pip.
