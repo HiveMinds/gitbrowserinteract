@@ -110,7 +110,8 @@ class Hardcoded:
         self.github_pat_table_xpath = (
             # "/html/body/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
             # "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]/div/div"
-            "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
+            # "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
+            "/html/body/div[1]/div[6]/main/div[2]/div/div[2]/div/div/div[1]/div[2]"
         )
 
         self.github_ci_build_status_repo_name = "gitlab-ci-build-statuses"

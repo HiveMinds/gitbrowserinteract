@@ -62,12 +62,14 @@ def delete_github_pat(link, hardcoded, driver):
         github_pat_id = int(link[len(hardcoded.github_pat_tokens_url) :])
         print(f"github_pat_id={github_pat_id}")
 
+        # TODO: make this method more robust, e.g. by clicking on element
+        # based on text or finding table based on id: listgroup.
         # Get the right table row nr.
         valid_indices = list_of_valid_xpath_indices(
-            [],
-            f"{hardcoded.github_pat_table_xpath}/div[",
-            "]",
-            driver,
+            valid_indices=[],
+            left=f"{hardcoded.github_pat_table_xpath}/div[",
+            right="]",
+            driver=driver,
         )
         row_nr = get_desired_token_index(hardcoded, driver, valid_indices)
 
@@ -80,7 +82,7 @@ def delete_github_pat(link, hardcoded, driver):
         )
 
 
-def list_of_valid_xpath_indices(valid_indices, left, right, driver):
+def list_of_valid_xpath_indices(*, valid_indices, left, right, driver):
     """Returns the row numbers of the GitHub personal access tokens table,
     starting at index =1.
 
@@ -104,7 +106,10 @@ def list_of_valid_xpath_indices(valid_indices, left, right, driver):
     except:
         if len(valid_indices) == 0:
             # pylint: disable=W0707
-            raise Exception("Did not find any valid indices.")
+            raise Exception(
+                "Did not find any valid indices. So was not able "
+                "to delete the previous GitHub PAT token."
+            )
         return valid_indices
 
 
