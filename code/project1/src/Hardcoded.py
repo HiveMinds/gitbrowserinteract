@@ -130,7 +130,8 @@ class Hardcoded:
         self.github_pac_repo_status_checkbox_xpathV0 = "/html/body/div[6]/main/div[2]/div[2]/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
         self.github_pac_repo_status_checkbox_xpathV1 = "/html/body/div[6]/main/div[2]/div/div[2]/div/div/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
         self.github_pac_repo_status_checkbox_xpathV2 = "/html/body/div[5]/main/div[2]/div/div[2]/div/div/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
-        self.github_pac_repo_status_checkbox_xpathV3 = "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
+        # self.github_pac_repo_status_checkbox_xpathV3 = "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
+        self.github_pac_repo_status_checkbox_xpathV3 = "/html/body/div[1]/div[6]/main/div[2]/div/div[2]/div/div/form/div/dl[2]/dd/div/ul/li[1]/ul/li[1]/label/div/input"
 
         # Xpath of "Generate token" button
         # /html/body/div[6]/main/div[2]/div[2]/form/p/button
