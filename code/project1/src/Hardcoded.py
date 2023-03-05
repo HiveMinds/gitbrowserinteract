@@ -139,5 +139,6 @@ class Hardcoded:
             "/html/body/div[6]/main/div[2]/div[2]/form/p/button"  # nosec
         )
         self.github_pac_generate_token_button_xpathV1 = "/html/body/div[6]/main/div[2]/div/div[2]/div/div/form/p/button"  # nosec
-        self.github_pac_generate_token_button_xpathV2 = "/html/body/div[5]/main/div[2]/div/div[2]/div/div/form/p/button"  # nosec
-        self.github_pac_generate_token_button_xpathV2 = "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/form/p/button"  # nosec
+        # self.github_pac_generate_token_button_xpathV2 = "/html/body/div[5]/main/div[2]/div/div[2]/div/div/form/p/button"  # nosec
+        # self.github_pac_generate_token_button_xpathV2 = "/html/body/div[1]/div[5]/main/div[2]/div/div[2]/div/div/form/p/button"  # nosec
+        self.github_pac_generate_token_button_xpathV2 = "/html/body/div[1]/div[6]/main/div[2]/div/div[2]/div/div/form/p/button"  # nosec

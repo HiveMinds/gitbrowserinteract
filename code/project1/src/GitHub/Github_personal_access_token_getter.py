@@ -207,6 +207,7 @@ class Github_personal_access_token_getter:
                 clicked = True
             except:  # nosec
                 pass
+        # TODO: click button by text: "Generate token"
         if not clicked:
             click_element_by_xpath(
                 driver,
