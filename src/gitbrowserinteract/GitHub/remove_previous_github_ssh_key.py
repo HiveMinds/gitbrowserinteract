@@ -1,10 +1,11 @@
 """Removes pre-existing GitHub SSH deploy keys with the same name if they
 exist."""
-from code.project1.src.control_website import wait_until_page_is_loaded
-from code.project1.src.helper import open_url
 from typing import List
 
 from selenium.webdriver.common.by import By
+
+from src.gitbrowserinteract.control_website import wait_until_page_is_loaded
+from src.gitbrowserinteract.helper import open_url
 
 
 def remove_previous_github_ssh_key(github_username, hardcoded, driver):

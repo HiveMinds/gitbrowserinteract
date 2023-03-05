@@ -1,16 +1,17 @@
 """Object to run code based on incoming arguments."""
 import time
-from code.project1.src.GitLab.get_gitlab_runner_token import (
+from typing import Optional
+
+from src.gitbrowserinteract.GitLab.get_gitlab_runner_token import (
     get_gitlab_runner_registration_token_from_page,
 )
-from code.project1.src.GitLab.login_gitlab import gitlab_login
-from code.project1.src.Hardcoded import Hardcoded
-from code.project1.src.helper import (
+from src.gitbrowserinteract.GitLab.login_gitlab import gitlab_login
+from src.gitbrowserinteract.Hardcoded import Hardcoded
+from src.gitbrowserinteract.helper import (
     get_runner_registration_token_filepath,
     loiter_till_gitlab_server_is_ready_for_login,
     write_string_to_file,
 )
-from typing import Optional
 
 
 # pylint: disable=R0903
@@ -71,7 +72,7 @@ class Get_gitlab_runner_token:
                 get_runner_registration_token_filepath(),
             )
         else:
-            raise Exception(
+            raise ValueError(
                 "Expected runner registration token to be EXTRACTED from the "
                 + "source code, but it is not."
             )

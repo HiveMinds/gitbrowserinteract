@@ -1,7 +1,8 @@
 """Tests whether the parse_creds function returns the correct credentials based
 on a given input."""
 import unittest
-from code.project1.src.helper import parse_creds
+
+from src.gitbrowserinteract.helper import parse_creds
 
 
 class Test_parse_creds(unittest.TestCase):

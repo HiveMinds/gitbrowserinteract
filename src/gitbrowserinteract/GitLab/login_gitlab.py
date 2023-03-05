@@ -4,10 +4,11 @@
 import getpass
 import os
 import time
-from code.project1.src.helper import get_pwd, get_username
 
 from browsercontroller.get_controller import get_ubuntu_apt_firefox_controller
 from browsercontroller.helper import click_element_by_xpath
+
+from src.gitbrowserinteract.helper import get_pwd, get_username
 
 
 def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):

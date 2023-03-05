@@ -1,14 +1,15 @@
 # Code that automatically copies all issues of a repository to another
 import time
-from code.project1.src.GitHub.github_login import github_login
-from code.project1.src.GitHub.remove_previous_github_pat import (
-    remove_previous_github_pat,
-)
 
 from browsercontroller.helper import (
     click_element_by_xpath,
     open_url,
     source_contains,
+)
+
+from src.gitbrowserinteract.GitHub.github_login import github_login
+from src.gitbrowserinteract.GitHub.remove_previous_github_pat import (
+    remove_previous_github_pat,
 )
 
 from ..export_token import export_github_pac_to_personal_creds_txt

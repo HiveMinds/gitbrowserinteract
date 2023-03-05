@@ -1,12 +1,13 @@
 """Sets the GitHub SSH deploy key."""
 import time
-from code.project1.src.GitHub.github_login import github_login
-from code.project1.src.GitHub.remove_previous_github_ssh_key import (
-    remove_previous_github_ssh_key,
-)
-from code.project1.src.Hardcoded import Hardcoded
 
 from browsercontroller.helper import click_element_by_xpath
+
+from src.gitbrowserinteract.GitHub.github_login import github_login
+from src.gitbrowserinteract.GitHub.remove_previous_github_ssh_key import (
+    remove_previous_github_ssh_key,
+)
+from src.gitbrowserinteract.Hardcoded import Hardcoded
 
 
 class Ssh_deploy_key_setter:

@@ -1,8 +1,9 @@
 """Removes previously existing GitHub personal access tokens, if they exist."""
-from code.project1.src.control_website import wait_until_page_is_loaded
 from typing import List
 
 from selenium.webdriver.common.by import By
+
+from src.gitbrowserinteract.control_website import wait_until_page_is_loaded
 
 
 def remove_previous_github_pat(*, hardcoded, driver):

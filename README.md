@@ -40,7 +40,7 @@ conda activate get_gitlab_generation_token
 ## Usage: do every run (Set ssh-deploy key in GitHub for pushing build status icons)
 
 ```
-python -m code.project1.src --d --ssh <the public ssh key that was created>
+python -m src.gitbrowserinteract --d --ssh <the public ssh key that was created>
 ```
 
 - The `--d` indicates you are setting the deploy ssh key in GitHub.
@@ -52,7 +52,7 @@ python -m code.project1.src --d --ssh <the public ssh key that was created>
 Create and get GitHub personal access token for setting commit build statuses
 
 ```
-python -m code.project1.src -hubcpat
+python -m src.gitbrowserinteract -hubcpat
 ```
 
 - The `--hubcpat` indicates you are letting GitHub create a personal access
@@ -61,14 +61,14 @@ python -m code.project1.src -hubcpat
 More complete:
 
 ```sh
-cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --hubcpat -hu $github_username -hp $github_pwd
-cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m code.project1.src --d -hu $github_username -hp $github_pwd
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m src.gitbrowserinteract --hubcpat -hu $github_username -hp $github_pwd
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m src.gitbrowserinteract --d -hu $github_username -hp $github_pwd
 ```
 
 ## Usage: do every run (Create and get GitLab runnertoken)
 
 ```
-python -m code.project1.src --g
+python -m src.gitbrowserinteract --g
 ```
 
 - The `--g` indicates you are letting GitLab generate a personal access token

@@ -5,9 +5,10 @@ TODO: Change to get it from within docker instead
 of using browser controller.
 """
 import time
-from code.project1.src.helper import get_value_from_html_source
 
 from browsercontroller.helper import click_element_by_xpath, source_contains
+
+from src.gitbrowserinteract.helper import get_value_from_html_source
 
 
 def get_gitlab_runner_registration_token_from_page(hc, driver):

@@ -4,10 +4,11 @@ Get GitLab runner token from local GitLab server. Set GitHub ssh deploy
 key. Set GitHub personal access token.
 """
 import argparse
-from code.project1.src.GitHub.Ssh_deploy_key_setter import (
+
+from src.gitbrowserinteract.GitHub.Ssh_deploy_key_setter import (
     Ssh_deploy_key_setter,
 )
-from code.project1.src.GitLab.GitLab_runner_token_getter import (
+from src.gitbrowserinteract.GitLab.GitLab_runner_token_getter import (
     Get_gitlab_runner_token,
 )
 
