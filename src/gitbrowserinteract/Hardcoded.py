@@ -1,5 +1,7 @@
 """Contains the hardcoded data for this project."""
 
+from typeguard import typechecked
+
 
 # pylint: disable=C0301
 # pylint: disable=R0902
@@ -9,6 +11,7 @@ class Hardcoded:
     to latex and compiles the latex report of the incoming project nr."""
 
     # pylint: disable=R0915
+    @typechecked
     def __init__(self):
         """Constructs an object that contains all the hardcoded values that are
         used in this script.

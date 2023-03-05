@@ -4,12 +4,14 @@ import time
 
 from browsercontroller.get_controller import get_ubuntu_apt_firefox_controller
 from browsercontroller.helper import click_element_by_xpath, source_contains
+from typeguard import typechecked
 
 from src.gitbrowserinteract.ask_user_input import ask_two_factor_code
 from src.gitbrowserinteract.control_website import wait_until_page_is_loaded
 
 
 # pylint: disable=R0913
+@typechecked
 def github_login(
     *,
     hardcoded,
@@ -39,7 +41,7 @@ def github_login(
     # logged into GitHub, if so, skip setting username and pwd and clicking
     # the login button.
     user_has_manually_logged_in = user_is_logged_in_in_github(
-        hardcoded, driver
+        hardcoded=hardcoded, driver=driver
     )
     if not user_has_manually_logged_in:
         username_input = driver.find_element("id", user_element_id)
@@ -58,8 +60,8 @@ def github_login(
     # Wait till login completed
     time.sleep(5)
 
-    complete_github_two_factor_auth(hardcoded, driver)
-    if not user_is_logged_in_in_github(hardcoded, driver):
+    complete_github_two_factor_auth(hardcoded=hardcoded, driver=driver)
+    if not user_is_logged_in_in_github(hardcoded=hardcoded, driver=driver):
         print(
             "Hi, we were not able to verify you are logged in, (which is "
             + "needed"
@@ -70,25 +72,27 @@ def github_login(
         driver.close()
 
         return github_login(
-            hardcoded,
-            login_url,
-            user_element_id,
-            pw_element_id,
-            signin_button_xpath,
-            None,
-            None,
+            hardcoded=hardcoded,
+            login_url=login_url,
+            user_element_id=user_element_id,
+            pw_element_id=pw_element_id,
+            signin_button_xpath=signin_button_xpath,
+            username=None,
+            pwd=None,
         )
 
     return driver
 
 
+@typechecked
 def user_is_logged_in_in_github(
+    *,
     hardcoded,
     driver,
 ):
     """Returns True if the user is logged in, False otherwise."""
     # Read page source that indicates user is logged in.
-    wait_until_page_is_loaded(6, driver)
+    wait_until_page_is_loaded(time_limit_sec=6, driver=driver)
 
     source = driver.page_source
 
@@ -97,7 +101,8 @@ def user_is_logged_in_in_github(
     return False
 
 
-def complete_github_two_factor_auth(hardcoded, driver):
+@typechecked
+def complete_github_two_factor_auth(*, hardcoded, driver):
     """Completes the GitHub 2FA."""
     # check if 2factor
     if source_contains(driver, "<h1>Two-factor authentication</h1>"):
@@ -105,12 +110,17 @@ def complete_github_two_factor_auth(hardcoded, driver):
         two_factor_code = ask_two_factor_code()
 
         # enter code
-        github_two_factor_login(hardcoded, two_factor_code, driver, "GitHub")
+        github_two_factor_login(
+            hardcoded=hardcoded,
+            two_factor_code=two_factor_code,
+            driver=driver,
+        )
 
     # Verify user is logged in correctly.
 
 
-def github_two_factor_login(hardcoded, two_factor_code, driver, company):
+@typechecked
+def github_two_factor_login(*, hardcoded, two_factor_code, driver):
     """USED to login for GitHub. Performs login of user into website. Returns
     the driver object.
 
@@ -127,6 +137,7 @@ def github_two_factor_login(hardcoded, two_factor_code, driver, company):
         )
         # two_factor_input = driver.find_element("name","otp")
         user_completed_2fac_in_browser = False
+    # pylint: disable=W0702
     except:  # nosec
         # User has already manually logged in in browser iso CLI.
         # pylint: disable=W0707
@@ -139,7 +150,7 @@ def github_two_factor_login(hardcoded, two_factor_code, driver, company):
         driver.find_element("css selector", ".btn-primary").click()
 
     # Assert user is already logged in.
-    if not user_is_logged_in_in_github(hardcoded, driver):
-        raise Exception("Error user is not logged in after 2fa login.")
+    if not user_is_logged_in_in_github(hardcoded=hardcoded, driver=driver):
+        raise ValueError("Error user is not logged in after 2fa login.")
 
     return driver

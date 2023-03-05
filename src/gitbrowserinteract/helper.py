@@ -4,9 +4,12 @@ import os
 import time
 from getpass import getpass
 
+from typeguard import typechecked
 
+
+@typechecked
 def loiter_till_gitlab_server_is_ready_for_login(
-    hardcoded, scan_duration, interval_duration, driver
+    *, hardcoded, scan_duration, interval_duration, driver
 ):
     """Waits untill a GitLab server is ready for the user to log in.
 
@@ -21,7 +24,7 @@ def loiter_till_gitlab_server_is_ready_for_login(
         # Refresh page
         try:
             # TODO: get the open_url function from the control_website.py file.
-            driver = open_url(driver, hardcoded.gitlab_login_url)
+            driver = open_url(driver=driver, url=hardcoded.gitlab_login_url)
             driver.implicitly_wait(1)
         # pylint: disable=W0702
         except:
@@ -33,7 +36,7 @@ def loiter_till_gitlab_server_is_ready_for_login(
         time.sleep(interval_duration)
 
         # Break loop if page is succesfully loaded.
-        if check_if_gitlab_login_page_is_loaded(driver):
+        if check_if_gitlab_login_page_is_loaded(driver=driver):
             # GitLab server page is loaded correctly, can move on in script.
             break
 
@@ -45,7 +48,8 @@ def loiter_till_gitlab_server_is_ready_for_login(
     )
 
 
-def check_if_gitlab_login_page_is_loaded(driver):
+@typechecked
+def check_if_gitlab_login_page_is_loaded(*, driver):
     """Checks if a GitLab login page is loaded or not.
 
     :param driver:
@@ -74,13 +78,14 @@ def check_if_gitlab_login_page_is_loaded(driver):
         return True
     if already_logged_in in source:
         return True
-    raise Exception(
+    raise ValueError(
         "The GitLab server webpage is in a state that is not yet known/"
         + f"recognised, its source code contains:{source}"
     )
 
 
-def file_is_found(filepath):
+@typechecked
+def file_is_found(*, filepath):
     """Checks if file is found or not.
 
     :param filepath: param hardcoded: An object containing all the hardcoded
@@ -90,7 +95,8 @@ def file_is_found(filepath):
     return os.path.isfile(filepath)
 
 
-def get_firefox_browser_driver(hardcoded):
+@typechecked
+def get_firefox_browser_driver(*, hardcoded):
     """USED Creates a folder to store the firefox browser controller downloader
     and then downloads it into that.
 
@@ -115,6 +121,7 @@ def get_firefox_browser_driver(hardcoded):
     os.system(unpack_firefox_driver)  # nosec
 
 
+@typechecked
 def install_firefox_browser():
     """USED."""
     install_firefox_browser_command = "yes | sudo apt install firefox"
@@ -122,7 +129,8 @@ def install_firefox_browser():
     os.system(install_firefox_browser_command)  # nosec
 
 
-def get_chromium_browser_driver(hardcoded):
+@typechecked
+def get_chromium_browser_driver(*, hardcoded):
     """Creates a folder to store the chromium browser controller downloader and
     then downloads it into that.
     TODO: include os identifier and select accompanying file
@@ -184,7 +192,8 @@ def get_chromium_browser_driver(hardcoded):
     os.system(rename_chromium_driver)  # nosec
 
 
-def scroll_shim(passed_in_driver, browser_object):
+@typechecked
+def scroll_shim(*, passed_in_driver, browser_object):
     """Scrolls down till object is found.
 
     :param passed_in_driver: An object within the object that controls an internet browser.
@@ -198,7 +207,8 @@ def scroll_shim(passed_in_driver, browser_object):
     passed_in_driver.execute_script(scroll_nav_out_of_way)
 
 
-def write_string_to_file(string, output_path):
+@typechecked
+def write_string_to_file(*, string, output_path):
     """Writes a string to an output file.
 
     :param string: content you write to file
@@ -208,10 +218,11 @@ def write_string_to_file(string, output_path):
         f.write(string)
 
 
+@typechecked
 def get_runner_registration_token_filepath():
     """Gets the GitLab runner registration token filepath."""
     # get lines from hardcoded data
-    lines = read_file_content("../src/hardcoded_variables.txt")
+    lines = read_file_content(filepath="../src/hardcoded_variables.txt")
     runner_registration_token_filepath_identifier = (
         "RUNNER_REGISTRATION_TOKEN_FILEPATH="  # nosec
     )
@@ -228,10 +239,11 @@ def get_runner_registration_token_filepath():
         # remove newline character
         print(f"FILEPATH=../{runner_registration_token_filepath.strip()}")
         return f"../{runner_registration_token_filepath.strip()}"
-    raise Exception("Did not get runner_registration_token_filepath.")
+    raise ValueError("Did not get runner_registration_token_filepath.")
 
 
-def read_file_content(filepath):
+@typechecked
+def read_file_content(*, filepath):
     """
 
     :param filepath:
@@ -244,7 +256,8 @@ def read_file_content(filepath):
     return lines
 
 
-def open_url(driver, url):
+@typechecked
+def open_url(*, driver, url):
     """USED # TODO: eliminate duplicate function. Makes the browser open an url
     through the driver object in the webcontroller.
 
@@ -255,7 +268,8 @@ def open_url(driver, url):
     return driver
 
 
-def get_value_from_html_source(source, substring, closing_substring):
+@typechecked
+def get_value_from_html_source(*, source, substring, closing_substring):
     """Returns value from html source code.
 
     :param source: Source code of website that is being controlled.
@@ -271,7 +285,8 @@ def get_value_from_html_source(source, substring, closing_substring):
     return value
 
 
-def get_username(company):
+@typechecked
+def get_username(*, company):
     """Gets the username for login and returns it."""
     username = getpass(
         f"\nPlease enter your {company} Username: \n(you can also manually log"
@@ -283,7 +298,8 @@ def get_username(company):
     return username
 
 
-def get_pwd(company):
+@typechecked
+def get_pwd(*, company):
     """Gets the password for login and returns it."""
     pwd = getpass(
         f"Please enter your {company} Password \n(you can also manually log "

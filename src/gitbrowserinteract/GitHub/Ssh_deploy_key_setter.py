@@ -2,6 +2,7 @@
 import time
 
 from browsercontroller.helper import click_element_by_xpath
+from typeguard import typechecked
 
 from src.gitbrowserinteract.GitHub.github_login import github_login
 from src.gitbrowserinteract.GitHub.remove_previous_github_ssh_key import (
@@ -13,6 +14,7 @@ from src.gitbrowserinteract.Hardcoded import Hardcoded
 class Ssh_deploy_key_setter:
     """Gets the GitHub SSH deploy key."""
 
+    @typechecked
     def __init__(
         self,
         public_ssh_sha,
@@ -34,7 +36,7 @@ class Ssh_deploy_key_setter:
 
         self.github_username = github_username
         if self.github_username is None:
-            raise Exception(
+            raise ValueError(
                 "Error, expected a GitHub username as incoming argument."
             )
         self.github_pwd = github_pwd
@@ -60,7 +62,11 @@ class Ssh_deploy_key_setter:
         )
 
         # Remove pre-existing ssh keys matching target description.
-        remove_previous_github_ssh_key(self.github_username, hardcoded, driver)
+        remove_previous_github_ssh_key(
+            github_username=self.github_username,
+            hardcoded=hardcoded,
+            driver=driver,
+        )
 
         # Reload add new token page
         repository_url = (
@@ -91,6 +97,7 @@ class Ssh_deploy_key_setter:
 
         print(f"Done setting GitHub deployment token repo:{github_repo_name}.")
 
+    @typechecked
     def open_github_build_status_repo_keys(
         self,
         driver,
@@ -122,6 +129,7 @@ class Ssh_deploy_key_setter:
 
         return driver
 
+    @typechecked
     def fill_in_ssh_key(self, hardcoded, driver, public_ssh_sha):
         """
 

@@ -1,28 +1,30 @@
 """Performs GitLab login."""
-
-
 import getpass
 import os
 import time
 
 from browsercontroller.get_controller import get_ubuntu_apt_firefox_controller
 from browsercontroller.helper import click_element_by_xpath
+from typeguard import typechecked
 
 from src.gitbrowserinteract.helper import get_pwd, get_username
 
 
-def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):
+@typechecked
+def gitlab_login(*, hardcoded, gitlab_username=None, gitlab_pwd=None):
     """Gets the GitLab login."""
     print(f"gitlab_username={gitlab_username}")
     print(f"gitlab_pwd={gitlab_pwd}")
     if gitlab_pwd is None or gitlab_username is None:
         gitlab_username, gitlab_pwd = get_gitlab_credentials(
-            hardcoded, gitlab_username, gitlab_pwd
+            hardcoded=hardcoded,
+            gitlab_username=gitlab_username,
+            gitlab_pwd=gitlab_pwd,
         )
         if gitlab_username is None:
-            raise Exception("Did not get Username.")
+            raise ValueError("Did not get Username.")
         if gitlab_pwd is None:
-            raise Exception("Did not get pwd.")
+            raise ValueError("Did not get pwd.")
 
     # Go to extension settings.
     driver = get_ubuntu_apt_firefox_controller(
@@ -46,7 +48,7 @@ def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):
     # logged into GitHub, if so, skip setting username and pwd and clicking
     # the login button.
     user_has_manually_logged_in = user_is_logged_in_in_gitlab(
-        hardcoded, driver
+        hardcoded=hardcoded, driver=driver
     )
     if not user_has_manually_logged_in:
         username_input.send_keys(gitlab_username)
@@ -65,7 +67,10 @@ def gitlab_login(hardcoded, gitlab_username=None, gitlab_pwd=None):
     return driver, gitlab_username, gitlab_pwd
 
 
-def get_gitlab_credentials(hardcoded, gitlab_username=None, gitlab_pwd=None):
+@typechecked
+def get_gitlab_credentials(
+    *, hardcoded, gitlab_username=None, gitlab_pwd=None
+):
     """Gets  credentials from a hardcoded file and asks the user for them if
     they are not found.
 
@@ -75,19 +80,20 @@ def get_gitlab_credentials(hardcoded, gitlab_username=None, gitlab_pwd=None):
     """
     if (
         hardcoded.use_cred_file
-        and creds_file_contains_gitlab_username(hardcoded)
-        and creds_file_contains_gitlab_pwd(hardcoded)
+        and creds_file_contains_gitlab_username(hardcoded=hardcoded)
+        and creds_file_contains_gitlab_pwd(hardcoded=hardcoded)
     ):
-        gitlab_username, gitlab_pwd = read_gitlab_creds(hardcoded)
+        gitlab_username, gitlab_pwd = read_gitlab_creds(hardcoded=hardcoded)
     else:
         if gitlab_username is None:
-            gitlab_username = get_username("GitLab")
+            gitlab_username = get_username(company="GitLab")
         if gitlab_pwd is None:
-            gitlab_pwd = get_pwd("GitLab")
+            gitlab_pwd = get_pwd(company="GitLab")
     return gitlab_username, gitlab_pwd
 
 
-def user_is_logged_in_in_gitlab(hardcoded, driver):
+@typechecked
+def user_is_logged_in_in_gitlab(*, hardcoded, driver):
     """Returns True if the user is logged in, False otherwise."""
     source = driver.page_source
     if hardcoded.gitlab_logged_in_or_not_string in source:
@@ -95,7 +101,8 @@ def user_is_logged_in_in_gitlab(hardcoded, driver):
     return False
 
 
-def creds_file_contains_gitlab_username(hardcoded):
+@typechecked
+def creds_file_contains_gitlab_username(*, hardcoded):
     """Returns True if the credentials file contains the GitLab username."""
     with open(hardcoded.cred_path, encoding="utf-8") as f:
         lines = []
@@ -108,7 +115,8 @@ def creds_file_contains_gitlab_username(hardcoded):
     return False
 
 
-def creds_file_contains_gitlab_pwd(hardcoded):
+@typechecked
+def creds_file_contains_gitlab_pwd(*, hardcoded):
     """Returns True if the credentials file contains the GitLab pwd."""
     with open(hardcoded.cred_path, encoding="utf-8") as f:
         lines = []
@@ -121,7 +129,8 @@ def creds_file_contains_gitlab_pwd(hardcoded):
     return False
 
 
-def read_gitlab_creds(hardcoded):
+@typechecked
+def read_gitlab_creds(*, hardcoded):
     """Reads username and password from credentials file, if the file exists,
     asks the user to manually enter them if the file is not found.
 
@@ -129,7 +138,7 @@ def read_gitlab_creds(hardcoded):
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
     """
-    get_gitlab_creds_if_not_exist(hardcoded)
+    get_gitlab_creds_if_not_exist(hardcoded=hardcoded)
     with open(hardcoded.cred_path, encoding="utf-8") as f:
         lines = []
         for line in f:
@@ -138,12 +147,13 @@ def read_gitlab_creds(hardcoded):
     # creds.txt is changed to bash format in other project so the credentials need to be parsed
     # username = lines[0][:-1]
     # pwd = lines[1]
-    username, pwd = parse_gitlab_creds(lines)
+    username, pwd = parse_gitlab_creds(lines=lines)
 
     return username, pwd
 
 
-def get_gitlab_creds_if_not_exist(hardcoded):
+@typechecked
+def get_gitlab_creds_if_not_exist(*, hardcoded):
     """Asks the user to enter the username and password for the login to the
     Radboud Universitiy Sports Center login.
 
@@ -164,7 +174,8 @@ def get_gitlab_creds_if_not_exist(hardcoded):
             some_file.close()
 
 
-def parse_gitlab_creds(lines):
+@typechecked
+def parse_gitlab_creds(*, lines):
     """Gets the GitLab server credentials from the local credentials file.
 
     :param lines:
@@ -181,5 +192,5 @@ def parse_gitlab_creds(lines):
     if username is not None:
         if pwd is not None:
             return username, pwd
-        raise Exception("Did not get password.")
-    raise Exception("Did not get username.")
+        raise ValueError("Did not get password.")
+    raise ValueError("Did not get username.")

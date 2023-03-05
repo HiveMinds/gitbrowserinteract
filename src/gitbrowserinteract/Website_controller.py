@@ -1,5 +1,6 @@
 """Gets a website controller and opens it."""
 from selenium import webdriver
+from typeguard import typechecked
 
 from .Hardcoded import Hardcoded
 
@@ -8,6 +9,7 @@ from .Hardcoded import Hardcoded
 class driver:
     """Controls/commands website using selenium."""
 
+    @typechecked
     def __init__(self):
         """Constructs object that controlls a firefox browser.
 
@@ -27,7 +29,7 @@ class driver:
         # pylint: disable=W0707
         except:
             # pylint: disable=W0707
-            raise Exception(
+            raise ValueError(
                 "Error, you have the snap Firefox browser installed"
                 + ". Please use the apt one instead. This switching is automated"
                 + " in a bash script of the Self-host GitLab."

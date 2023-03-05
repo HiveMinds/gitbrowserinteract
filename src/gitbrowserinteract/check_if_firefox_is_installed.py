@@ -1,8 +1,11 @@
 """Runs a bash command."""
 import subprocess  # nosec
 
+from typeguard import typechecked
 
-def run_bash_command(bashCommand):
+
+@typechecked
+def run_bash_command(*, bashCommand):
     """Runs a bash command.
 
     :param bashCommand: A string containing a bash command that can be executed.

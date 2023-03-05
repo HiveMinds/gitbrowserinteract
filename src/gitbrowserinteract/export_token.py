@@ -2,8 +2,11 @@
 import os
 import shutil
 
+from typeguard import typechecked
 
-def export_github_pac_to_personal_creds_txt(filepath, hardcoded, pac):
+
+@typechecked
+def export_github_pac_to_personal_creds_txt(*, filepath, hardcoded, pac):
     """
 
     :param filepath:
@@ -16,19 +19,22 @@ def export_github_pac_to_personal_creds_txt(filepath, hardcoded, pac):
         print(f"File exists,new_line={new_line}")
         # if the precursor exists:
         if file_contains_substring(
-            filepath, hardcoded.github_pac_bash_precursor
+            filepath=filepath, substring=hardcoded.github_pac_bash_precursor
         ):
             # Replace the line starting with:self.github_pac_bash_precursor
             replace_line_in_file_if_contains_substring(
-                filepath, hardcoded.github_pac_bash_precursor, new_line
+                filepath=filepath,
+                substring=hardcoded.github_pac_bash_precursor,
+                new_string=new_line,
             )
         else:
-            append_line(filepath, new_line)
+            append_line(filepath=filepath, line=new_line)
     else:
-        append_line(filepath, new_line)
+        append_line(filepath=filepath, line=new_line)
 
 
-def append_line(filepath, line):
+@typechecked
+def append_line(*, filepath, line):
     """
 
     :param filepath:
@@ -40,7 +46,8 @@ def append_line(filepath, line):
         fd.write(f"{line}")
 
 
-def file_contains_substring(filepath, substring):
+@typechecked
+def file_contains_substring(*, filepath, substring):
     """
 
     :param filepath:
@@ -53,8 +60,9 @@ def file_contains_substring(filepath, substring):
         return False
 
 
+@typechecked
 def replace_line_in_file_if_contains_substring(
-    filepath, substring, new_string
+    *, filepath, substring, new_string
 ):
     """
 

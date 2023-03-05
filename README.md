@@ -61,8 +61,10 @@ python -m src.gitbrowserinteract -hubcpat
 More complete:
 
 ```sh
-cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m src.gitbrowserinteract --hubcpat -hu $github_username -hp $github_pwd
-cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token && python -m src.gitbrowserinteract --d -hu $github_username -hp $github_pwd
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token \
+&& python -m src.gitbrowserinteract --hubcpat -hu $github_username -hp $github_pwd
+cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token \
+&& python -m src.gitbrowserinteract --d -hu $github_username -hp $github_pwd
 ```
 
 ## Usage: do every run (Create and get GitLab runnertoken)
