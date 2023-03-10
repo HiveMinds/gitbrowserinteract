@@ -4,9 +4,8 @@ import time
 from browsercontroller.helper import click_element_by_xpath
 from typeguard import typechecked
 
-from src.gitbrowserinteract.Hardcoded import Hardcoded
-
-from .github_login import github_login
+from ..GitHub.github_login import github_login
+from ..Hardcoded import Hardcoded
 from .remove_previous_github_ssh_key import remove_previous_github_ssh_key
 
 

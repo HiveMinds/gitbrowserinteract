@@ -4,10 +4,8 @@ from typing import List
 from selenium.webdriver.common.by import By
 from typeguard import typechecked
 
-from src.gitbrowserinteract.control_website import wait_until_page_is_loaded
-from src.gitbrowserinteract.GitHub.remove_previous_github_ssh_key import (
-    list_of_valid_xpath_indices,
-)
+from ..control_website import wait_until_page_is_loaded
+from ..GitHub.remove_previous_github_ssh_key import list_of_valid_xpath_indices
 
 
 @typechecked

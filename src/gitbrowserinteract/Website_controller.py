@@ -1,8 +1,7 @@
 """Gets a website controller and opens it."""
+from Hardcoded import Hardcoded
 from selenium import webdriver
 from typeguard import typechecked
-
-from src.gitbrowserinteract.Hardcoded import Hardcoded
 
 
 # pylint: disable=R0903

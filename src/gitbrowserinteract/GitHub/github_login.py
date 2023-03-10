@@ -6,8 +6,8 @@ from browsercontroller.get_controller import get_ubuntu_apt_firefox_controller
 from browsercontroller.helper import click_element_by_xpath, source_contains
 from typeguard import typechecked
 
-from src.gitbrowserinteract.ask_user_input import ask_two_factor_code
-from src.gitbrowserinteract.control_website import wait_until_page_is_loaded
+from ..ask_user_input import ask_two_factor_code
+from ..control_website import wait_until_page_is_loaded
 
 
 # pylint: disable=R0913

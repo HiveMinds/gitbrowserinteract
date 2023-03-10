@@ -73,6 +73,12 @@ cd $repo_name && conda deactivate && conda activate get_gitlab_generation_token 
 python -m gitbrowserinteract --g
 ```
 
+or, to run it from bash as a pip package:
+
+```bash
+python -m gitbrowserinteract.__main__ --glr
+```
+
 - The `--g` indicates you are letting GitLab generate a personal access token
   and storing it.
 

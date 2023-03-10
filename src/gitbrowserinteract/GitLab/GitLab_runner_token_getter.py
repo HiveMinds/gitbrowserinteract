@@ -4,12 +4,12 @@ from typing import Optional
 
 from typeguard import typechecked
 
-from src.gitbrowserinteract.GitLab.get_gitlab_runner_token import (
+from ..GitLab.get_gitlab_runner_token import (
     get_gitlab_runner_registration_token_from_page,
 )
-from src.gitbrowserinteract.GitLab.login_gitlab import gitlab_login
-from src.gitbrowserinteract.Hardcoded import Hardcoded
-from src.gitbrowserinteract.helper import (
+from ..GitLab.login_gitlab import gitlab_login
+from ..Hardcoded import Hardcoded
+from ..helper import (
     get_runner_registration_token_filepath,
     loiter_till_gitlab_server_is_ready_for_login,
     write_string_to_file,

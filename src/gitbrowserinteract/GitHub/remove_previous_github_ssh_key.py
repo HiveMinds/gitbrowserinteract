@@ -5,8 +5,8 @@ from typing import List
 from selenium.webdriver.common.by import By
 from typeguard import typechecked
 
-from src.gitbrowserinteract.control_website import wait_until_page_is_loaded
-from src.gitbrowserinteract.helper import open_url
+from ..control_website import wait_until_page_is_loaded
+from ..helper import open_url
 
 
 @typechecked

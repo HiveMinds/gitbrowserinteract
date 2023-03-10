@@ -9,7 +9,7 @@ import time
 from browsercontroller.helper import click_element_by_xpath, source_contains
 from typeguard import typechecked
 
-from src.gitbrowserinteract.helper import get_value_from_html_source
+from ..helper import get_value_from_html_source
 
 
 @typechecked
