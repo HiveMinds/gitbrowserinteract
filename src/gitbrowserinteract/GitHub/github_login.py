@@ -94,6 +94,7 @@ def user_is_logged_in_in_github(
     # Read page source that indicates user is logged in.
     wait_until_page_is_loaded(time_limit_sec=6, driver=driver)
 
+    time.sleep(5)
     source = driver.page_source
 
     if hardcoded.github_logged_in_or_not_string in source:

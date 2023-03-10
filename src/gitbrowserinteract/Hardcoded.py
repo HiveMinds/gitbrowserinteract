@@ -41,11 +41,10 @@ class Hardcoded:
         self.pickle_driver_filename = "driver.p"
 
         self.use_cred_file = True
-        self.personal_creds_path = "../../personal_creds.txt"
+        self.personal_creds_path = "../personal_creds.txt"
         self.cred_path = self.personal_creds_path
         # TODO: verify if called from path using bash, if the
         # python path is still the same root.
-        self.personal_creds_path = "../../personal_creds.txt"
         self.github_pac_bash_precursor = "GITHUB_PERSONAL_ACCESS_TOKEN_GLOBAL="
         # website properties
         self.gitlab_login_url = "http://127.0.0.1"

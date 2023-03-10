@@ -21,4 +21,4 @@ def get_input(*, text):
     :param text:
 
     """
-    return input(text=text)
+    return input(text)
