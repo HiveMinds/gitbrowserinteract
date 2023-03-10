@@ -1,11 +1,12 @@
 # run: conda env create --file environment.yml
-# include new packages: conda env update --file environment.yml
+# include new packages: con
 name: gitbrowserinteract
 channels:
   - conda-forge
 dependencies:
 # Specify specific python version.
   - python=3.10
+# Pre-commit packages for code quality:
 # Run python tests.
   - pytest-cov
 # Turns relative import paths into absolute import paths.
@@ -30,22 +31,27 @@ dependencies:
   - mdformat
 # Auto check static typing.
   - mypy
+# Auto generate documentation.
+  - pdoc3
 # Another static type checker for python like mypy.
   - pyright
 # Include GitHub pre-commit hook.
   - pre-commit
+# Visualise the structure of the code based on a command.
+  - pycallgraph2
 # Automatically upgrades Python syntax to the new Python version syntax.
   - pyupgrade
 # Auto generate docstrings.
   - pyment
 # Auto check programming style aspects.
   - pylint
-# Auto check static typing.
-  - mypy
-# Auto format Markdown files.
-  - mdformat
-# Auto sort the import statements.
-  - isort
+# Enable publishing the pip package.
+  - twine
+# Ensure the python function arguments are verified at runtime.
+  - typeguard
+# Enable creating the pip package.
+  - setuptools
+  - wheel
   - pip
   - pip:
     # Get apt firefox driver object.
