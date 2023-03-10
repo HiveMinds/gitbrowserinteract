@@ -4,11 +4,10 @@ import time
 from browsercontroller.helper import click_element_by_xpath
 from typeguard import typechecked
 
-from .github_login import github_login
-from .remove_previous_github_ssh_key import (
-    remove_previous_github_ssh_key,
-)
 from src.gitbrowserinteract.Hardcoded import Hardcoded
+
+from .github_login import github_login
+from .remove_previous_github_ssh_key import remove_previous_github_ssh_key
 
 
 class Ssh_deploy_key_setter:

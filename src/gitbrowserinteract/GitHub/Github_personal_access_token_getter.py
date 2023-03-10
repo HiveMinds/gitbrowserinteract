@@ -8,12 +8,13 @@ from browsercontroller.helper import (
 )
 from typeguard import typechecked
 
+from src.gitbrowserinteract.export_token import (
+    export_github_pac_to_personal_creds_txt,
+)
 from src.gitbrowserinteract.GitHub.github_login import github_login
 from src.gitbrowserinteract.GitHub.remove_previous_github_pat import (
     remove_previous_github_pat,
 )
-
-from src.gitbrowserinteract.export_token import export_github_pac_to_personal_creds_txt
 from src.gitbrowserinteract.Hardcoded import Hardcoded
 from src.gitbrowserinteract.helper import get_value_from_html_source
 

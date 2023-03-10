@@ -5,15 +5,14 @@ key. Set GitHub personal access token.
 """
 import argparse
 
+from src.gitbrowserinteract.GitHub.Github_personal_access_token_getter import (
+    Github_personal_access_token_getter,
+)
 from src.gitbrowserinteract.GitHub.Ssh_deploy_key_setter import (
     Ssh_deploy_key_setter,
 )
 from src.gitbrowserinteract.GitLab.GitLab_runner_token_getter import (
     Get_gitlab_runner_token,
-)
-
-from src.gitbrowserinteract.GitHub.Github_personal_access_token_getter import (
-    Github_personal_access_token_getter,
 )
 from src.gitbrowserinteract.Hardcoded import Hardcoded
 
