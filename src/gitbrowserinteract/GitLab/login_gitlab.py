@@ -28,7 +28,7 @@ def gitlab_login(*, hardcoded, gitlab_username=None, gitlab_pwd=None):
 
     # Go to extension settings.
     driver = get_ubuntu_apt_firefox_controller(
-        url=hardcoded.gitlab_login_url, default_profile=True
+        url=hardcoded.gitlab_login_url, default_profile=False
     )
     time.sleep(5)
 

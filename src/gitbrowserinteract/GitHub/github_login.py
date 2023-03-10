@@ -29,7 +29,7 @@ def github_login(
 
     # Go to extension settings.
     driver = get_ubuntu_apt_firefox_controller(
-        url=login_url, default_profile=True
+        url=login_url, default_profile=False
     )
     time.sleep(5)
 
