@@ -1,6 +1,6 @@
 # run: conda env create --file environment.yml
 # include new packages: conda env update --file environment.yml
-name: get_gitlab_generation_token
+name: gitbrowserinteract
 channels:
   - conda-forge
 dependencies:
@@ -50,6 +50,8 @@ dependencies:
   - pip:
     # Get apt firefox driver object.
     - browsercontroller>=0.0.7
+    # Install the pip package of this project.
+    - gitbrowserinteract
     # Auto generate documentation.
     - pdoc3
     # Seems to be an autoformatter like black, but installed using npm instead of pip.

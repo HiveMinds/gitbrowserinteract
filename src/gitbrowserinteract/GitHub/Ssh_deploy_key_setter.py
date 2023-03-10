@@ -34,6 +34,7 @@ class Ssh_deploy_key_setter:
         # Store the hardcoded values used within this project
         hardcoded = Hardcoded()
 
+        # pylint: disable = R0801
         self.github_username = github_username
         if self.github_username is None:
             raise ValueError(
@@ -44,7 +45,6 @@ class Ssh_deploy_key_setter:
         # TODO: get gitlab-ci-build-statuses from hardcoded.txt
         github_repo_name = "gitlab-ci-build-statuses"
 
-        # login
         driver = github_login(
             hardcoded=hardcoded,
             login_url=hardcoded.github_login_url,

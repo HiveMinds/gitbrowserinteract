@@ -1,0 +1,11 @@
+[
+  {
+    "func_name": "Test_parse_creds.test_parse_creds",
+    "line": 16,
+    "path": "test/test_helper.py",
+    "samples": 1,
+    "type_comments": [
+      "() -> None"
+    ]
+  }
+]

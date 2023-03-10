@@ -101,7 +101,7 @@ class Github_personal_access_token_getter:
         :param github_pwd:
         """
 
-        # login
+        # pylint: disable = R0801
         driver = github_login(
             hardcoded=hardcoded,
             login_url=hardcoded.github_login_url,
