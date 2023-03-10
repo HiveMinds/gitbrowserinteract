@@ -13,9 +13,9 @@ from src.gitbrowserinteract.GitHub.remove_previous_github_pat import (
     remove_previous_github_pat,
 )
 
-from ..export_token import export_github_pac_to_personal_creds_txt
-from ..Hardcoded import Hardcoded
-from ..helper import get_value_from_html_source
+from src.gitbrowserinteract.export_token import export_github_pac_to_personal_creds_txt
+from src.gitbrowserinteract.Hardcoded import Hardcoded
+from src.gitbrowserinteract.helper import get_value_from_html_source
 
 
 class Github_personal_access_token_getter:

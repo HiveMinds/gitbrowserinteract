@@ -1,5 +1,5 @@
 # run: conda env create --file environment.yml
-# include new packages: con
+# update: conda env update --file environment.yml --prune
 name: gitbrowserinteract
 channels:
   - conda-forge

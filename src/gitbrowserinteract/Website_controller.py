@@ -2,7 +2,7 @@
 from selenium import webdriver
 from typeguard import typechecked
 
-from .Hardcoded import Hardcoded
+from src.gitbrowserinteract.Hardcoded import Hardcoded
 
 
 # pylint: disable=R0903
