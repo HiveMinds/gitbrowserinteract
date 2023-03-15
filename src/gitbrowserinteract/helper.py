@@ -3,14 +3,21 @@ import math
 import os
 import time
 from getpass import getpass
+from typing import Any, List
 
 from typeguard import typechecked
+
+from src.gitbrowserinteract import Hardcoded
 
 
 @typechecked
 def loiter_till_gitlab_server_is_ready_for_login(
-    *, hardcoded, scan_duration, interval_duration, driver
-):
+    *,
+    hardcoded: Hardcoded,
+    scan_duration: int,
+    interval_duration: int,
+    driver: Any,
+) -> None:
     """Waits untill a GitLab server is ready for the user to log in.
 
     :param hardcoded:
@@ -49,7 +56,7 @@ def loiter_till_gitlab_server_is_ready_for_login(
 
 
 @typechecked
-def check_if_gitlab_login_page_is_loaded(*, driver):
+def check_if_gitlab_login_page_is_loaded(*, driver: Any) -> bool:
     """Checks if a GitLab login page is loaded or not.
 
     :param driver:
@@ -85,7 +92,7 @@ def check_if_gitlab_login_page_is_loaded(*, driver):
 
 
 @typechecked
-def file_is_found(*, filepath):
+def file_is_found(*, filepath: str) -> bool:
     """Checks if file is found or not.
 
     :param filepath: param hardcoded: An object containing all the hardcoded
@@ -96,7 +103,7 @@ def file_is_found(*, filepath):
 
 
 @typechecked
-def get_firefox_browser_driver(*, hardcoded):
+def get_firefox_browser_driver(*, hardcoded: Hardcoded) -> None:
     """USED Creates a folder to store the firefox browser controller downloader
     and then downloads it into that.
 
@@ -122,15 +129,15 @@ def get_firefox_browser_driver(*, hardcoded):
 
 
 @typechecked
-def install_firefox_browser():
+def install_firefox_browser() -> None:
     """USED."""
-    install_firefox_browser_command = "yes | sudo apt install firefox"
+    install_firefox_browser_command = "sudo apt install firefox --yes"
     print(f"install_firefox_browser:{install_firefox_browser_command}")
     os.system(install_firefox_browser_command)  # nosec
 
 
 @typechecked
-def get_chromium_browser_driver(*, hardcoded):
+def get_chromium_browser_driver(*, hardcoded: Hardcoded) -> None:
     """Creates a folder to store the chromium browser controller downloader and
     then downloads it into that.
     TODO: include os identifier and select accompanying file
@@ -193,7 +200,7 @@ def get_chromium_browser_driver(*, hardcoded):
 
 
 @typechecked
-def scroll_shim(*, passed_in_driver, browser_object):
+def scroll_shim(*, passed_in_driver: Any, browser_object: Any) -> None:
     """Scrolls down till object is found.
 
     :param passed_in_driver: An object within the object that controls an internet browser.
@@ -208,7 +215,7 @@ def scroll_shim(*, passed_in_driver, browser_object):
 
 
 @typechecked
-def write_string_to_file(*, string, output_path):
+def write_string_to_file(*, string: str, output_path: str) -> None:
     """Writes a string to an output file.
 
     :param string: content you write to file
@@ -219,7 +226,7 @@ def write_string_to_file(*, string, output_path):
 
 
 @typechecked
-def get_runner_registration_token_filepath():
+def get_runner_registration_token_filepath() -> str:
     """Gets the GitLab runner registration token filepath."""
     # get lines from hardcoded data
     lines = read_file_content(filepath="../src/hardcoded_variables.txt")
@@ -243,7 +250,7 @@ def get_runner_registration_token_filepath():
 
 
 @typechecked
-def read_file_content(*, filepath):
+def read_file_content(*, filepath: str) -> List[str]:
     """
 
     :param filepath:
@@ -257,7 +264,7 @@ def read_file_content(*, filepath):
 
 
 @typechecked
-def open_url(*, driver, url):
+def open_url(*, driver: Any, url: str) -> Any:
     """USED # TODO: eliminate duplicate function. Makes the browser open an url
     through the driver object in the webcontroller.
 
@@ -269,7 +276,9 @@ def open_url(*, driver, url):
 
 
 @typechecked
-def get_value_from_html_source(*, source, substring, closing_substring):
+def get_value_from_html_source(
+    *, source: str, substring: str, closing_substring: str
+) -> str:
     """Returns value from html source code.
 
     :param source: Source code of website that is being controlled.
@@ -286,7 +295,7 @@ def get_value_from_html_source(*, source, substring, closing_substring):
 
 
 @typechecked
-def get_username(*, company):
+def get_username(*, company: str) -> str:
     """Gets the username for login and returns it."""
     username = getpass(
         f"\nPlease enter your {company} Username: \n(you can also manually log"
@@ -299,7 +308,7 @@ def get_username(*, company):
 
 
 @typechecked
-def get_pwd(*, company):
+def get_pwd(*, company: str) -> str:
     """Gets the password for login and returns it."""
     pwd = getpass(
         f"Please enter your {company} Password \n(you can also manually log "

@@ -5,9 +5,12 @@ TODO: Change to get it from within docker instead
 of using browser controller.
 """
 import time
+from typing import Any, Tuple
 
 from browsercontroller.helper import click_element_by_xpath, source_contains
 from typeguard import typechecked
+
+from src.gitbrowserinteract import Hardcoded
 
 from ..helper import get_value_from_html_source
 
@@ -110,7 +113,9 @@ def unhide_registration_token_through_xpath_V1(*, driver):
 
 
 @typechecked
-def gitlab_visualise_runner_token_through_dropdown_boxV2(*, hc, driver):
+def gitlab_visualise_runner_token_through_dropdown_boxV2(
+    *, hc: Hardcoded, driver: Any
+) -> Any:
     """
 
     :param hc:
@@ -138,7 +143,7 @@ def gitlab_visualise_runner_token_through_dropdown_boxV2(*, hc, driver):
 
 
 @typechecked
-def click_dropdown_box_V2(*, driver):
+def click_dropdown_box_V2(*, driver: Any) -> Any:
     """
 
     :param driver:
@@ -159,14 +164,16 @@ def click_dropdown_box_V2(*, driver):
 
 
 @typechecked
-def gitlab_click_eye_button_through_xpath_V2(*, hc, driver):
+def gitlab_click_eye_button_through_xpath_V2(
+    *, hc: Hardcoded, driver: Any
+) -> Tuple[Any, bool]:
     """
 
     :param driver:
 
     """
 
-    successfull = False
+    successfull: bool = False
     for i, xpath in enumerate(hc.gitlab_eye_xpaths):
         print(f"{i},xpath={xpath}")
         if not successfull:
@@ -181,7 +188,9 @@ def gitlab_click_eye_button_through_xpath_V2(*, hc, driver):
 
 
 @typechecked
-def gitlab_click_eye_button_through_id_V2(*, hc, driver):
+def gitlab_click_eye_button_through_id_V2(
+    *, hc: Hardcoded, driver: Any
+) -> Tuple[Any, bool]:
     """
 
     :param hc:
@@ -204,7 +213,9 @@ def gitlab_click_eye_button_through_id_V2(*, hc, driver):
 
 
 @typechecked
-def try_to_click_by_id(*, driver, some_id, error_msg, raise_error):
+def try_to_click_by_id(
+    *, driver: Any, some_id: str, error_msg: str, raise_error: bool
+) -> Tuple[Any, bool]:
     """Tries to click an object in website using the class id.
 
     :param driver:
@@ -228,7 +239,9 @@ def try_to_click_by_id(*, driver, some_id, error_msg, raise_error):
 
 
 @typechecked
-def try_to_click_by_xpath(*, driver, xpath, error_msg, raise_error):
+def try_to_click_by_xpath(
+    *, driver: Any, xpath: str, error_msg: str, raise_error: bool
+) -> Tuple[Any, bool]:
     """Tries to click an object in website using the xpath of that object.
 
     :param driver:
@@ -252,7 +265,7 @@ def try_to_click_by_xpath(*, driver, xpath, error_msg, raise_error):
 
 
 @typechecked
-def read_gitlab_runner_token_from_page(*, driver):
+def read_gitlab_runner_token_from_page(*, driver: Any) -> str:
     """
 
     :param driver:

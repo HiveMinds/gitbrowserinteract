@@ -150,7 +150,7 @@ class Github_personal_access_token_getter:
         self.click_submit_token(driver, hardcoded)
 
     @typechecked
-    def click_repo_status_checkbox(self, driver, hardcoded):
+    def click_repo_status_checkbox(self, driver, hardcoded: Hardcoded):
         """
 
         :param driver:
@@ -194,7 +194,7 @@ class Github_personal_access_token_getter:
             )
 
     @typechecked
-    def click_submit_token(self, driver, hardcoded):
+    def click_submit_token(self, driver, hardcoded: Hardcoded):
         """
 
         :param driver:

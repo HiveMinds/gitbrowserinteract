@@ -5,7 +5,7 @@ from typeguard import typechecked
 
 
 @typechecked
-def run_bash_command(*, bashCommand):
+def run_bash_command(*, bashCommand: str) -> None:
     """Runs a bash command.
 
     :param bashCommand: A string containing a bash command that can be executed.
