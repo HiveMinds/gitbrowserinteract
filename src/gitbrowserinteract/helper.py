@@ -7,7 +7,7 @@ from typing import Any, List
 
 from typeguard import typechecked
 
-from src.gitbrowserinteract import Hardcoded
+from .Hardcoded import Hardcoded
 
 
 @typechecked

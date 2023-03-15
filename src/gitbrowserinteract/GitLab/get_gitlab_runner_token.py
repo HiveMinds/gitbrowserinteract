@@ -10,13 +10,14 @@ from typing import Any, Tuple
 from browsercontroller.helper import click_element_by_xpath, source_contains
 from typeguard import typechecked
 
-from src.gitbrowserinteract import Hardcoded
-
+from ..Hardcoded import Hardcoded
 from ..helper import get_value_from_html_source
 
 
 @typechecked
-def get_gitlab_runner_registration_token_from_page(*, hc, driver):
+def get_gitlab_runner_registration_token_from_page(
+    *, hc: Hardcoded, driver: Any
+) -> str:
     """
 
     :param hc:
@@ -31,7 +32,7 @@ def get_gitlab_runner_registration_token_from_page(*, hc, driver):
 
 
 @typechecked
-def goto_runner_token_site(*, driver):
+def goto_runner_token_site(*, driver: Any) -> None:
     """
 
     :param driver:
@@ -45,7 +46,7 @@ def goto_runner_token_site(*, driver):
 
 
 @typechecked
-def visualise_runner_token(*, hc, driver):
+def visualise_runner_token(*, hc: Hardcoded, driver: Any) -> Any:
     """
 
     :param hc:
@@ -65,7 +66,7 @@ def visualise_runner_token(*, hc, driver):
 
 
 @typechecked
-def click_display_token_through_css_V0(*, driver):
+def click_display_token_through_css_V0(*, driver: Any) -> bool:
     """
 
     :param driver:
@@ -88,7 +89,7 @@ def click_display_token_through_css_V0(*, driver):
 
 
 @typechecked
-def unhide_registration_token_through_xpath_V1(*, driver):
+def unhide_registration_token_through_xpath_V1(*, driver: Any) -> bool:
     """Tries to show the GitLab runner registration token.
 
     :param driver:

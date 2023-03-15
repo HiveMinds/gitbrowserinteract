@@ -1,6 +1,7 @@
 """Performs login on GitHub."""
 
 import time
+from typing import Any
 
 from browsercontroller.get_controller import get_ubuntu_apt_firefox_controller
 from browsercontroller.helper import click_element_by_xpath, source_contains
@@ -8,20 +9,21 @@ from typeguard import typechecked
 
 from ..ask_user_input import ask_two_factor_code
 from ..control_website import wait_until_page_is_loaded
+from ..Hardcoded import Hardcoded
 
 
 # pylint: disable=R0913
 @typechecked
 def github_login(
     *,
-    hardcoded,
-    login_url,
-    user_element_id,
-    pw_element_id,
-    signin_button_xpath,
-    username,
-    pwd,
-):
+    hardcoded: Hardcoded,
+    login_url: str,
+    user_element_id: str,
+    pw_element_id: str,
+    signin_button_xpath: str,
+    username: str,
+    pwd: str,
+) -> Any:
     """Performs login of user into  website. Returns the driver object.
 
     :param hardcoded: An object containing all the hardcoded settings used in this program.
@@ -87,9 +89,9 @@ def github_login(
 @typechecked
 def user_is_logged_in_in_github(
     *,
-    hardcoded,
-    driver,
-):
+    hardcoded: Hardcoded,
+    driver: Any,
+) -> bool:
     """Returns True if the user is logged in, False otherwise."""
     # Read page source that indicates user is logged in.
     wait_until_page_is_loaded(time_limit_sec=6, driver=driver)
@@ -103,7 +105,11 @@ def user_is_logged_in_in_github(
 
 
 @typechecked
-def complete_github_two_factor_auth(*, hardcoded, driver):
+def complete_github_two_factor_auth(
+    *,
+    hardcoded: Hardcoded,
+    driver: Any,
+) -> None:
     """Completes the GitHub 2FA."""
     # check if 2factor
     if source_contains(driver, "<h1>Two-factor authentication</h1>"):
@@ -121,7 +127,9 @@ def complete_github_two_factor_auth(*, hardcoded, driver):
 
 
 @typechecked
-def github_two_factor_login(*, hardcoded, two_factor_code, driver):
+def github_two_factor_login(
+    *, hardcoded: Hardcoded, driver: Any, two_factor_code: str
+) -> Any:
     """USED to login for GitHub. Performs login of user into website. Returns
     the driver object.
 

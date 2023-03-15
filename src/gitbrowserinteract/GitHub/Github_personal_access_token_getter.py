@@ -1,5 +1,6 @@
 """Gets GitHub personal access token."""
 import time
+from typing import Any, Optional
 
 from browsercontroller.helper import (
     click_element_by_xpath,
@@ -21,9 +22,9 @@ class Github_personal_access_token_getter:
     @typechecked
     def __init__(
         self,
-        github_username=None,
-        github_pwd=None,
-    ):
+        github_username: Optional[str] = None,
+        github_pwd: Optional[str] = None,
+    ) -> None:
         """Initialises object that gets the browser controller, then it gets
         the issues from the source repo, and copies them to the target repo.
 
@@ -80,8 +81,8 @@ class Github_personal_access_token_getter:
 
     @typechecked
     def set_github_personal_access_token(
-        self, hardcoded, github_username, github_pwd
-    ):
+        self, hardcoded: Hardcoded, github_username: str, github_pwd: str
+    ) -> Any:
         """USED Gets the issues from a github repo. Opens a separate browser
         instance and then closes it again. Returns the rsc_data object that
         contains the parsed availability of the relevant activities.
@@ -122,7 +123,9 @@ class Github_personal_access_token_getter:
         return driver
 
     @typechecked
-    def create_github_personal_access_token(self, hardcoded, driver):
+    def create_github_personal_access_token(
+        self, hardcoded: Hardcoded, driver: Any
+    ) -> None:
         """
 
         :param hardcoded:
@@ -150,7 +153,9 @@ class Github_personal_access_token_getter:
         self.click_submit_token(driver, hardcoded)
 
     @typechecked
-    def click_repo_status_checkbox(self, driver, hardcoded: Hardcoded):
+    def click_repo_status_checkbox(
+        self, driver: Any, hardcoded: Hardcoded
+    ) -> None:
         """
 
         :param driver:
@@ -194,7 +199,7 @@ class Github_personal_access_token_getter:
             )
 
     @typechecked
-    def click_submit_token(self, driver, hardcoded: Hardcoded):
+    def click_submit_token(self, driver: Any, hardcoded: Hardcoded) -> None:
         """
 
         :param driver:
@@ -229,7 +234,7 @@ class Github_personal_access_token_getter:
             )
 
     @typechecked
-    def read_github_personal_access_token(self, driver):
+    def read_github_personal_access_token(self, driver: Any) -> None:
         """Reads the GitHub personal acccess token from website.
 
         :param driver:

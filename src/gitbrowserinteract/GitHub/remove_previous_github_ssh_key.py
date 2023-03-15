@@ -1,16 +1,19 @@
 """Removes pre-existing GitHub SSH deploy keys with the same name if they
 exist."""
-from typing import List
+from typing import Any, List
 
 from selenium.webdriver.common.by import By
 from typeguard import typechecked
 
 from ..control_website import wait_until_page_is_loaded
+from ..Hardcoded import Hardcoded
 from ..helper import open_url
 
 
 @typechecked
-def remove_previous_github_ssh_key(*, github_username, hardcoded, driver):
+def remove_previous_github_ssh_key(
+    *, github_username: str, hardcoded: Hardcoded, driver: Any
+) -> None:
     """Assumes the user is logged in into GitHub.
 
     Then lists the already existing GitHub personal access token (PAT)
@@ -38,7 +41,9 @@ def remove_previous_github_ssh_key(*, github_username, hardcoded, driver):
 
 
 @typechecked
-def github_ssh_key_description_exists(*, github_username, hardcoded, driver):
+def github_ssh_key_description_exists(
+    *, github_username: str, hardcoded: Hardcoded, driver: Any
+) -> bool:
     """Assumes the user is logged in into GitHub.
 
     Then lists the already existing GitHub personal access token (PAT)
@@ -77,7 +82,7 @@ def github_ssh_key_description_exists(*, github_username, hardcoded, driver):
 
 
 @typechecked
-def delete_github_ssh_key(*, hardcoded, driver):
+def delete_github_ssh_key(*, hardcoded: Hardcoded, driver: Any) -> None:
     """Gets the GitHub ssh_key id from the link, then clicks the delete button,
     and the confirm deletion button, to delete the GitHub ssh_key.
 
@@ -103,7 +108,9 @@ def delete_github_ssh_key(*, hardcoded, driver):
 
 
 @typechecked
-def list_of_valid_xpath_indices(*, valid_indices, left, right, driver):
+def list_of_valid_xpath_indices(
+    *, valid_indices, left, right, driver
+) -> List[int]:
     """Returns the row numbers of the GitHub personal access tokens table,
     starting at index =1.
 
@@ -138,7 +145,9 @@ def list_of_valid_xpath_indices(*, valid_indices, left, right, driver):
 
 # pylint: disable=R1710
 @typechecked
-def get_desired_token_index(*, hardcoded, driver, valid_indices: List[int]):
+def get_desired_token_index(
+    *, hardcoded: Hardcoded, driver: Any, valid_indices: List[int]
+) -> int:
     """Finds the index/row number of the GitHub ssh_key's that corresponds to
     the description of the GitHub ssh_key that is to be created, and returns
     this index.
@@ -158,7 +167,9 @@ def get_desired_token_index(*, hardcoded, driver, valid_indices: List[int]):
 
 
 @typechecked
-def click_github_ssh_key_delete_button(*, hardcoded, driver, row_nr: int):
+def click_github_ssh_key_delete_button(
+    *, hardcoded: Hardcoded, driver: any, row_nr: int
+) -> None:
     """Clicks the delete GitHub ssh_key button, and then clicks the confirm
     deletion button.
 

@@ -4,9 +4,13 @@ import shutil
 
 from typeguard import typechecked
 
+from .Hardcoded import Hardcoded
+
 
 @typechecked
-def export_github_pac_to_personal_creds_txt(*, filepath, hardcoded, pac):
+def export_github_pac_to_personal_creds_txt(
+    *, filepath: str, hardcoded: Hardcoded, pac: str
+) -> None:
     """
 
     :param filepath:
@@ -34,7 +38,7 @@ def export_github_pac_to_personal_creds_txt(*, filepath, hardcoded, pac):
 
 
 @typechecked
-def append_line(*, filepath, line):
+def append_line(*, filepath: str, line: str) -> None:
     """
 
     :param filepath:
@@ -47,7 +51,7 @@ def append_line(*, filepath, line):
 
 
 @typechecked
-def file_contains_substring(*, filepath, substring):
+def file_contains_substring(*, filepath: str, substring: str) -> bool:
     """
 
     :param filepath:
@@ -62,8 +66,8 @@ def file_contains_substring(*, filepath, substring):
 
 @typechecked
 def replace_line_in_file_if_contains_substring(
-    *, filepath, substring, new_string
-):
+    *, filepath: str, substring: str, new_string: str
+) -> None:
     """
 
     :param filepath:

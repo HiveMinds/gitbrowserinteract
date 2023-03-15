@@ -8,8 +8,7 @@ from browsercontroller.get_controller import get_ubuntu_apt_firefox_controller
 from browsercontroller.helper import click_element_by_xpath
 from typeguard import typechecked
 
-from src.gitbrowserinteract import Hardcoded
-
+from ..Hardcoded import Hardcoded
 from ..helper import get_pwd, get_username
 
 

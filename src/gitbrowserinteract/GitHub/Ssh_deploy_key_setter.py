@@ -1,5 +1,6 @@
 """Sets the GitHub SSH deploy key."""
 import time
+from typing import Any, Optional
 
 from browsercontroller.helper import click_element_by_xpath
 from typeguard import typechecked
@@ -15,10 +16,10 @@ class Ssh_deploy_key_setter:
     @typechecked
     def __init__(
         self,
-        public_ssh_sha,
-        github_username=None,
-        github_pwd=None,
-    ):
+        public_ssh_sha: str,
+        github_username: Optional[str] = None,
+        github_pwd: Optional[str] = None,
+    ) -> None:
         """Initialises object that gets the browser controller, then it gets
         the issues from the source repo, and copies them to the target repo.
 
@@ -98,10 +99,10 @@ class Ssh_deploy_key_setter:
     @typechecked
     def open_github_build_status_repo_keys(
         self,
-        driver,
-        github_username,
-        github_build_status_repo_name,
-    ):
+        driver: Any,
+        github_username: str,
+        github_build_status_repo_name: str,
+    ) -> Any:
         """USED Gets the issues from a github repo. Opens a separate browser
         instance and then closes it again. Returns the rsc_data object that
         contains the parsed availability of the relevant activities.
@@ -128,7 +129,9 @@ class Ssh_deploy_key_setter:
         return driver
 
     @typechecked
-    def fill_in_ssh_key(self, hardcoded, driver, public_ssh_sha):
+    def fill_in_ssh_key(
+        self, hardcoded: Hardcoded, driver: Any, public_ssh_sha: str
+    ) -> None:
         """
 
         :param hardcoded:

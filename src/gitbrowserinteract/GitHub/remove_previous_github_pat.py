@@ -1,15 +1,16 @@
 """Removes previously existing GitHub personal access tokens, if they exist."""
-from typing import List
+from typing import Any, List, Union
 
 from selenium.webdriver.common.by import By
 from typeguard import typechecked
 
 from ..control_website import wait_until_page_is_loaded
 from ..GitHub.remove_previous_github_ssh_key import list_of_valid_xpath_indices
+from ..Hardcoded import Hardcoded
 
 
 @typechecked
-def remove_previous_github_pat(*, hardcoded, driver):
+def remove_previous_github_pat(*, hardcoded: Hardcoded, driver: Any) -> None:
     """Assumes the user is logged in into GitHub.
 
     Then lists the already existing GitHub personal access token (PAT)
@@ -32,7 +33,9 @@ def remove_previous_github_pat(*, hardcoded, driver):
 
 
 @typechecked
-def github_pat_description_exists(*, hardcoded, driver):
+def github_pat_description_exists(
+    *, hardcoded: Hardcoded, driver: Any
+) -> Union[bool, Union[str, None]]:
     """Assumes the user is logged in into GitHub.
 
     Then lists the already existing GitHub personal access token (PAT)
@@ -59,7 +62,7 @@ def github_pat_description_exists(*, hardcoded, driver):
 
 
 @typechecked
-def delete_github_pat(*, link, hardcoded, driver):
+def delete_github_pat(*, link: str, hardcoded: Hardcoded, driver: Any) -> None:
     """Gets the GitHub pat id from the link, then clicks the delete button, and
     the confirm deletion button, to delete the GitHub pat."""
 
@@ -98,7 +101,9 @@ def delete_github_pat(*, link, hardcoded, driver):
 
 # pylint: disable=R1710
 @typechecked
-def get_desired_token_index(*, hardcoded, driver, valid_indices: List[int]):
+def get_desired_token_index(
+    *, hardcoded: Hardcoded, driver: Any, valid_indices: List[int]
+) -> str:
     """TODO: remove duplicate function, fix pylint: disable=R1710.
     Finds the index/row number of the GitHub pat's that corresponds to the
     description of the GitHub pat that is to be created, and returns this
@@ -112,7 +117,9 @@ def get_desired_token_index(*, hardcoded, driver, valid_indices: List[int]):
 
 
 @typechecked
-def click_github_pat_delete_button(*, hardcoded, driver, row_nr: int):
+def click_github_pat_delete_button(
+    *, hardcoded: Hardcoded, driver: Any, row_nr: int
+) -> None:
     """Clicks the delete GitHub pat button, and then clicks the confirm
     deletion button."""
     delete_button = driver.find_element(

@@ -14,7 +14,7 @@ class Hardcoded:
 
     # pylint: disable=R0915
     @typechecked
-    def __init__(self):
+    def __init__(self) -> None:
         """Constructs an object that contains all the hardcoded values that are
         used in this script.
 
